@@ -1,0 +1,48 @@
+{
+    "name": "laracrafts/laravel-geo-routes",
+    "description": "Geo location restricted routes for Laravel",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Choraimy Kroonstuiver",
+            "email": "choraimy@live.nl"
+        },
+        {
+            "name": "yak0d3",
+            "email": "contact.raedyak@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^7.1.3",
+        "illuminate/routing": "^5.7",
+        "illuminate/support": "^5.7"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^3.7",
+        "phpunit/phpunit": "^7.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "LaraCrafts\\GeoRoutes\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "LaraCrafts\\GeoRoutes\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        },
+        "laravel": {
+            "providers": [
+                "\\LaraCrafts\\GeoRoutes\\GeoRoutesServiceProvider"
+            ]
+        }
+    }
+}
