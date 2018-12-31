@@ -5,7 +5,7 @@ namespace LaraCrafts\GeoRoutes\Tests\Unit;
 use LaraCrafts\GeoRoutes\GeoRoutesServiceProvider;
 use LaraCrafts\GeoRoutes\Tests\TestCase;
 
-class ExampleTest extends TestCase
+class ServiceProviderTest extends TestCase
 {
     public function testServiceProviderWasRegistered()
     {
