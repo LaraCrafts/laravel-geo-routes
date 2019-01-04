@@ -121,27 +121,53 @@ class GeoRoutes
             return;
         }
 
-        // We explicitly assign it as an empty array here, so that even if there are no registered callbacks we still
-        // won't keep reading config
-        static::$proxies = [];
-
         foreach (config('geo-routes.callbacks') as $key => $callback) {
             static::$proxies['or' . Str::studly($key)] = $callback;
         }
     }
 
     /**
+     * Return a HTTP 404 error if access is denied.
+     *
+     * @return $this
+     */
+    public function orNotFound()
+    {
+        return $this->setCallback('LaraCrafts\GeoRoutes\Callbacks::notFound', func_get_args());
+    }
+
+    /**
+     * Redirect to given route if access is denied.
+     *
+     * @param string $routeName
+     * @return $this
+     */
+    public function orRedirectTo(string $routeName)
+    {
+        return $this->setCallback('LaraCrafts\GeoRoutes\Callbacks::redirectTo', func_get_args());
+    }
+
+    /**
+     * Return a HTTP 401 error if access is denied (this is the default behavior).
+     *
+     * @return $this
+     */
+    public function orUnauthorized()
+    {
+        $this->callback = null;
+        return $this;
+    }
+
+    /**
      * Set the callback.
      *
-     * @param string $proxy
+     * @param callable $callback
      * @param array $arguments
      * @return $this
      */
-    protected function setCallback(string $proxy, array $arguments)
+    protected function setCallback(callable $callback, array $arguments)
     {
-        $callback = static::$proxies[$proxy];
-
-        if (!is_callable($callback)) {
+        if (is_string($callback) && Str::contains($callback, '@')) {
             $callback = Str::parseCallback($callback, '__invoke');
             $callback[0] = resolve($callback[0]);
         }
