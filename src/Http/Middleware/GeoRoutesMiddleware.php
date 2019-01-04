@@ -12,15 +12,15 @@ class GeoRoutesMiddleware
      *
      * @param \Illuminate\Http\Request $request
      * @param \Closure $next
-     * @param string $rule
+     * @param string $strategy
      * @param string $countries
      * @return mixed
      */
-    public function handle(Request $request, Closure $next, string $rule, string $countries)
+    public function handle(Request $request, Closure $next, string $strategy, string $countries)
     {
         $countries = explode('&', $countries);
 
-        if ($this->shouldHaveAccess($request, $countries, $rule)) {
+        if ($this->shouldHaveAccess($request, $countries, $strategy)) {
             return $next($request);
         }
 
