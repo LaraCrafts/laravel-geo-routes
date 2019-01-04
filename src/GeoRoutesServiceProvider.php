@@ -27,6 +27,9 @@ class GeoRoutesServiceProvider extends ServiceProvider
         Route::macro('from', function (string ...$countries) {
             return new GeoRoutes($this, $countries, 'allow');
         });
+
+        $this->mergeConfigFrom(__DIR__ . '/../config/geo-routes.php', 'geo-routes');
+        $this->publishes([__DIR__ . '/../config/geo-routes.php' => config_path('geo-routes.php')], 'config');
     }
 
     /**
