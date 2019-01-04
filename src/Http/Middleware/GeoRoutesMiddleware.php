@@ -14,9 +14,10 @@ class GeoRoutesMiddleware
      * @param \Closure $next
      * @param string $strategy
      * @param string $countries
+     * @param string|null $callback
      * @return mixed
      */
-    public function handle(Request $request, Closure $next, string $strategy, string $countries)
+    public function handle(Request $request, Closure $next, string $strategy, string $countries, string $callback = null)
     {
         $countries = explode('&', $countries);
 
@@ -24,7 +25,10 @@ class GeoRoutesMiddleware
             return $next($request);
         }
 
-        # TODO: implement callbacks here
+        if ($callback && $callback = unserialize($callback)) {
+            return call_user_func_array($callback[0], $callback[1] ?? []);
+        }
+
         return abort(401);
     }
 

@@ -4,6 +4,7 @@ namespace LaraCrafts\GeoRoutes;
 
 use BadMethodCallException;
 use Illuminate\Routing\Route;
+use Illuminate\Support\Str;
 
 /**
  * @mixin \Illuminate\Routing\Route
@@ -11,7 +12,9 @@ use Illuminate\Routing\Route;
 class GeoRoutes
 {
     protected $applied;
+    protected $callback;
     protected $countries;
+    protected static $proxies;
     protected $route;
     protected $strategy;
 
@@ -29,6 +32,8 @@ class GeoRoutes
         $this->countries = $countries;
         $this->route = $route;
         $this->strategy = $strategy;
+
+        static::loadProxies();
     }
 
     /**
@@ -42,6 +47,10 @@ class GeoRoutes
     {
         if (method_exists($this->route, $method)) {
             return $this->route->$method(...$arguments);
+        }
+
+        if (array_key_exists($method, static::$proxies)) {
+            return $this->setCallback($method, $arguments);
         }
 
         throw new BadMethodCallException("Undefined method '$method'");
@@ -62,7 +71,8 @@ class GeoRoutes
      */
     public function __toString()
     {
-        return 'geo:' . $this->strategy . ',' . implode('&', $this->countries);
+        return 'geo:' . $this->strategy . ',' . implode('&', $this->countries) .
+            ($this->callback ? ',' . serialize($this->callback) : '');
     }
 
     /**
@@ -99,6 +109,40 @@ class GeoRoutes
     public function deny()
     {
         $this->strategy = 'deny';
+        return $this;
+    }
+
+    /**
+     * Load the available proxies.
+     */
+    protected static function loadProxies()
+    {
+        if (static::$proxies !== null) {
+            return;
+        }
+
+        // We explicitly assign it as an empty array here, so that even if there are no registered callbacks we still
+        // won't keep reading config
+        static::$proxies = [];
+
+        foreach (config('geo-routes.callbacks') as $key => $callback) {
+            $callback = is_callable($callback) ? $callback : Str::parseCallback($callback, '__invoke');
+            $proxy = 'or' . Str::studly($key);
+
+            static::$proxies[$proxy] = $callback;
+        }
+    }
+
+    /**
+     * Set the callback.
+     *
+     * @param string $proxy
+     * @param array $arguments
+     * @return $this
+     */
+    protected function setCallback(string $proxy, array $arguments)
+    {
+        $this->callback = [static::$proxies[$proxy], $arguments];
         return $this;
     }
 }
