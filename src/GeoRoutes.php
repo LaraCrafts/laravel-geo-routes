@@ -50,7 +50,7 @@ class GeoRoutes
         }
 
         if (array_key_exists($method, static::$proxies)) {
-            return $this->setCallback($method, $arguments);
+            return $this->setCallback(static::$proxies[$method], $arguments);
         }
 
         throw new BadMethodCallException("Undefined method '$method'");
