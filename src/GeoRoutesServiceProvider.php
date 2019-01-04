@@ -9,6 +9,11 @@ use LaraCrafts\GeoRoutes\Http\Middleware\GeoRoutesMiddleware;
 
 class GeoRoutesServiceProvider extends ServiceProvider
 {
+    /**
+     * Bootstrap any package services.
+     *
+     * @return void
+     */
     public function boot()
     {
         Route::macro('allowFrom', function (string ...$countries) {
@@ -24,6 +29,11 @@ class GeoRoutesServiceProvider extends ServiceProvider
         });
     }
 
+    /**
+     * Register any package services.
+     *
+     * @return void
+     */
     public function register()
     {
         $this->app->extend('router', function (Router $router) {

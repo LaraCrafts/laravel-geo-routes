@@ -7,6 +7,15 @@ use Illuminate\Http\Request;
 
 class GeoRoutesMiddleware
 {
+    /**
+     * Handle an incoming request.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure $next
+     * @param string $rule
+     * @param string $countries
+     * @return mixed
+     */
     public function handle(Request $request, Closure $next, string $rule, string $countries)
     {
         $countries = explode('&', $countries);
@@ -19,6 +28,14 @@ class GeoRoutesMiddleware
         return abort(401);
     }
 
+    /**
+     * Determine if the request should be allowed through.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param array $countries
+     * @param string $strategy
+     * @return bool
+     */
     protected function shouldHaveAccess(Request $request, array $countries, string $strategy)
     {
         $requestCountry = $request->query('country', 'us'); # TODO: replace this with a geo ip provider call
