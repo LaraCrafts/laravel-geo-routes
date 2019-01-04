@@ -126,10 +126,7 @@ class GeoRoutes
         static::$proxies = [];
 
         foreach (config('geo-routes.callbacks') as $key => $callback) {
-            $callback = is_callable($callback) ? $callback : Str::parseCallback($callback, '__invoke');
-            $proxy = 'or' . Str::studly($key);
-
-            static::$proxies[$proxy] = $callback;
+            static::$proxies['or' . Str::studly($key)] = $callback;
         }
     }
 
@@ -142,7 +139,14 @@ class GeoRoutes
      */
     protected function setCallback(string $proxy, array $arguments)
     {
-        $this->callback = [static::$proxies[$proxy], $arguments];
+        $callback = static::$proxies[$proxy];
+
+        if (!is_callable($callback)) {
+            $callback = Str::parseCallback($callback, '__invoke');
+            $callback[0] = resolve($callback[0]);
+        }
+
+        $this->callback = [$callback, $arguments];
         return $this;
     }
 }
