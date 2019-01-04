@@ -5,25 +5,29 @@ namespace LaraCrafts\GeoRoutes;
 use Illuminate\Routing\Route;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
-use LaraCrafts\GeoRoutes\Http\Middleware\AllowGeoAccess;
-use LaraCrafts\GeoRoutes\Http\Middleware\DenyGeoAccess;
+use LaraCrafts\GeoRoutes\Http\Middleware\GeoRoutesMiddleware;
 
 class GeoRoutesServiceProvider extends ServiceProvider
 {
     public function boot()
     {
-        Route::macro('allow', function (string ...$countries) {
-            return $this->middleware('allow:' . implode(',', $countries));
+        Route::macro('allowFrom', function (string ...$countries) {
+            return new GeoRoutes($this, $countries, 'allow');
         });
 
-        Route::macro('deny', function (string ...$countries) {
-            return $this->middleware('deny:' . implode(',', $countries));
+        Route::macro('denyFrom', function (string ...$countries) {
+            return new GeoRoutes($this, $countries, 'deny');
         });
 
+        Route::macro('from', function (string ...$countries) {
+            return new GeoRoutes($this, $countries, 'allow');
+        });
+    }
+
+    public function register()
+    {
         $this->app->extend('router', function (Router $router) {
-            return $router
-                ->aliasMiddleware('allow', AllowGeoAccess::class)
-                ->aliasMiddleware('deny', DenyGeoAccess::class);
+            return $router->aliasMiddleware('geo', GeoRoutesMiddleware::class);
         });
     }
 }
