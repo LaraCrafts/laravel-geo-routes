@@ -3,6 +3,7 @@
 namespace LaraCrafts\GeoRoutes;
 
 use BadMethodCallException;
+use InvalidArgumentException;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Str;
 
@@ -11,6 +12,7 @@ use Illuminate\Support\Str;
  */
 class GeoRoutes
 {
+    use GeoCountries;
     /**
      * Rule is applied.
      *
@@ -58,8 +60,9 @@ class GeoRoutes
      * Create a new GeoRoutes instance.
      *
      * @param \Illuminate\Routing\Route $route
-     * @param array                     $countries
-     * @param string                    $strategy
+     * @param array $countries
+     * @param string $strategy
+     * @throws \InvalidArgumentException
      */
     public function __construct(Route $route, array $countries, string $strategy)
     {
@@ -67,6 +70,10 @@ class GeoRoutes
         $this->countries = $countries;
         $this->route = $route;
         $this->strategy = $strategy;
+
+        if (!$this->validateCodes($countries)) {
+            throw new InvalidArgumentException();
+        }
 
         static::loadProxies();
     }
