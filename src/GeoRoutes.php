@@ -11,20 +11,55 @@ use Illuminate\Support\Str;
  */
 class GeoRoutes
 {
+    /**
+     * Rule is applied.
+     *
+     * @var bool
+     */
     protected $applied;
+
+    /**
+     * The callback to execute if the visitor
+     * is not allowed.
+     *
+     * @var array
+     */
     protected $callback;
+
+    /**
+     * The countries to apply the rule for.
+     *
+     * @var array
+     */
     protected $countries;
+
+    /**
+     * The callbacks' proxies.
+     *
+     * @var array
+     */
     protected static $proxies;
+
+    /**
+     * The route.
+     *
+     * @var \Illuminate\Routing\Route
+     */
     protected $route;
+
+    /**
+     * The rule's strategy.
+     *
+     * @var string
+     */
     protected $strategy;
 
     /**
      * Create a new GeoRoutes instance.
      *
      * @param \Illuminate\Routing\Route $route
-     * @param array $countries
-     * @param string $strategy
-     * @return void
+     * @param array                     $countries
+     * @param string                    $strategy
      */
     public function __construct(Route $route, array $countries, string $strategy)
     {
@@ -40,7 +75,8 @@ class GeoRoutes
      * Dynamically call the underlying route.
      *
      * @param string $method
-     * @param array $arguments
+     * @param array  $arguments
+     *
      * @return mixed
      */
     public function __call(string $method, array $arguments)
@@ -57,7 +93,7 @@ class GeoRoutes
     }
 
     /**
-     * Destruct the GeoRoutes instance and apply the middleware
+     * Destruct the GeoRoutes instance and apply the middleware.
      */
     public function __destruct()
     {
@@ -65,14 +101,14 @@ class GeoRoutes
     }
 
     /**
-     * Generate a middleware string
+     * Generate a middleware string.
      *
      * @return string
      */
     public function __toString()
     {
-        return 'geo:' . $this->strategy . ',' . implode('&', $this->countries) .
-            ($this->callback ? ',' . serialize($this->callback) : '');
+        return 'geo:'.$this->strategy.','.implode('&', $this->countries).
+            ($this->callback ? ','.serialize($this->callback) : '');
     }
 
     /**
@@ -83,13 +119,12 @@ class GeoRoutes
     public function allow()
     {
         $this->strategy = 'allow';
+
         return $this;
     }
 
     /**
      * Apply the middleware to the route.
-     *
-     * @return void
      */
     protected function applyMiddleware()
     {
@@ -98,7 +133,7 @@ class GeoRoutes
         }
 
         $this->applied = true;
-        $this->route->middleware((string)$this);
+        $this->route->middleware((string) $this);
     }
 
     /**
@@ -109,6 +144,7 @@ class GeoRoutes
     public function deny()
     {
         $this->strategy = 'deny';
+
         return $this;
     }
 
@@ -121,8 +157,13 @@ class GeoRoutes
             return;
         }
 
-        foreach (config('geo-routes.callbacks') as $key => $callback) {
-            static::$proxies['or' . Str::studly($key)] = $callback;
+        static::$proxies = [];
+        $callbacks = config('geo-routes.callbacks');
+
+        if (!empty($callbacks)) {
+            foreach ($callbacks as $key => $callback) {
+                static::$proxies['or'.Str::studly($key)] = $callback;
+            }
         }
     }
 
@@ -140,6 +181,7 @@ class GeoRoutes
      * Redirect to given route if access is denied.
      *
      * @param string $routeName
+     *
      * @return $this
      */
     public function orRedirectTo(string $routeName)
@@ -155,6 +197,7 @@ class GeoRoutes
     public function orUnauthorized()
     {
         $this->callback = null;
+
         return $this;
     }
 
@@ -162,7 +205,8 @@ class GeoRoutes
      * Set the callback.
      *
      * @param callable $callback
-     * @param array $arguments
+     * @param array    $arguments
+     *
      * @return $this
      */
     protected function setCallback(callable $callback, array $arguments)
@@ -171,8 +215,8 @@ class GeoRoutes
             $callback = Str::parseCallback($callback, '__invoke');
             $callback[0] = resolve($callback[0]);
         }
-
         $this->callback = [$callback, $arguments];
+
         return $this;
     }
 }
