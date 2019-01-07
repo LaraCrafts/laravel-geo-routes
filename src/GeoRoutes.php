@@ -3,9 +3,9 @@
 namespace LaraCrafts\GeoRoutes;
 
 use BadMethodCallException;
-use InvalidArgumentException;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Str;
+use InvalidArgumentException;
 
 /**
  * @mixin \Illuminate\Routing\Route
@@ -13,6 +13,7 @@ use Illuminate\Support\Str;
 class GeoRoutes
 {
     use GeoCountries;
+
     /**
      * Rule is applied.
      *
@@ -114,8 +115,8 @@ class GeoRoutes
      */
     public function __toString()
     {
-        return 'geo:'.$this->strategy.','.implode('&', $this->countries).
-            ($this->callback ? ','.serialize($this->callback) : '');
+        return 'geo:' . $this->strategy . ',' . implode('&', $this->countries) .
+            ($this->callback ? ',' . serialize($this->callback) : '');
     }
 
     /**
@@ -167,10 +168,8 @@ class GeoRoutes
         static::$proxies = [];
         $callbacks = config('geo-routes.callbacks');
 
-        if (!empty($callbacks)) {
-            foreach ($callbacks as $key => $callback) {
-                static::$proxies['or'.Str::studly($key)] = $callback;
-            }
+        foreach ($callbacks as $key => $callback) {
+            static::$proxies['or' . Str::studly($key)] = $callback;
         }
     }
 
@@ -222,6 +221,7 @@ class GeoRoutes
             $callback = Str::parseCallback($callback, '__invoke');
             $callback[0] = resolve($callback[0]);
         }
+
         $this->callback = [$callback, $arguments];
 
         return $this;
