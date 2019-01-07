@@ -6,13 +6,14 @@ use BadMethodCallException;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
+use LaraCrafts\GeoRoutes\GeoCountriesTrait;
 
 /**
  * @mixin \Illuminate\Routing\Route
  */
 class GeoRoutes
 {
-    use GeoCountries;
+    use GeoCountriesTrait;
 
     /**
      * Rule is applied.
