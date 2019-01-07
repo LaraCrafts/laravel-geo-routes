@@ -4,7 +4,7 @@ namespace LaraCrafts\GeoRoutes;
 
 use InvalidArgumentException;
 
-trait GeoCountries
+trait GeoCountriesTrait
 {
     protected static $GeoCountries = [
         'AF' => 'Afghanistan',
