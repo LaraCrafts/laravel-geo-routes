@@ -2,12 +2,12 @@
 
 namespace LaraCrafts\GeoRoutes\Tests\Unit;
 
-use LaraCrafts\GeoRoutes\GeoCountries;
+use LaraCrafts\GeoRoutes\GeoCountriesTrait;
 use LaraCrafts\GeoRoutes\Tests\TestCase;
 
 class GeoCountriesTest extends TestCase
 {
-    use GeoCountries;
+    use GeoCountriesTrait;
 
     /**
      * @test
