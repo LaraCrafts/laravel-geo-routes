@@ -254,6 +254,13 @@ trait GeoCountriesTrait
         'ZW' => 'Zimbabwe',
     ];
 
+    /**
+     * Get country name
+     *
+     * @param string $code
+     * @return string
+     * @throws \InvalidArgumentException
+     */
     protected function getCountryName(string $code)
     {
         if (!$this->isValidCountryCode($code)) {
@@ -263,6 +270,13 @@ trait GeoCountriesTrait
         return static::$GeoCountries[strtoupper($code)];
     }
 
+    /**
+     * Get country code
+     *
+     * @param string $countryName
+     * @return string
+     * @throws \InvalidArgumentException
+     */
     protected function getCountryCode(string $countryName)
     {
         if (!$this->isValidCountryName($countryName)) {
@@ -272,33 +286,53 @@ trait GeoCountriesTrait
         return array_flip(static::$GeoCountries)[$countryName];
     }
 
+    /**
+     * Validate country codes
+     *
+     * @param array $codes
+     * @return array|bool
+     */
     protected function validateCodes(array $codes)
     {
-        foreach ($codes as $code) {
-            if (!$this->isValidCountryCode($code)) {
-                return false;
-            }
+        $codes = array_map('strtoupper', $codes);
+        if (!array_diff($codes, array_keys(static::$GeoCountries))) {
+            return $codes;
         }
 
-        return true;
+        return false;
     }
-
+    /**
+     * Validate country names
+     *
+     * @param array $names
+     * @return array|bool
+     */
     protected function validateNames(array $names)
     {
-        foreach ($names as $name) {
-            if (!$this->isValidCountryName($name)) {
-                return false;
-            }
+        if (!array_diff($names, static::$GeoCountries)) {
+            return true;
         }
 
-        return true;
+        return false;
     }
 
+    /**
+     * Validate country code
+     *
+     * @param string $code
+     * @return bool
+     */
     protected function isValidCountryCode(string $code)
     {
         return in_array(strtoupper($code), array_keys(static::$GeoCountries));
     }
 
+    /**
+     * Validate country name
+     *
+     * @param string $countryName
+     * @return bool
+     */
     protected function isValidCountryName(string $countryName)
     {
         return in_array($countryName, static::$GeoCountries);
