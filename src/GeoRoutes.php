@@ -6,7 +6,6 @@ use BadMethodCallException;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
-use LaraCrafts\GeoRoutes\GeoCountriesTrait;
 
 /**
  * @mixin \Illuminate\Routing\Route
@@ -69,13 +68,16 @@ class GeoRoutes
     public function __construct(Route $route, array $countries, string $strategy)
     {
         $this->applied = false;
-        $this->countries = $countries;
         $this->route = $route;
         $this->strategy = $strategy;
 
-        if (!$this->validateCodes($countries)) {
-            throw new InvalidArgumentException();
+        $countries = $this->validateCodes($countries);
+
+        if ($countries != true) {
+            throw new InvalidArgumentException("One or more of the given country codes are invalid.");
         }
+
+        $this->countries = $countries;
 
         static::loadProxies();
     }
