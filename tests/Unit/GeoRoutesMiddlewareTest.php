@@ -21,6 +21,9 @@ class GeoRoutesMiddlewareTest extends TestCase
     /** @var \Illuminate\Http\Request */
     protected $request;
 
+    /** @var \Mockery\MockInterface */
+    protected $location;
+
     protected function setUp()
     {
         parent::setUp();
@@ -29,7 +32,8 @@ class GeoRoutesMiddlewareTest extends TestCase
         $this->next = function () {
             return 'User got through';
         };
-        $this->request = new Request(['country' => 'us']);
+        $this->request = new Request();
+        $this->location = Mockery::mock('overload:Location');
     }
 
     public function tearDown()
@@ -44,6 +48,9 @@ class GeoRoutesMiddlewareTest extends TestCase
      */
     public function denyDeniessDeniedCountry()
     {
+        $this->location->shouldReceive('get')
+                      ->once()
+                      ->andReturn(json_decode('{"countryCode": "us"}'));
         $this->middleware->handle($this->request, $this->next, 'deny', 'us');
     }
 
@@ -53,6 +60,9 @@ class GeoRoutesMiddlewareTest extends TestCase
      */
     public function MiddlewareAllowsAccess()
     {
+        $this->location->shouldReceive('get')
+        ->once()
+        ->andReturn(json_decode('{"countryCode": "us"}'));
         $output = $this->middleware->handle($this->request, $this->next, 'allow', 'us');
         $this->assertEquals('User got through', $output);
     }
@@ -69,9 +79,13 @@ class GeoRoutesMiddlewareTest extends TestCase
                   ->with('arg')
                   ->andReturn('MockCallback');
 
+        $this->location->shouldReceive('get')
+        ->once()
+        ->andReturn(json_decode('{"countryCode": "ca"}'));
+
         $callback = serialize(['mockClass::callback', ['arg']]);
 
-        $output = $this->middleware->handle(new Request(['country' => 'es']), $this->next, 'allow', 'us', $callback);
+        $output = $this->middleware->handle($this->request, $this->next, 'allow', 'us', $callback);
         
         $this->assertEquals('MockCallback', $output);
     }
