@@ -4,6 +4,7 @@ namespace LaraCrafts\GeoRoutes\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Stevebauman\Location\Facades\Location;
 
 class GeoRoutesMiddleware
 {
@@ -42,7 +43,7 @@ class GeoRoutesMiddleware
      */
     protected function shouldHaveAccess(Request $request, array $countries, string $strategy)
     {
-        $requestCountry = $request->query('country', 'us'); # TODO: replace this with a geo ip provider call
+        $requestCountry = Location::get()->countryCode;
 
         if ($strategy === 'allow') {
             return in_array($requestCountry, $countries);
