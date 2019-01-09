@@ -13,4 +13,4 @@ install:
 
 script:
   - ./vendor/bin/phpunit --verbose
-  - ./vendor/bin/php-cs-fixer fix --verbose
+  - ./vendor/bin/php-cs-fixer fix  --dry-run --verbose
