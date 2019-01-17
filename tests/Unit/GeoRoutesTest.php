@@ -73,7 +73,7 @@ class GeoRoutesTest extends TestCase
 
         $response = $this->get('/foo');
 
-        $response->assertNotFound();
+        $response->assertStatus(404);
     }
 
     /**
@@ -125,7 +125,8 @@ class GeoRoutesTest extends TestCase
 
         $response = $this->get('/foo');
 
-        $response->assertNotFound();
+
+        $response->assertStatus(404);
     }
 
     /**
