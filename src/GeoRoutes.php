@@ -5,15 +5,12 @@ namespace LaraCrafts\GeoRoutes;
 use BadMethodCallException;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Str;
-use InvalidArgumentException;
 
 /**
  * @mixin \Illuminate\Routing\Route
  */
 class GeoRoutes
 {
-    use GeoCountriesTrait;
-
     /**
      * Rule is applied.
      *
@@ -68,16 +65,9 @@ class GeoRoutes
     public function __construct(Route $route, array $countries, string $strategy)
     {
         $this->applied = false;
+        $this->countries = array_map('strtoupper', $countries);
         $this->route = $route;
         $this->strategy = $strategy;
-
-        $countries = $this->validateCodes($countries);
-
-        if ($countries != true) {
-            throw new InvalidArgumentException("One or more of the given country codes are invalid.");
-        }
-
-        $this->countries = $countries;
 
         static::loadProxies();
     }
@@ -86,7 +76,7 @@ class GeoRoutes
      * Dynamically call the underlying route.
      *
      * @param string $method
-     * @param array  $arguments
+     * @param array $arguments
      *
      * @return mixed
      */
@@ -144,7 +134,7 @@ class GeoRoutes
         }
 
         $this->applied = true;
-        $this->route->middleware((string) $this);
+        $this->route->middleware((string)$this);
     }
 
     /**
@@ -214,7 +204,7 @@ class GeoRoutes
      * Set the callback.
      *
      * @param callable $callback
-     * @param array    $arguments
+     * @param array $arguments
      *
      * @return $this
      */

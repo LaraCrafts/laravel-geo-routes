@@ -2,6 +2,7 @@
 
 namespace LaraCrafts\GeoRoutes\Tests\Unit;
 
+use Illuminate\Support\Arr;
 use LaraCrafts\GeoRoutes\Tests\TestCase;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
@@ -10,7 +11,6 @@ class GeoRoutesTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    
     /** @var \Illuminate\Routing\Router */
     protected $router;
 
@@ -41,18 +41,22 @@ class GeoRoutesTest extends TestCase
      * @test
      * @small
      */
-    public function MacrosAddMiddleware()
+    public function macrosAddMiddleware()
     {
-        $this->location->shouldReceive('get')
-        ->once()
-        ->andReturn(json_decode('{"countryCode": "us"}'));
+        $this->route->allowFrom('nl');
+        $this->assertEquals('geo:allow,NL', Arr::last($this->route->middleware()));
 
-        $macros = ['from', 'allowFrom', 'denyFrom'];
+        $this->route->from('tn');
+        $this->assertEquals('geo:allow,TN', Arr::last($this->route->middleware()));
 
-        foreach ($macros as $macro) {
-            $this->route->{$macro}('us');
-            $this->assertRegExp('/geo:(allow|deny),US/', serialize($this->route->middleware()));
-        }
+        $this->route->from('be')->allow();
+        $this->assertEquals('geo:allow,BE', Arr::last($this->route->middleware()));
+
+        $this->route->from('jp')->deny();
+        $this->assertEquals('geo:deny,JP', Arr::last($this->route->middleware()));
+
+        $this->route->denyFrom('us');
+        $this->assertEquals('geo:deny,US', Arr::last($this->route->middleware()));
     }
 
     /**
@@ -64,8 +68,8 @@ class GeoRoutesTest extends TestCase
         $this->route->allowFrom('gb')->orNotFound();
 
         $this->location->shouldReceive('get')
-        ->once()
-        ->andReturn(json_decode('{"countryCode": "us"}'));
+            ->once()
+            ->andReturn(json_decode('{"countryCode": "us"}'));
 
         $response = $this->get('/foo');
 
@@ -83,8 +87,8 @@ class GeoRoutesTest extends TestCase
         })->name('redirect');
 
         $this->location->shouldReceive('get')
-        ->once()
-        ->andReturn(json_decode('{"countryCode": "us"}'));
+            ->once()
+            ->andReturn(json_decode('{"countryCode": "us"}'));
 
         $this->route->allowFrom('gb')->orRedirectTo('redirect');
 
@@ -99,8 +103,8 @@ class GeoRoutesTest extends TestCase
     public function orUnauthorizedCallbackThrowsException()
     {
         $this->location->shouldReceive('get')
-        ->once()
-        ->andReturn(json_decode('{"countryCode": "US"}'));
+            ->once()
+            ->andReturn(json_decode('{"countryCode": "US"}'));
 
         $this->route->allowFrom('gb')->orUnauthorized('redirect');
         $response = $this->get('/foo');
@@ -116,11 +120,11 @@ class GeoRoutesTest extends TestCase
         $this->route->allowFrom('gb')->orNotFound()->name('test');
 
         $this->location->shouldReceive('get')
-        ->once()
-        ->andReturn(json_decode('{"countryCode": "us"}'));
-        
+            ->once()
+            ->andReturn(json_decode('{"countryCode": "us"}'));
+
         $response = $this->get('/foo');
-        
+
         $response->assertNotFound();
     }
 
@@ -132,15 +136,5 @@ class GeoRoutesTest extends TestCase
     public function throwsExceptionForInvalidCallback()
     {
         $this->route->allowFrom('us')->invalid();
-    }
-
-    /**
-     * @test
-     * @small
-     * @expectedException \InvalidArgumentException
-     */
-    public function throwsExceptionForInvalidCountryCode()
-    {
-        $this->route->allowFrom('INVALID');
     }
 }

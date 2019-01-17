@@ -43,7 +43,7 @@ class GeoRoutesMiddleware
      */
     protected function shouldHaveAccess(Request $request, array $countries, string $strategy)
     {
-        $requestCountry = Location::get()->countryCode;
+        $requestCountry = Location::get($request->ip())->countryCode;
 
         if ($strategy === 'allow') {
             return in_array($requestCountry, $countries);
