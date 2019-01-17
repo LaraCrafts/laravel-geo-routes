@@ -91,7 +91,7 @@ class GeoRoutesTest extends TestCase
         $this->route->allowFrom('gb')->orRedirectTo('redirect');
 
         $response = $this->get('/foo');
-        $response->assertRedirect('/redirect');
+        $response->assertRedirect('/redirected');
     }
 
     /**
