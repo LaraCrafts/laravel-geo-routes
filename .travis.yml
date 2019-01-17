@@ -7,6 +7,7 @@ cache:
 php:
   - 7.1
   - 7.2
+  - 7.3
 
 install:
   - composer install --no-interaction --no-progress --no-suggest --prefer-dist
