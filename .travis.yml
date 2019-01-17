@@ -13,3 +13,7 @@ install:
 
 script:
   - ./vendor/bin/phpunit --verbose
+  - ./vendor/bin/php-cs-fixer fix  --dry-run --verbose
+
+notifications:
+  slack: $SLACK_CHANNEL
