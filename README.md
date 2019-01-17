@@ -40,7 +40,7 @@ Alternatively we can do something like the following:
 Route::get('/home', 'FooController@bar')->from('us', 'gb')->allow();
 ```
 
-**By default,** all other countries will receive an **HTTP 401 Unauthorized Error**, to change this behavior you can use a callback as described in the <a href="">callbacks</a> section.
+**By default,** all other countries will receive an **HTTP 401 Unauthorized Error**, to change this behavior you can use a callback as described in the <a href="#callbacks">callbacks</a> section.
 
 
 - Deny access from specific regions
@@ -55,7 +55,7 @@ Alternatively:
 Route::get('/home', 'FooController@bar')->from('ca', 'de', 'fr')->deny();
 ```
 
-> ***Note:*** This package uses *<a href="https://www.nationsonline.org/oneworld/country_code_list.htm">ISO Alpha-2</a>* country codes.
+> ***Note:*** This package uses *<a href="https://www.nationsonline.org/oneworld/country_code_list.htm" target="_blank">ISO Alpha-2</a>* country codes.
 
 
 ## Callbacks
@@ -87,6 +87,11 @@ Route::get('/forums', 'FooController@bar')
 
 This callback accepts one ***required*** argument which has to be a valid route name. 
 Thanks to this callback, you'll be able to redirect unauthorized visitors to a route of your choice.
+```php
+Route::get('/forums', 'FooController@bar')
+->allowFrom('de', 'ca')
+->orRedirectTo('myRoute');
+```
 
 - ### Custom callbacks
 The callbacks above might not be enough for your own use case, so you might want to add custom callbacks, the following guide will describe the steps to create your own custom callbacks.
