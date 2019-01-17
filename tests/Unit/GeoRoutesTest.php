@@ -27,7 +27,7 @@ class GeoRoutesTest extends TestCase
     {
         parent::setUp();
         $this->router = $this->app->get('router');
-        $this->route = $this->router->addRoute(['GET', 'HEAD'], '/foo', 'BarController@baz')->name('test');
+        $this->route = $this->router->get('/foo', 'BarController@baz')->name('test');
         $this->controller = Mockery::mock('BarController');
         $this->location = Mockery::mock('overload:Location');
     }
@@ -82,9 +82,7 @@ class GeoRoutesTest extends TestCase
      */
     public function orRedirectToCallbackRedirectsToRoute()
     {
-        $redirectRoute = $this->router->addRoute(['GET', 'HEAD'], '/redirect', function () {
-            return 'hi';
-        })->name('redirect');
+        $this->router->get('/redirected', 'BarController@baz')->name('redirect');
 
         $this->location->shouldReceive('get')
             ->once()
@@ -117,7 +115,7 @@ class GeoRoutesTest extends TestCase
      */
     public function canChainWithRoute()
     {
-        $this->route->allowFrom('gb')->orNotFound()->name('test');
+        $this->route->allowFrom('gb')->orNotFound();
 
         $this->location->shouldReceive('get')
             ->once()

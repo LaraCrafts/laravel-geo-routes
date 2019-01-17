@@ -19,6 +19,7 @@
         "stevebauman/location": "^3.0"
     },
     "require-dev": {
+        "ext-json": "*",
         "friendsofphp/php-cs-fixer": "^2.14",
         "mockery/mockery": "^1.2",
         "orchestra/testbench": "^3.5",
