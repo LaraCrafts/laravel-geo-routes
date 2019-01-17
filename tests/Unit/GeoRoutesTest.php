@@ -27,7 +27,7 @@ class GeoRoutesTest extends TestCase
     {
         parent::setUp();
         $this->router = $this->app->get('router');
-        $this->route = $this->router->addRoute(['GET', 'HEAD'], '/foo', 'BarController@baz')->name('test');
+        $this->route = $this->router->get('/foo', 'BarController@baz')->name('test');
         $this->controller = Mockery::mock('BarController');
         $this->location = Mockery::mock('overload:Location');
     }
@@ -71,9 +71,7 @@ class GeoRoutesTest extends TestCase
             ->once()
             ->andReturn(json_decode('{"countryCode": "us"}'));
 
-        $response = $this->get('/foo');
-
-        $response->assertStatus(404);
+        $this->assertTrue($this->get('/foo')->isNotFound());
     }
 
     /**
@@ -82,18 +80,18 @@ class GeoRoutesTest extends TestCase
      */
     public function orRedirectToCallbackRedirectsToRoute()
     {
-        $redirectRoute = $this->router->addRoute(['GET', 'HEAD'], '/redirect', function () {
-            return 'hi';
-        })->name('redirect');
+        $this->route->allowFrom('gb')->orRedirectTo('redirect');
+        $this->router->get('/redirected', 'BarController@baz')->name('redirect');
 
         $this->location->shouldReceive('get')
             ->once()
             ->andReturn(json_decode('{"countryCode": "us"}'));
 
-        $this->route->allowFrom('gb')->orRedirectTo('redirect');
-
         $response = $this->get('/foo');
-        $response->assertRedirect('/redirect');
+        $url = $this->app->make('url');
+
+        $this->assertTrue($response->isRedirect());
+        $this->assertEquals($url->to('/redirected'), $url->to($response->headers->get('Location')));
     }
 
     /**
@@ -102,13 +100,13 @@ class GeoRoutesTest extends TestCase
      */
     public function orUnauthorizedCallbackThrowsException()
     {
+        $this->route->allowFrom('gb')->orUnauthorized('redirect');
+
         $this->location->shouldReceive('get')
             ->once()
             ->andReturn(json_decode('{"countryCode": "US"}'));
 
-        $this->route->allowFrom('gb')->orUnauthorized('redirect');
-        $response = $this->get('/foo');
-        $response->assertStatus(401);
+        $this->assertEquals(401, $this->get('/foo')->getStatusCode());
     }
 
     /**
@@ -117,16 +115,13 @@ class GeoRoutesTest extends TestCase
      */
     public function canChainWithRoute()
     {
-        $this->route->allowFrom('gb')->orNotFound()->name('test');
+        $this->route->allowFrom('gb')->orNotFound();
 
         $this->location->shouldReceive('get')
             ->once()
             ->andReturn(json_decode('{"countryCode": "us"}'));
 
-        $response = $this->get('/foo');
-
-
-        $response->assertStatus(404);
+        $this->assertTrue($this->get('/foo')->isNotFound());
     }
 
     /**
