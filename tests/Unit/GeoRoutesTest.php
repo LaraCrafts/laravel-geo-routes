@@ -71,9 +71,7 @@ class GeoRoutesTest extends TestCase
             ->once()
             ->andReturn(json_decode('{"countryCode": "us"}'));
 
-        $response = $this->get('/foo');
-
-        $response->assertNotFound();
+        $this->assertTrue($this->get('/foo')->isNotFound());
     }
 
     /**
@@ -82,16 +80,18 @@ class GeoRoutesTest extends TestCase
      */
     public function orRedirectToCallbackRedirectsToRoute()
     {
+        $this->route->allowFrom('gb')->orRedirectTo('redirect');
         $this->router->get('/redirected', 'BarController@baz')->name('redirect');
 
         $this->location->shouldReceive('get')
             ->once()
             ->andReturn(json_decode('{"countryCode": "us"}'));
 
-        $this->route->allowFrom('gb')->orRedirectTo('redirect');
-
         $response = $this->get('/foo');
-        $response->assertRedirect('/redirected');
+        $url = $this->app->make('url');
+
+        $this->assertTrue($response->isRedirect());
+        $this->assertEquals($url->to('/redirected'), $url->to($response->headers->get('Location')));
     }
 
     /**
@@ -100,13 +100,13 @@ class GeoRoutesTest extends TestCase
      */
     public function orUnauthorizedCallbackThrowsException()
     {
+        $this->route->allowFrom('gb')->orUnauthorized('redirect');
+
         $this->location->shouldReceive('get')
             ->once()
             ->andReturn(json_decode('{"countryCode": "US"}'));
 
-        $this->route->allowFrom('gb')->orUnauthorized('redirect');
-        $response = $this->get('/foo');
-        $response->assertStatus(401);
+        $this->assertEquals(401, $this->get('/foo')->getStatusCode());
     }
 
     /**
@@ -121,9 +121,7 @@ class GeoRoutesTest extends TestCase
             ->once()
             ->andReturn(json_decode('{"countryCode": "us"}'));
 
-        $response = $this->get('/foo');
-
-        $response->assertNotFound();
+        $this->assertTrue($this->get('/foo')->isNotFound());
     }
 
     /**
