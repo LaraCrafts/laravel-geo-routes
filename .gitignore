@@ -1,5 +1,6 @@
 vendor/
 .idea/
+.history/
 composer.lock
 phpunit.xml
 .php_cs
