@@ -23,8 +23,12 @@ install:
   - composer install --no-interaction --no-progress --no-suggest --prefer-dist
 
 script:
-  - ./vendor/bin/phpunit --verbose
+  - ./vendor/bin/phpunit --coverage-clover=coverage.clover --verbose
   - ./vendor/bin/php-cs-fixer fix  --dry-run --verbose
+
+after_script:
+  - wget https://scrutinizer-ci.com/ocular.phar
+  - php ocular.phar code-coverage:upload --format=php-clover coverage.clover
 
 notifications:
   slack: $SLACK_CHANNEL
