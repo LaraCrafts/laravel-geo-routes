@@ -1,9 +1,9 @@
 # Laravel-geo-routes
 [![Build Status](https://img.shields.io/travis/LaraCrafts/laravel-geo-routes.svg?style=flat-square)](https://travis-ci.org/LaraCrafts/laravel-geo-routes)
 ![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/LaraCrafts/laravel-geo-routes.svg?style=flat-square)
-![](https://img.shields.io/github/tag/LaraCrafts/laravel-geo-routes.svg?style=flat-square)
-![](https://img.shields.io/packagist/php-v/laracrafts/laravel-geo-routes.svg?style=flat-square)
-![](https://img.shields.io/packagist/l/laracrafts/laravel-geo-routes.svg?style=flat-square)
+![Git Tag](https://img.shields.io/github/tag/LaraCrafts/laravel-geo-routes.svg?style=flat-square)
+![Minimum PHP Version](https://img.shields.io/packagist/php-v/laracrafts/laravel-geo-routes.svg?style=flat-square)
+![License](https://img.shields.io/packagist/l/laracrafts/laravel-geo-routes.svg?style=flat-square)
 > GeoLocation Restricted Routes For Laravel
 ## Requirements
 - Laravel >= 5.5
@@ -18,7 +18,7 @@ composer require laracrafts/laravel-geo-routes
 * Publish the configuration
 
 While still in the same folder, execute this command in your terminal:
-```php
+```bash
 php artisan vendor:publish --provider="LaraCrafts\GeoRoutes\GeoRoutesServiceProvider"
 ```
 
@@ -40,7 +40,7 @@ Alternatively we can do something like the following:
 Route::get('/home', 'FooController@bar')->from('us', 'gb')->allow();
 ```
 
-**By default,** all other countries will receive an **HTTP 401 Unauthorized Error**, to change this behavior you can use a callback as described in the <a href="#callbacks">callbacks</a> section.
+**By default,** all other countries will receive an **HTTP 401 Unauthorized Error**, to change this behavior you can use a callback as described in the [callbacks][1] section.
 
 
 - Deny access from specific regions
@@ -118,9 +118,13 @@ Route::get('/blog', 'FooController@baz')
 > ***Notice*** that we have added the **`or`** prefix and converted the callback name to studly case (e.g. `myCallback` was converted to `orMyCallback`), be sure not to forget this note as it is very important for your callback to work.
 
 ## Contribution
-All contributions are welcomed for this project, please refer to the CONTRIBUTING.md file for more information about contribution guidelines.
+All contributions are welcomed for this project, please refer to the [CONTRIBUTING.md][2] file for more information about contribution guidelines.
 
 ## License
 **Copyright (c) 2018 LaraCrafts.**
 
-This product is licensed under the MIT license, please refer to the <a href="https://github.com/LaraCrafts/laravel-geo-routes/blob/master/LICENSE">License file</a> for more information.
+This product is licensed under the MIT license, please refer to the [License file][3] for more information.
+
+[1]: #callbacks
+[2]: https://github.com/LaraCrafts/laravel-geo-routes/blob/documentation/CONTRIBUTING.md
+[3]: https://github.com/LaraCrafts/laravel-geo-routes/blob/master/LICENSE
