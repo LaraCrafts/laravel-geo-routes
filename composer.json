@@ -43,8 +43,11 @@
             "dev-master": "1.0.x-dev"
         },
         "laravel": {
+            "aliases": {
+                "GeoRoute": "LaraCrafts\\GeoRoutes\\Support\\Facade"
+            },
             "providers": [
-                "\\LaraCrafts\\GeoRoutes\\GeoRoutesServiceProvider"
+                "LaraCrafts\\GeoRoutes\\GeoRoutesServiceProvider"
             ]
         }
     }
