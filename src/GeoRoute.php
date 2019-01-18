@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 /**
  * @mixin \Illuminate\Routing\Route
  */
-class GeoRoutes
+class GeoRoute
 {
     /**
      * Rule is applied.
@@ -55,7 +55,7 @@ class GeoRoutes
     protected $strategy;
 
     /**
-     * Create a new GeoRoutes instance.
+     * Create a new GeoRoute instance.
      *
      * @param \Illuminate\Routing\Route $route
      * @param array $countries
@@ -94,7 +94,7 @@ class GeoRoutes
     }
 
     /**
-     * Destruct the GeoRoutes instance and apply the middleware.
+     * Destruct the GeoRoute instance and apply the middleware.
      */
     public function __destruct()
     {
@@ -129,7 +129,7 @@ class GeoRoutes
      */
     protected function applyMiddleware()
     {
-        if ($this->applied) {
+        if ($this->applied || !$this->countries) {
             return;
         }
 

@@ -17,15 +17,15 @@ class GeoRoutesServiceProvider extends ServiceProvider
     public function boot()
     {
         Route::macro('allowFrom', function (string ...$countries) {
-            return new GeoRoutes($this, $countries, 'allow');
+            return new GeoRoute($this, $countries, 'allow');
         });
 
         Route::macro('denyFrom', function (string ...$countries) {
-            return new GeoRoutes($this, $countries, 'deny');
+            return new GeoRoute($this, $countries, 'deny');
         });
 
         Route::macro('from', function (string ...$countries) {
-            return new GeoRoutes($this, $countries, 'allow');
+            return new GeoRoute($this, $countries, 'allow');
         });
 
         $this->mergeConfigFrom(__DIR__ . '/../config/geo-routes.php', 'geo-routes');
