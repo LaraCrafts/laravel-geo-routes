@@ -46,7 +46,7 @@ install:
 
 script:
   - ./vendor/bin/phpunit --verbose
-  - composer global exec php-cs-fixer --verbose -- fix --config="$PWD/.php_cs.dist" --dry-run
+  - composer global exec php-cs-fixer -- fix --config="$PWD/.php_cs.dist" --dry-run --verbose
 
 notifications:
   slack: $SLACK_CHANNEL

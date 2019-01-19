@@ -12,9 +12,6 @@ class GeoRouteTest extends TestCase
     use MockeryPHPUnitIntegration;
 
     /** @var \Mockery\MockInterface */
-    protected $controller;
-
-    /** @var \Mockery\MockInterface */
     protected $location;
 
     /** @var \Illuminate\Routing\Route */
@@ -32,10 +29,9 @@ class GeoRouteTest extends TestCase
     {
         parent::setUp();
 
-        $this->controller = Mockery::mock('BarController');
         $this->location = Mockery::mock('overload:Location');
         $this->router = $this->app->make('router');
-        $this->route = $this->router->get('/foo', ['uses' => 'BarController@baz', 'as' => 'qux']);
+        $this->route = $this->router->get('/foo', ['uses' => '\LaraCrafts\GeoRoutes\Tests\Mocks\MockController@index', 'as' => 'qux']);
     }
 
     public function tearDown()
