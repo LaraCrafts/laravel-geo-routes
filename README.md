@@ -121,7 +121,7 @@ Route::get('/blog', 'FooController@baz')
 All contributions are welcomed for this project, please refer to the [CONTRIBUTING.md][2] file for more information about contribution guidelines.
 
 ## License
-**Copyright (c) 2018 LaraCrafts.**
+**Copyright (c) 2019 LaraCrafts.**
 
 This product is licensed under the MIT license, please refer to the [License file][3] for more information.
 
