@@ -7,7 +7,7 @@ use LaraCrafts\GeoRoutes\Tests\TestCase;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
-class GeoRoutesTest extends TestCase
+class MacroTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
@@ -26,10 +26,20 @@ class GeoRoutesTest extends TestCase
     public function setUp()
     {
         parent::setUp();
+
+        if (!$this->routeMacrosAreSupported()) {
+            $this->markTestSkipped();
+        }
+
         $this->router = $this->app->get('router');
         $this->route = $this->router->get('/foo', 'BarController@baz')->name('test');
         $this->controller = Mockery::mock('BarController');
         $this->location = Mockery::mock('overload:Location');
+    }
+
+    protected function routeMacrosAreSupported()
+    {
+        return version_compare($this->app->version(), '5.5.0', '>=');
     }
 
     public function tearDown()

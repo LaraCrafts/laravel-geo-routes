@@ -37,5 +37,4 @@ return Config::create()
         ],
         'psr4' => true,
         'trailing_comma_in_multiline_array' => true,
-        'yoda_style' => false,
     ]);

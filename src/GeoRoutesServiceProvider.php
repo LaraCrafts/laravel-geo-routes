@@ -3,7 +3,6 @@
 namespace LaraCrafts\GeoRoutes;
 
 use Illuminate\Routing\Route;
-use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 use LaraCrafts\GeoRoutes\Http\Middleware\GeoRoutesMiddleware;
 
@@ -16,6 +15,37 @@ class GeoRoutesServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->mergeConfigFrom(__DIR__ . '/../config/geo-routes.php', 'geo-routes');
+        $this->publishes([__DIR__ . '/../config/geo-routes.php' => config_path('geo-routes.php')], 'config');
+
+        if (version_compare($this->app->version(), '5.5.0', '>=')) {
+            $this->registerMacros();
+        }
+    }
+
+    /**
+     * Register any package services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        $router = $this->app->make('router');
+
+        if (method_exists($router, 'aliasMiddleware')) {
+            $router->aliasMiddleware('geo', GeoRoutesMiddleware::class);
+        } else {
+            $router->middleware('geo', GeoRoutesMiddleware::class);
+        }
+    }
+
+    /**
+     * Register the route macros.
+     *
+     * @return void
+     */
+    protected function registerMacros()
+    {
         Route::macro('allowFrom', function (string ...$countries) {
             return new GeoRoute($this, $countries, 'allow');
         });
@@ -26,21 +56,6 @@ class GeoRoutesServiceProvider extends ServiceProvider
 
         Route::macro('from', function (string ...$countries) {
             return new GeoRoute($this, $countries, 'allow');
-        });
-
-        $this->mergeConfigFrom(__DIR__ . '/../config/geo-routes.php', 'geo-routes');
-        $this->publishes([__DIR__ . '/../config/geo-routes.php' => config_path('geo-routes.php')], 'config');
-    }
-
-    /**
-     * Register any package services.
-     *
-     * @return void
-     */
-    public function register()
-    {
-        $this->app->extend('router', function (Router $router) {
-            return $router->aliasMiddleware('geo', GeoRoutesMiddleware::class);
         });
     }
 }

@@ -24,7 +24,7 @@ class GeoRoutesMiddlewareTest extends TestCase
     /** @var \Mockery\MockInterface */
     protected $location;
 
-    protected function setUp()
+    public function setUp()
     {
         parent::setUp();
 
