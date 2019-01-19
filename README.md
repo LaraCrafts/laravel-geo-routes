@@ -1,9 +1,9 @@
 # Laravel-geo-routes
 [![Build Status](https://img.shields.io/travis/LaraCrafts/laravel-geo-routes/master.svg?style=flat-square)](https://travis-ci.org/LaraCrafts/laravel-geo-routes)
-![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/LaraCrafts/laravel-geo-routes.svg?style=flat-square)
-![Git Tag](https://img.shields.io/github/tag/LaraCrafts/laravel-geo-routes.svg?style=flat-square)
-![Minimum PHP Version](https://img.shields.io/packagist/php-v/laracrafts/laravel-geo-routes.svg?style=flat-square)
-![License](https://img.shields.io/packagist/l/laracrafts/laravel-geo-routes.svg?style=flat-square)
+[![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/LaraCrafts/laravel-geo-routes.svg?style=flat-square)][7]
+[![Git Tag](https://img.shields.io/github/tag/LaraCrafts/laravel-geo-routes.svg?style=flat-square)][8]
+[![Minimum PHP Version](https://img.shields.io/packagist/php-v/laracrafts/laravel-geo-routes.svg?style=flat-square)][9]
+[![License](https://img.shields.io/packagist/l/laracrafts/laravel-geo-routes.svg?style=flat-square)][10]
 > GeoLocation Restricted Routes For Laravel
 ## Requirements
 - Laravel >= 5.5
@@ -132,3 +132,7 @@ This product is licensed under the MIT license, please refer to the [License fil
 [4]: https://github.com/stevebauman
 [5]: https://github.com/stevebauman/location
 [6]: https://github.com/stevebauman/location/blob/master/readme.md
+[7]: https://scrutinizer-ci.com/g/LaraCrafts/laravel-geo-routes/
+[8]: https://github.com/LaraCrafts/laravel-geo-routes/releases
+[9]: http://php.net/releases/
+[10]: https://github.com/LaraCrafts/laravel-geo-routes/blob/master/LICENSE
