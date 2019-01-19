@@ -57,6 +57,7 @@ Route::get('/home', 'FooController@bar')->from('ca', 'de', 'fr')->deny();
 
 > ***Note:*** This package uses *<a href="https://www.nationsonline.org/oneworld/country_code_list.htm" target="_blank">ISO Alpha-2</a>* country codes.
 
+> ***Note:*** This package uses [*stevebauman*][4]'s [location package][5], please refer to the [official documentation][6] for a detailed guide on how to configure it correctly.
 
 ## Callbacks
 
@@ -128,3 +129,6 @@ This product is licensed under the MIT license, please refer to the [License fil
 [1]: #callbacks
 [2]: https://github.com/LaraCrafts/laravel-geo-routes/blob/master/CONTRIBUTING.md
 [3]: https://github.com/LaraCrafts/laravel-geo-routes/blob/master/LICENSE
+[4]: https://github.com/stevebauman
+[5]: https://github.com/stevebauman/location
+[6]: https://github.com/stevebauman/location/blob/master/readme.md
