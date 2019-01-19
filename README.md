@@ -1,5 +1,5 @@
 # Laravel-geo-routes
-[![Build Status](https://img.shields.io/travis/LaraCrafts/laravel-geo-routes.svg?style=flat-square)](https://travis-ci.org/LaraCrafts/laravel-geo-routes)
+[![Build Status](https://img.shields.io/travis/LaraCrafts/laravel-geo-routes/master.svg?style=flat-square)](https://travis-ci.org/LaraCrafts/laravel-geo-routes)
 ![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/LaraCrafts/laravel-geo-routes.svg?style=flat-square)
 ![Git Tag](https://img.shields.io/github/tag/LaraCrafts/laravel-geo-routes.svg?style=flat-square)
 ![Minimum PHP Version](https://img.shields.io/packagist/php-v/laracrafts/laravel-geo-routes.svg?style=flat-square)
@@ -126,5 +126,5 @@ All contributions are welcomed for this project, please refer to the [CONTRIBUTI
 This product is licensed under the MIT license, please refer to the [License file][3] for more information.
 
 [1]: #callbacks
-[2]: https://github.com/LaraCrafts/laravel-geo-routes/blob/documentation/CONTRIBUTING.md
+[2]: https://github.com/LaraCrafts/laravel-geo-routes/blob/master/CONTRIBUTING.md
 [3]: https://github.com/LaraCrafts/laravel-geo-routes/blob/master/LICENSE
