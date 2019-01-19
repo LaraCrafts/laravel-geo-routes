@@ -2,7 +2,6 @@
 
 namespace LaraCrafts\GeoRoutes\Tests\Unit;
 
-use Illuminate\Support\Arr;
 use LaraCrafts\GeoRoutes\GeoRoute;
 use LaraCrafts\GeoRoutes\Tests\TestCase;
 use Mockery;
@@ -36,7 +35,7 @@ class GeoRouteTest extends TestCase
         $this->controller = Mockery::mock('BarController');
         $this->location = Mockery::mock('overload:Location');
         $this->router = $this->app->make('router');
-        $this->route = $this->router->get('/foo', 'BarController@baz')->name('qux');
+        $this->route = $this->router->get('/foo', ['uses' => 'BarController@baz', 'as' => 'qux']);
     }
 
     public function tearDown()
@@ -47,19 +46,19 @@ class GeoRouteTest extends TestCase
     public function testIfMiddlewareIsApplied()
     {
         (new GeoRoute($this->route, ['nl'], 'allow'));
-        $this->assertEquals('geo:allow,NL', Arr::last($this->route->middleware()));
+        $this->assertEquals('geo:allow,NL', last($this->route->middleware()));
 
         (new GeoRoute($this->route, ['tn'], 'allow'))->allow();
-        $this->assertEquals('geo:allow,TN', Arr::last($this->route->middleware()));
+        $this->assertEquals('geo:allow,TN', last($this->route->middleware()));
 
         (new GeoRoute($this->route, ['be'], 'deny'))->allow();
-        $this->assertEquals('geo:allow,BE', Arr::last($this->route->middleware()));
+        $this->assertEquals('geo:allow,BE', last($this->route->middleware()));
 
         (new GeoRoute($this->route, ['jp'], 'allow'))->deny();
-        $this->assertEquals('geo:deny,JP', Arr::last($this->route->middleware()));
+        $this->assertEquals('geo:deny,JP', last($this->route->middleware()));
 
         (new GeoRoute($this->route, ['us'], 'deny'))->deny();
-        $this->assertEquals('geo:deny,US', Arr::last($this->route->middleware()));
+        $this->assertEquals('geo:deny,US', last($this->route->middleware()));
     }
 
     public function testDefaultCallback()
@@ -102,7 +101,7 @@ class GeoRouteTest extends TestCase
 
         (new GeoRoute($this->route, ['uk'], 'allow'))->orRedirectTo('grault');
 
-        $this->router->get('/quux', 'CorgeController@uier')->name('grault');
+        $this->router->get('/quux', ['uses' => 'CorgeController@uier', 'as' => 'grault']);
 
         $this->location
             ->shouldReceive('get')

@@ -133,8 +133,11 @@ class GeoRoute
             return;
         }
 
+        $action = $this->route->getAction();
+        $action['middleware'][] = (string)$this;
+
         $this->applied = true;
-        $this->route->middleware((string)$this);
+        $this->route->setAction($action);
     }
 
     /**
