@@ -1,8 +1,8 @@
 # Laravel-geo-routes
 [![Build Status](https://img.shields.io/travis/LaraCrafts/laravel-geo-routes/master.svg?style=flat-square)](https://travis-ci.org/LaraCrafts/laravel-geo-routes)
 [![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/LaraCrafts/laravel-geo-routes.svg?style=flat-square)][7]
-[![Latest Stable Version](https://poser.pugx.org/laracrafts/laravel-geo-routes/v/stable?format=flat-square)](https://packagist.org/packages/laracrafts/laravel-geo-routes)
 [![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/LaraCrafts/laravel-geo-routes.svg?style=flat-square)](https://scrutinizer-ci.com/g/LaraCrafts/laravel-geo-routes/?branch=master)
+[![Latest Stable Version](https://poser.pugx.org/laracrafts/laravel-geo-routes/v/stable?format=flat-square)](https://packagist.org/packages/laracrafts/laravel-geo-routes)
 [![Minimum PHP Version](https://img.shields.io/packagist/php-v/laracrafts/laravel-geo-routes.svg?style=flat-square)][9]
 [![License](https://img.shields.io/packagist/l/laracrafts/laravel-geo-routes.svg?style=flat-square)][10]
 > GeoLocation Restricted Routes For Laravel
