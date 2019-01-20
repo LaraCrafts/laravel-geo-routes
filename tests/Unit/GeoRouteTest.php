@@ -87,7 +87,6 @@ class GeoRouteTest extends TestCase
      */
     public function testOrRedirectCallback()
     {
-
         (new GeoRoute($this->route, ['uk'], 'allow'))->orRedirectTo('grault');
 
         $this->router->get('/quux', ['uses' => 'CorgeController@uier', 'as' => 'grault']);
