@@ -50,7 +50,7 @@ class GeoRoutesMiddlewareTest extends TestCase
     {
         $this->location->shouldReceive('get')
                       ->once()
-                      ->andReturn(json_decode('{"countryCode": "us"}'));
+                      ->andReturn((object) ['countryCode' => 'us']);
         $this->middleware->handle($this->request, $this->next, 'deny', 'us');
     }
 
@@ -62,11 +62,11 @@ class GeoRoutesMiddlewareTest extends TestCase
     {
         $this->location->shouldReceive('get')
         ->once()
-        ->andReturn(json_decode('{"countryCode": "us"}'));
+        ->andReturn((object) ['countryCode' => 'us']);
         $output = $this->middleware->handle($this->request, $this->next, 'allow', 'us');
         $this->assertEquals('User got through', $output);
     }
-    
+
     /**
      * @test
      * @small
@@ -81,12 +81,12 @@ class GeoRoutesMiddlewareTest extends TestCase
 
         $this->location->shouldReceive('get')
         ->once()
-        ->andReturn(json_decode('{"countryCode": "ca"}'));
+        ->andReturn((object) ['countryCode' => 'ca']);
 
         $callback = serialize(['mockClass::callback', ['arg']]);
 
         $output = $this->middleware->handle($this->request, $this->next, 'allow', 'us', $callback);
-        
+
         $this->assertEquals('MockCallback', $output);
     }
 }
