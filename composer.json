@@ -19,7 +19,6 @@
         "stevebauman/location": "^3.0"
     },
     "require-dev": {
-        "ext-json": "*",
         "mockery/mockery": "^1.0",
         "orchestra/testbench": "^3.0",
         "phpunit/phpunit": "^4.0 || ^5.0 || ^6.0 || ^7.0"
