@@ -12,10 +12,11 @@ class GeoRoutesMiddleware
      * Handle an incoming request.
      *
      * @param \Illuminate\Http\Request $request
-     * @param \Closure $next
-     * @param string $strategy
-     * @param string $countries
-     * @param string|null $callback
+     * @param \Closure                 $next
+     * @param string                   $strategy
+     * @param string                   $countries
+     * @param string|null              $callback
+     *
      * @return mixed
      */
     public function handle(Request $request, Closure $next, string $strategy, string $countries, string $callback = null)
@@ -37,8 +38,9 @@ class GeoRoutesMiddleware
      * Determine if the request should be allowed through.
      *
      * @param \Illuminate\Http\Request $request
-     * @param array $countries
-     * @param string $strategy
+     * @param array                    $countries
+     * @param string                   $strategy
+     *
      * @return bool
      */
     protected function shouldHaveAccess(Request $request, array $countries, string $strategy)

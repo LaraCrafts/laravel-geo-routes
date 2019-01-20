@@ -20,6 +20,7 @@ class Callbacks
      * Redirect to given route.
      *
      * @param string $route
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public static function redirectTo(string $route)

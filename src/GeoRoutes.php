@@ -58,8 +58,9 @@ class GeoRoutes
      * Create a new GeoRoutes instance.
      *
      * @param \Illuminate\Routing\Route $route
-     * @param array $countries
-     * @param string $strategy
+     * @param array                     $countries
+     * @param string                    $strategy
+     *
      * @throws \InvalidArgumentException
      */
     public function __construct(Route $route, array $countries, string $strategy)
@@ -76,7 +77,7 @@ class GeoRoutes
      * Dynamically call the underlying route.
      *
      * @param string $method
-     * @param array $arguments
+     * @param array  $arguments
      *
      * @return mixed
      */
@@ -108,8 +109,8 @@ class GeoRoutes
      */
     public function __toString()
     {
-        return 'geo:' . $this->strategy . ',' . implode('&', $this->countries) .
-            ($this->callback ? ',' . serialize($this->callback) : '');
+        return 'geo:'.$this->strategy.','.implode('&', $this->countries).
+            ($this->callback ? ','.serialize($this->callback) : '');
     }
 
     /**
@@ -134,7 +135,7 @@ class GeoRoutes
         }
 
         $this->applied = true;
-        $this->route->middleware((string)$this);
+        $this->route->middleware((string) $this);
     }
 
     /**
@@ -162,7 +163,7 @@ class GeoRoutes
         $callbacks = config('geo-routes.callbacks');
 
         foreach ($callbacks as $key => $callback) {
-            static::$proxies['or' . Str::studly($key)] = $callback;
+            static::$proxies['or'.Str::studly($key)] = $callback;
         }
     }
 
@@ -204,7 +205,7 @@ class GeoRoutes
      * Set the callback.
      *
      * @param callable $callback
-     * @param array $arguments
+     * @param array    $arguments
      *
      * @return $this
      */

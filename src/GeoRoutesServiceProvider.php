@@ -28,8 +28,8 @@ class GeoRoutesServiceProvider extends ServiceProvider
             return new GeoRoutes($this, $countries, 'allow');
         });
 
-        $this->mergeConfigFrom(__DIR__ . '/../config/geo-routes.php', 'geo-routes');
-        $this->publishes([__DIR__ . '/../config/geo-routes.php' => config_path('geo-routes.php')], 'config');
+        $this->mergeConfigFrom(__DIR__.'/../config/geo-routes.php', 'geo-routes');
+        $this->publishes([__DIR__.'/../config/geo-routes.php' => config_path('geo-routes.php')], 'config');
     }
 
     /**

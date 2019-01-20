@@ -66,7 +66,7 @@ class GeoRoutesMiddlewareTest extends TestCase
         $output = $this->middleware->handle($this->request, $this->next, 'allow', 'us');
         $this->assertEquals('User got through', $output);
     }
-    
+
     /**
      * @test
      * @small
@@ -86,7 +86,7 @@ class GeoRoutesMiddlewareTest extends TestCase
         $callback = serialize(['mockClass::callback', ['arg']]);
 
         $output = $this->middleware->handle($this->request, $this->next, 'allow', 'us', $callback);
-        
+
         $this->assertEquals('MockCallback', $output);
     }
 }
