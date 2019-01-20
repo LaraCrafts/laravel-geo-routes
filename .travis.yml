@@ -24,7 +24,6 @@ install:
 
 script:
   - ./vendor/bin/phpunit --coverage-clover=coverage.clover --verbose
-  - ./vendor/bin/php-cs-fixer fix  --dry-run --verbose
 
 after_script:
   - wget https://scrutinizer-ci.com/ocular.phar
