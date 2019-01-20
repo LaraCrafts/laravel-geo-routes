@@ -22,7 +22,7 @@ class GeoRouteTest extends TestCase
 
     public function requestMockingIsSupported()
     {
-        return version_compare($this->app->version(), '5.2.0', '>=');
+        return version_compare($this->app->version(), '5.4.0', '>=');
     }
 
     public function setUp()
