@@ -60,6 +60,16 @@ Route::get('/home', 'FooController@bar')->from('ca', 'de', 'fr')->deny();
 
 > ***Note:*** This package uses [*stevebauman*][4]'s [location package][5], please refer to the [official documentation][6] for a detailed guide on how to configure it correctly.
 
+### Facade
+Laravel does not support macro's on its routes before version 5.5, this means the examples above won't work for 5.4 and
+below. Instead those versions have to use the `GeoRoute` facade.
+
+```php
+GeoRoute::get('/home', 'FooController@bar')->denyFrom('ca', 'de', 'fr');
+```
+
+Using the GeoRoute facade works the exact same way as using macros!
+
 ## Callbacks
 
 As mentioned earlier, the default behavior for unauthorized users is an `HTTP 401 Unauthorized Error` response, but you are still able to change this behavior by using ***callbacks***.
