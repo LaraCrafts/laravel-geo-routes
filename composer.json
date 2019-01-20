@@ -20,7 +20,6 @@
     },
     "require-dev": {
         "ext-json": "*",
-        "friendsofphp/php-cs-fixer": "^2.14",
         "mockery/mockery": "^1.2",
         "orchestra/testbench": "^3.5",
         "phpunit/phpunit": "^6.0 || ^7.0"
