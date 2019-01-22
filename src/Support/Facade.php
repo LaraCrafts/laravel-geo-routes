@@ -24,6 +24,6 @@ class Facade extends Route
             return $resolved;
         }
 
-        return new GeoRoute($resolved, [], 'allow');
+        return new GeoRoute($resolved, []);
     }
 }

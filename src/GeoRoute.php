@@ -3,8 +3,8 @@
 namespace LaraCrafts\GeoRoutes;
 
 use BadMethodCallException;
-use Illuminate\Routing\Route;
 use Illuminate\Support\Str;
+use Illuminate\Routing\Route;
 
 /**
  * @mixin \Illuminate\Routing\Route
@@ -59,17 +59,16 @@ class GeoRoute
      *
      * @param \Illuminate\Routing\Route $route
      * @param array $countries
-     * @param string $strategy
      * @throws \InvalidArgumentException
      */
-    public function __construct(Route $route, array $countries, string $strategy)
+    public function __construct(Route $route, array $countries)
     {
         $this->applied = false;
         $this->countries = array_map('strtoupper', $countries);
         $this->route = $route;
-        $this->strategy = $strategy;
 
         static::loadProxies();
+        $this->loadDefaultSettings();
     }
 
     /**
@@ -86,11 +85,37 @@ class GeoRoute
             return $this->route->$method(...$arguments);
         }
 
+        if ($this->countries == []) {
+            return $this->processMacroReplacements($method, $arguments);
+        }
+
         if (array_key_exists($method, static::$proxies)) {
             return $this->setCallback(static::$proxies[$method], $arguments);
         }
 
         throw new BadMethodCallException("Undefined method '$method'");
+    }
+
+    /**
+     * Process the macro methods' replacements
+     *
+     * @param string $method
+     * @param array $args
+     * @return $this
+     */
+    protected function processMacroReplacements(string $method, array $args)
+    {
+        $this->countries = array_map('strtoupper', $args);
+
+        if ($method == 'allowFrom') {
+            return $this->allow();
+        }
+
+        if ($method == 'denyFrom') {
+            return $this->deny();
+        }
+
+        return $this;
     }
 
     /**
@@ -134,7 +159,7 @@ class GeoRoute
         }
 
         $action = $this->route->getAction();
-        $action['middleware'][] = (string)$this;
+        $action['middleware'] = (string)$this;
 
         $this->applied = true;
         $this->route->setAction($action);
@@ -162,45 +187,45 @@ class GeoRoute
         }
 
         static::$proxies = [];
+        $defaultCallbacksClassName = Callbacks::class;
+
         $callbacks = config('geo-routes.callbacks');
 
+        $defaultCallbacksReflection = new \ReflectionClass($defaultCallbacksClassName);
+
+        $defaultCallbacks = $defaultCallbacksReflection->getMethods(\ReflectionMethod::IS_STATIC);
+
+        //Load default callbacks
+        foreach ($defaultCallbacks as $callback) {
+            static::$proxies['or' . Str::studly($callback->name)] = $defaultCallbacksClassName.'::'.$callback->name;
+        }
+
+        //Load custom callbacks
         foreach ($callbacks as $key => $callback) {
             static::$proxies['or' . Str::studly($key)] = $callback;
         }
+
+        static::$proxies['orUnauthorized'] = null;
     }
 
     /**
-     * Return a HTTP 404 error if access is denied.
+     * Load the default settings
      *
-     * @return $this
+     * @return void
      */
-    public function orNotFound()
+    protected function loadDefaultSettings()
     {
-        return $this->setCallback('LaraCrafts\GeoRoutes\Callbacks::notFound', func_get_args());
-    }
+        $defaults = config('geo-routes.defaults');
 
-    /**
-     * Redirect to given route if access is denied.
-     *
-     * @param string $routeName
-     *
-     * @return $this
-     */
-    public function orRedirectTo(string $routeName)
-    {
-        return $this->setCallback('LaraCrafts\GeoRoutes\Callbacks::redirectTo', func_get_args());
-    }
+        $this->strategy = $defaults['RULE'];
+        $defaultCallback = $defaults['CALLBACK'];
 
-    /**
-     * Return a HTTP 401 error if access is denied (this is the default behavior).
-     *
-     * @return $this
-     */
-    public function orUnauthorized()
-    {
-        $this->callback = null;
+        if (is_null(static::$proxies[$defaultCallback['name']])) {
+            $this->callback = null;
+            return;
+        }
 
-        return $this;
+        $this->setCallback(static::$proxies[$defaultCallback['name']], $defaultCallback['args'] ?? []);
     }
 
     /**
