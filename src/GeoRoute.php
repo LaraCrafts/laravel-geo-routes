@@ -3,8 +3,8 @@
 namespace LaraCrafts\GeoRoutes;
 
 use BadMethodCallException;
-use Illuminate\Support\Str;
 use Illuminate\Routing\Route;
+use Illuminate\Support\Str;
 
 /**
  * @mixin \Illuminate\Routing\Route
@@ -197,7 +197,7 @@ class GeoRoute
 
         //Load default callbacks
         foreach ($defaultCallbacks as $callback) {
-            static::$proxies['or' . Str::studly($callback->name)] = $defaultCallbacksClassName.'::'.$callback->name;
+            static::$proxies['or' . Str::studly($callback->name)] = $defaultCallbacksClassName . '::' . $callback->name;
         }
 
         //Load custom callbacks

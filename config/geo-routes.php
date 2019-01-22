@@ -39,8 +39,8 @@ return [
 
         'CALLBACK' => [
             'name' => 'orUnauthorized',
-            'args' => null
+            'args' => null,
         ],
 
-    ]
+    ],
 ];
