@@ -20,11 +20,6 @@ class GeoRouteTest extends TestCase
     /** @var \Illuminate\Routing\Router */
     protected $router;
 
-    public function requestMockingIsSupported()
-    {
-        return version_compare($this->app->version(), '5.4.0', '>=');
-    }
-
     public function setUp()
     {
         parent::setUp();
@@ -57,12 +52,11 @@ class GeoRouteTest extends TestCase
         $this->assertEquals('geo:deny,US', last($this->route->middleware()));
     }
 
+    /**
+     * @group new_versions
+     */
     public function testDefaultCallback()
     {
-        if (!$this->requestMockingIsSupported()) {
-            $this->markTestSkipped('Request mocking is not supported in this version of Laravel');
-        }
-
         (new GeoRoute($this->route, ['kr'], 'allow'));
 
         $this->location
@@ -73,12 +67,11 @@ class GeoRouteTest extends TestCase
         $this->assertEquals(401, $this->get('/foo')->getStatusCode());
     }
 
+    /**
+     * @group new_versions
+     */
     public function testOrNotFoundCallback()
     {
-        if (!$this->requestMockingIsSupported()) {
-            $this->markTestSkipped('Request mocking is not supported in this version of Laravel');
-        }
-
         (new GeoRoute($this->route, ['gb'], 'allow'))->orNotFound();
 
         $this->location
@@ -89,12 +82,11 @@ class GeoRouteTest extends TestCase
         $this->assertTrue($this->get('/foo')->isNotFound());
     }
 
+    /**
+     * @group new_versions
+     */
     public function testOrRedirectCallback()
     {
-        if (!$this->requestMockingIsSupported()) {
-            $this->markTestSkipped('Request mocking is not supported in this version of Laravel');
-        }
-
         (new GeoRoute($this->route, ['uk'], 'allow'))->orRedirectTo('grault');
 
         $this->router->get('/quux', ['uses' => 'CorgeController@uier', 'as' => 'grault']);
