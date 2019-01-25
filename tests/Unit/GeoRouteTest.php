@@ -72,7 +72,6 @@ class GeoRouteTest extends TestCase
         }
 
         $this->assertTrue($exceptionThrown);
-
     }
 
     /**
@@ -120,7 +119,6 @@ class GeoRouteTest extends TestCase
      */
     public function testOrNotFoundCallback_53_54()
     {
-
         (new GeoRoute($this->route, ['gb'], 'allow'))->orNotFound();
 
         $this->location
@@ -132,7 +130,6 @@ class GeoRouteTest extends TestCase
         $response = $this->get('/foo');
 
         $response->assertResponseStatus(404);
-
     }
 
 
