@@ -23,7 +23,7 @@ class PackageTest extends TestCase
     }
 
     /**
-     * @group new_versions
+     * @group 5.5_or_up
      */
     public function testMacros()
     {

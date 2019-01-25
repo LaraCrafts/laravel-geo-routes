@@ -53,9 +53,9 @@ class GeoRouteTest extends TestCase
     }
 
     /**
-     * @group new_versions
+     * @group 5.1_5.2
      */
-    public function testDefaultCallback()
+    public function testDefaultCallback_51_52()
     {
         (new GeoRoute($this->route, ['kr'], 'allow'));
 
@@ -64,13 +64,21 @@ class GeoRouteTest extends TestCase
             ->once()
             ->andReturn(json_decode('{"countryCode": "ca"}'));
 
-        $this->assertEquals(401, $this->get('/foo')->getStatusCode());
+        try {
+            $response = $this->get('/foo');
+        } catch (\Symfony\Component\HttpKernel\Exception\HttpException $e) {
+            $this->assertSame(401, $e->getStatusCode());
+            $exceptionThrown = true;
+        }
+
+        $this->assertTrue($exceptionThrown);
+
     }
 
     /**
-     * @group new_versions
+     * @group 5.1_5.2
      */
-    public function testOrNotFoundCallback()
+    public function testOrNotFoundCallback_51_52()
     {
         (new GeoRoute($this->route, ['gb'], 'allow'))->orNotFound();
 
@@ -79,13 +87,95 @@ class GeoRouteTest extends TestCase
             ->once()
             ->andReturn(json_decode('{"countryCode": "us"}'));
 
-        $this->assertTrue($this->get('/foo')->isNotFound());
+        try {
+            $response = $this->get('/foo');
+        } catch (\Symfony\Component\HttpKernel\Exception\HttpException $e) {
+            $this->assertSame(404, $e->getStatusCode());
+            $exceptionThrown = true;
+        }
+
+        $this->assertTrue($exceptionThrown);
     }
 
     /**
-     * @group new_versions
+     * @group 5.3_5.4
      */
-    public function testOrRedirectCallback()
+    public function testDefaultCallback_53_54()
+    {
+        $exceptionThrown = false;
+        (new GeoRoute($this->route, ['kr'], 'allow'));
+
+        $this->location
+            ->shouldReceive('get')
+            ->once()
+            ->andReturn(json_decode('{"countryCode": "ca"}'));
+
+        $response = $this->get('/foo');
+
+        $response->assertResponseStatus(401);
+    }
+
+    /**
+     * @group 5.3_5.4
+     */
+    public function testOrNotFoundCallback_53_54()
+    {
+
+        (new GeoRoute($this->route, ['gb'], 'allow'))->orNotFound();
+
+        $this->location
+            ->shouldReceive('get')
+            ->once()
+            ->andReturn(json_decode('{"countryCode": "us"}'));
+
+
+        $response = $this->get('/foo');
+
+        $response->assertResponseStatus(404);
+
+    }
+
+
+    /**
+     * @group 5.5_or_up
+     */
+    public function testDefaultCallback_55()
+    {
+        (new GeoRoute($this->route, ['kr'], 'allow'));
+
+        $this->location
+            ->shouldReceive('get')
+            ->once()
+            ->andReturn(json_decode('{"countryCode": "ca"}'));
+
+        $response = $this->get('/foo');
+
+        $response->assertStatus(401);
+    }
+
+    /**
+     * @group 5.5_or_up
+     */
+    public function testOrNotFoundCallback_55()
+    {
+        $exceptionThrown = false;
+
+        (new GeoRoute($this->route, ['gb'], 'allow'))->orNotFound();
+
+        $this->location
+            ->shouldReceive('get')
+            ->once()
+            ->andReturn(json_decode('{"countryCode": "us"}'));
+
+        $response = $this->get('/foo');
+
+        $response->assertStatus(404);
+    }
+
+    /**
+     * @group 5.5_or_up
+     */
+    public function testOrRedirectCallback_55()
     {
         (new GeoRoute($this->route, ['uk'], 'allow'))->orRedirectTo('grault');
 
@@ -99,7 +189,8 @@ class GeoRouteTest extends TestCase
         $response = $this->get('/foo');
         $url = $this->app->make('url');
 
-        $this->assertTrue($response->isRedirect());
-        $this->assertEquals($url->route('grault'), $url->to($response->headers->get('Location')));
+        $response = $response->response ?? $response;
+
+        $response->assertRedirect('/quux');
     }
 }
