@@ -97,9 +97,9 @@ class GeoRouteTest extends TestCase
     }
 
     /**
-     * @group 5.3_5.4
+     * @group 5.3
      */
-    public function testDefaultCallback_53_54()
+    public function testDefaultCallback_53()
     {
         $exceptionThrown = false;
         (new GeoRoute($this->route, ['kr'], 'allow'));
@@ -115,9 +115,9 @@ class GeoRouteTest extends TestCase
     }
 
     /**
-     * @group 5.3_5.4
+     * @group 5.3
      */
-    public function testOrNotFoundCallback_53_54()
+    public function testOrNotFoundCallback_53()
     {
         (new GeoRoute($this->route, ['gb'], 'allow'))->orNotFound();
 
@@ -132,11 +132,10 @@ class GeoRouteTest extends TestCase
         $response->assertResponseStatus(404);
     }
 
-
     /**
-     * @group 5.5_or_up
+     * @group 5.4_or_up
      */
-    public function testDefaultCallback_55()
+    public function testDefaultCallback_54up()
     {
         (new GeoRoute($this->route, ['kr'], 'allow'));
 
@@ -151,9 +150,9 @@ class GeoRouteTest extends TestCase
     }
 
     /**
-     * @group 5.5_or_up
+     * @group 5.4_or_up
      */
-    public function testOrNotFoundCallback_55()
+    public function testOrNotFoundCallback_54up()
     {
         $exceptionThrown = false;
 
@@ -170,9 +169,9 @@ class GeoRouteTest extends TestCase
     }
 
     /**
-     * @group 5.5_or_up
+     * @group 5.4_or_up
      */
-    public function testOrRedirectCallback_55()
+    public function testOrRedirectCallback_54up()
     {
         (new GeoRoute($this->route, ['uk'], 'allow'))->orRedirectTo('grault');
 
