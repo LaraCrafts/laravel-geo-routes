@@ -17,13 +17,16 @@ class PackageTest extends TestCase
         $this->router = $this->app->make('router');
     }
 
+    /**
+     * @group global
+     */
     public function testFacade()
     {
         $this->assertInstanceOf(GeoRoute::class, Facade::get('/foo', 'BarController@baz'));
     }
 
     /**
-     * @group 5.5_or_up
+     * @group 5.5-5.7
      */
     public function testMacros()
     {

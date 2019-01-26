@@ -43,7 +43,7 @@ class GeoRoutesMiddlewareTest extends TestCase
 
     /**
      * @test
-     * @small
+     * @group global
      * @expectedException Symfony\Component\HttpKernel\Exception\HttpException
      */
     public function denyDeniessDeniedCountry()
@@ -56,7 +56,7 @@ class GeoRoutesMiddlewareTest extends TestCase
 
     /**
      * @test
-     * @small
+     * @group global
      */
     public function MiddlewareAllowsAccess()
     {
@@ -69,7 +69,7 @@ class GeoRoutesMiddlewareTest extends TestCase
 
     /**
      * @test
-     * @small
+     * @group global
      */
     public function MiddlewareExecutesCallback()
     {
