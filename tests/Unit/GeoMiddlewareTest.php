@@ -23,7 +23,9 @@ class GeoMiddlewareTest extends TestCase
         parent::setUp();
 
         $this->app['config']['geo-routes.global.countries'] = ['ch'];
-        $this->app->make('router')->get('/', function () { return 'Hello world'; });
+        $this->app->make('router')->get('/', function () {
+            return 'Hello world';
+        });
 
         $this->kernel = $this->app->make(Kernel::class);
         $this->location = Mockery::mock('overload:Location');
