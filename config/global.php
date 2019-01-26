@@ -19,7 +19,8 @@ return [
     |--------------------------------------------------------------------------
     |
     | The strategy determines what should be done with the country codes
-    | entered under 'countries'.
+    | entered under 'countries'. The strategy will default to 'deny' if no
+    | valid value is set.
     |
     | Allowed values: allow, deny
     |
