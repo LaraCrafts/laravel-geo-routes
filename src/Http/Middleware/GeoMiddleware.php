@@ -19,30 +19,13 @@ class GeoMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if (!$this->shouldHaveAccess($request)) {
+        $countries = config()->get('geo-routes.global.countries');
+        $strategy = config()->get('geo-routes.global.strategy');
+
+        if (!$this->shouldHaveAccess($request, $countries, $strategy)) {
             abort(401);
         }
 
         return $next($request);
-    }
-
-    /**
-     * Get the countries.
-     *
-     * @return string[]
-     */
-    public function getCountries()
-    {
-        return config('geo-routes.global.countries');
-    }
-
-    /**
-     * Get the strategy.
-     *
-     * @return string
-     */
-    public function getStrategy()
-    {
-        return config('geo-routes.global.strategy');
     }
 }

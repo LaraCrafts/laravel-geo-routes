@@ -8,30 +8,15 @@ use Stevebauman\Location\Facades\Location;
 trait DeterminesGeoAccess
 {
     /**
-     * Get the countries.
-     *
-     * @return string[]
-     */
-    abstract public function getCountries();
-
-    /**
-     * Get the strategy.
-     *
-     * @return string
-     */
-    abstract public function getStrategy();
-
-    /**
      * Determine if the request should be allowed through.
      *
      * @param \Illuminate\Http\Request $request
+     * @param array $countries
+     * @param string $strategy
      * @return bool
      */
-    public function shouldHaveAccess(Request $request)
+    protected function shouldHaveAccess(Request $request, array $countries, string $strategy)
     {
-        $countries = $this->getCountries();
-        $strategy = $this->getStrategy();
-
         if (!$countries) {
             return $strategy !== 'allow';
         }

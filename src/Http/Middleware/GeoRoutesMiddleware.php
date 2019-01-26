@@ -10,9 +10,6 @@ class GeoRoutesMiddleware
 {
     use DeterminesGeoAccess;
 
-    protected $countries;
-    protected $strategy;
-
     /**
      * Handle an incoming request.
      *
@@ -25,10 +22,9 @@ class GeoRoutesMiddleware
      */
     public function handle(Request $request, Closure $next, string $strategy, string $countries, string $callback = null)
     {
-        $this->countries = explode('&', $countries);
-        $this->strategy = $strategy;
+        $countries = explode('&', $countries);
 
-        if ($this->shouldHaveAccess($request)) {
+        if ($this->shouldHaveAccess($request, $countries, $strategy)) {
             return $next($request);
         }
 
@@ -37,25 +33,5 @@ class GeoRoutesMiddleware
         }
 
         return abort(401);
-    }
-
-    /**
-     * Get the countries.
-     *
-     * @return string[]
-     */
-    public function getCountries()
-    {
-        return $this->countries;
-    }
-
-    /**
-     * Get the strategy.
-     *
-     * @return string
-     */
-    public function getStrategy()
-    {
-        return $this->strategy;
     }
 }
