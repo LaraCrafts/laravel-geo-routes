@@ -24,6 +24,8 @@ class GeoRoutesServiceProvider extends ServiceProvider
         if (version_compare($this->app->version(), '5.5.0', '>=')) {
             $this->registerMacros();
         }
+
+        $this->registerGlobalMiddleware();
     }
 
     /**
