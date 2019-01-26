@@ -30,8 +30,13 @@ trait DeterminesGeoAccess
     public function shouldHaveAccess(Request $request)
     {
         $countries = $this->getCountries();
-        $requestCountry = Location::get($request->ip())->countryCode;
         $strategy = $this->getStrategy();
+
+        if (!$countries) {
+            return $strategy !== 'allow';
+        }
+
+        $requestCountry = Location::get($request->ip())->countryCode;
 
         if ($strategy === 'allow') {
             return in_array($requestCountry, $countries);

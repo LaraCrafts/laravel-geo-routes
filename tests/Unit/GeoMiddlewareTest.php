@@ -23,12 +23,11 @@ class GeoMiddlewareTest extends TestCase
         parent::setUp();
 
         $this->app['config']['geo-routes.global.countries'] = ['ch'];
+        $this->app->make('router')->get('/', function () { return 'Hello world'; });
+
         $this->kernel = $this->app->make(Kernel::class);
         $this->location = Mockery::mock('overload:Location');
         $this->request = $this->app->make(Request::class);
-        $this->app->make('router')->get('/', function () {
-            echo 'Hello world';
-        });
     }
 
     public function tearDown()
