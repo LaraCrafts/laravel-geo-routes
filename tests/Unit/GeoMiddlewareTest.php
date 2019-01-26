@@ -6,6 +6,7 @@ use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\Request;
 use LaraCrafts\GeoRoutes\Tests\TestCase;
 use Mockery;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class GeoMiddlewareTest extends TestCase
 {
@@ -44,7 +45,12 @@ class GeoMiddlewareTest extends TestCase
             ->once()
             ->andReturn((object)['countryCode' => 'ch']);
 
-        $response = $this->kernel->handle($this->request);
+        try {
+            $response = $this->kernel->handle($this->request);
+        } catch (HttpException $response) {
+            // Laravel will throw in versions 5.0 - 5.2
+        }
+
         $this->assertEquals(401, $response->getStatusCode());
     }
 
