@@ -162,7 +162,7 @@ class GeoRoute
         }
 
         static::$proxies = [];
-        $callbacks = config('geo-routes.callbacks');
+        $callbacks = config('geo-routes.routes.callbacks');
 
         foreach ($callbacks as $key => $callback) {
             static::$proxies['or' . Str::studly($key)] = $callback;

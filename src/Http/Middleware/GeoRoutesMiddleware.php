@@ -4,10 +4,15 @@ namespace LaraCrafts\GeoRoutes\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Stevebauman\Location\Facades\Location;
+use LaraCrafts\GeoRoutes\DeterminesGeoAccess;
 
 class GeoRoutesMiddleware
 {
+    use DeterminesGeoAccess;
+
+    protected $countries;
+    protected $strategy;
+
     /**
      * Handle an incoming request.
      *
@@ -20,9 +25,10 @@ class GeoRoutesMiddleware
      */
     public function handle(Request $request, Closure $next, string $strategy, string $countries, string $callback = null)
     {
-        $countries = explode('&', $countries);
+        $this->countries = explode('&', $countries);
+        $this->strategy = $strategy;
 
-        if ($this->shouldHaveAccess($request, $countries, $strategy)) {
+        if ($this->shouldHaveAccess($request)) {
             return $next($request);
         }
 
@@ -34,21 +40,22 @@ class GeoRoutesMiddleware
     }
 
     /**
-     * Determine if the request should be allowed through.
+     * Get the countries.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param array $countries
-     * @param string $strategy
-     * @return bool
+     * @return string[]
      */
-    protected function shouldHaveAccess(Request $request, array $countries, string $strategy)
+    public function getCountries()
     {
-        $requestCountry = Location::get($request->ip())->countryCode;
+        return $this->countries;
+    }
 
-        if ($strategy === 'allow') {
-            return in_array($requestCountry, $countries);
-        }
-
-        return !in_array($requestCountry, $countries);
+    /**
+     * Get the strategy.
+     *
+     * @return string
+     */
+    public function getStrategy()
+    {
+        return $this->strategy;
     }
 }
