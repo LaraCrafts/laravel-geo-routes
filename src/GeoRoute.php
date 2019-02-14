@@ -113,6 +113,50 @@ class GeoRoute
     }
 
     /**
+     * Determine the countries covered by the constraint.
+     *
+     * @param string ...$countries
+     *
+     * @return this
+     */
+    public function from(string ...$countries)
+    {
+        $this->countries = $countries;
+
+        return $this;
+    }
+
+    /**
+     * Allow given countries
+     *
+     * @param string ...$countries
+     *
+     * @return $this
+     */
+    public function allowFrom(string ...$countries)
+    {
+        $this->strategy = 'allow';
+        $this->countries = $countries;
+
+        return $this;
+    }
+
+    /**
+     * Deny given countries
+     *
+     * @param string ...$countries
+     *
+     * @return $this
+     */
+    public function denyFrom(string ...$countries)
+    {
+        $this->strategy = 'deny';
+        $this->countries = $countries;
+
+        return $this;
+    }
+
+    /**
      * Allow given countries.
      *
      * @return $this
@@ -120,6 +164,18 @@ class GeoRoute
     public function allow()
     {
         $this->strategy = 'allow';
+
+        return $this;
+    }
+
+    /**
+     * Deny given countries.
+     *
+     * @return $this
+     */
+    public function deny()
+    {
+        $this->strategy = 'deny';
 
         return $this;
     }
@@ -134,22 +190,10 @@ class GeoRoute
         }
 
         $action = $this->route->getAction();
-        $action['middleware'][] = (string)$this;
+        $action['middleware'] = (string)$this;
 
         $this->applied = true;
         $this->route->setAction($action);
-    }
-
-    /**
-     * Deny given countries.
-     *
-     * @return $this
-     */
-    public function deny()
-    {
-        $this->strategy = 'deny';
-
-        return $this;
     }
 
     /**
