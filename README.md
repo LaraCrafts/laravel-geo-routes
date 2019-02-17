@@ -7,7 +7,7 @@
 [![License](https://img.shields.io/packagist/l/laracrafts/laravel-geo-routes.svg?style=flat-square)][10]
 > GeoLocation Restricted Routes For Laravel
 ## Requirements
-- Laravel >= 5.0
+- Laravel >= 5.5
 - PHP >= 7.0
 
 ## Installation
@@ -17,7 +17,7 @@ Navigate to your project's root folder via terminal or command prompt and execut
 composer require laracrafts/laravel-geo-routes
 ```
 
-> Note: If you are using **Laravel 5.5 or higher**, you can skip the registration of the service provider and the alias as they do register themselves automatically, but don't forget to publish the configuration as described [below][12].
+> Note: If you are using [package discovery](https://laravel.com/docs/5.7/packages#package-discovery), you can skip the registration of the service provider and the alias as they do register themselves automatically, but don't forget to publish the configuration as described [below][12].
 
 * Register the service provider
 
@@ -25,14 +25,6 @@ Open your `config/app.php` file and add this entry to the `providers` array
 ```php
 LaraCrafts\GeoRoutes\GeoRoutesServiceProvider::class,
 ```
-
-* Register the facade's alias
-
-Open your `config/app.php` file and add this entry to the `aliases` array
-```php
-'GeoRoute' => LaraCrafts\GeoRoutes\Support\Facade::class,
-```
-<div id="publish"></div>
 
 * Publish the configuration
 
@@ -44,8 +36,6 @@ php artisan vendor:publish --provider="LaraCrafts\GeoRoutes\GeoRoutesServiceProv
 ## Usage
 
 To get started real quick, the `allowFrom` and `denyFrom` methods allow you to restrict access to routes depending on *GeoLocations*
-
-> **WARNING:** The examples described below will only work in Laravel 5.5 or higher. The same logic can be implemented in older versions by using the `GeoRoute` facade instead of the `Route` facade as described in the [*Facade*][11] section.
 
 - Allow access from specific regions
 
@@ -76,18 +66,7 @@ Route::get('/home', 'FooController@bar')->from('ca', 'de', 'fr')->deny();
 
 > ***Note:*** This package uses *<a href="https://www.nationsonline.org/oneworld/country_code_list.htm" target="_blank">ISO Alpha-2</a>* country codes.
 
-> ***Note:*** This package uses [*stevebauman*][4]'s [location package][5], please refer to the [official documentation][6] for a detailed guide on how to configure it correctly.
-
-### Facade
-This facade is available on all Laravel versions, but it was specifically made for the old versions (5.4 and lower) which does not have support for macros.
-
-So if you are using **Laravel 5.4 or lower**, you *MUST* use the facade instead of the examples listed above.
-
-```php
-GeoRoute::get('/home', 'FooController@bar')->denyFrom('ca', 'de', 'fr');
-```
-
-Using the *GeoRoute* facade works the exact same way as using macros!
+> ***Note:*** This package uses [*stevebauman*][4]'s [location package][5], please refer to it's [official documentation][6] for a detailed guide on how to configure it correctly.
 
 ## Callbacks
 
