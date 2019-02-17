@@ -3,7 +3,6 @@
 namespace LaraCrafts\GeoRoutes\Tests\Unit;
 
 use LaraCrafts\GeoRoutes\GeoRoute;
-use LaraCrafts\GeoRoutes\Support\Facade;
 use LaraCrafts\GeoRoutes\Tests\TestCase;
 
 class PackageTest extends TestCase
@@ -15,14 +14,6 @@ class PackageTest extends TestCase
     {
         parent::setUp();
         $this->router = $this->app->make('router');
-    }
-
-    /**
-     * @group global
-     */
-    public function testFacade()
-    {
-        $this->assertInstanceOf(GeoRoute::class, Facade::get('/foo', 'BarController@baz'));
     }
 
     /**
