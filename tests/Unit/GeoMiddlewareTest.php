@@ -38,6 +38,9 @@ class GeoMiddlewareTest extends TestCase
         Mockery::close();
     }
 
+    /**
+     * @group global
+     */
     public function testIfDisallowedCountryIsBlocked()
     {
         $this->location
@@ -54,6 +57,9 @@ class GeoMiddlewareTest extends TestCase
         $this->assertEquals(401, $response->getStatusCode());
     }
 
+    /**
+     * @group global
+     */
     public function testIfAllowedCountryIsLetThrough()
     {
         $this->location
