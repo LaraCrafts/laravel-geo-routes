@@ -16,9 +16,6 @@ class PackageTest extends TestCase
         $this->router = $this->app->make('router');
     }
 
-    /**
-     * @group 5.5-5.7
-     */
     public function testMacros()
     {
         $this->assertInstanceOf(GeoRoute::class, $this->router->get('/foo', 'BarController@baz')->from('it'));

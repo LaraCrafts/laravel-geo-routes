@@ -6,7 +6,6 @@ use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\Request;
 use LaraCrafts\GeoRoutes\Tests\TestCase;
 use Mockery;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class GeoMiddlewareTest extends TestCase
 {
@@ -38,9 +37,6 @@ class GeoMiddlewareTest extends TestCase
         Mockery::close();
     }
 
-    /**
-     * @group global
-     */
     public function testIfDisallowedCountryIsBlocked()
     {
         $this->location
@@ -48,18 +44,10 @@ class GeoMiddlewareTest extends TestCase
             ->once()
             ->andReturn((object)['countryCode' => 'ch']);
 
-        try {
-            $response = $this->kernel->handle($this->request);
-        } catch (HttpException $response) {
-            // Laravel will throw in versions 5.0 - 5.2
-        }
-
+        $response = $this->kernel->handle($this->request);
         $this->assertEquals(401, $response->getStatusCode());
     }
 
-    /**
-     * @group global
-     */
     public function testIfAllowedCountryIsLetThrough()
     {
         $this->location
