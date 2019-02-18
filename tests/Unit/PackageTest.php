@@ -20,11 +20,14 @@ class PackageTest extends TestCase
     public function testMacros()
     {
         $this->assertInstanceOf(
-                GeoGroup::class, $this->router->geogroup(['prefix' => 'foo'],
+                GeoGroup::class,
+            $this->router->geogroup(
+                    ['prefix' => 'foo'],
 
-                function() {
+                function () {
                     $this->router->get('/foo', 'BarController@baz');
-                })
+                }
+                )
 
                 ->allowFrom('it')
         );

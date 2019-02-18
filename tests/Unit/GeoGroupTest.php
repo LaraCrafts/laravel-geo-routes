@@ -36,7 +36,7 @@ class GeoGroupTest extends TestCase
 
     public function testDefaultCallback()
     {
-        (new GeoGroup(['prefix' => 'foo'], function() {
+        (new GeoGroup(['prefix' => 'foo'], function () {
             $this->router->get('/bar', '\LaraCrafts\GeoRoutes\Tests\Mocks\MockController@index');
             $this->router->get('/baz', '\LaraCrafts\GeoRoutes\Tests\Mocks\MockController@index');
         }))->denyFrom('US');
@@ -57,7 +57,7 @@ class GeoGroupTest extends TestCase
 
     public function testOrNotFoundCallback()
     {
-        (new GeoGroup(['prefix' => 'foo'], function() {
+        (new GeoGroup(['prefix' => 'foo'], function () {
             $this->router->get('/bar', '\LaraCrafts\GeoRoutes\Tests\Mocks\MockController@index');
             $this->router->get('/baz', '\LaraCrafts\GeoRoutes\Tests\Mocks\MockController@index');
         }))->denyFrom('US')->orNotFound();
@@ -80,7 +80,7 @@ class GeoGroupTest extends TestCase
 
     public function testOrRedirectCallback()
     {
-        (new GeoGroup(['prefix' => 'foo'], function() {
+        (new GeoGroup(['prefix' => 'foo'], function () {
             $this->router->get('/bar', '\LaraCrafts\GeoRoutes\Tests\Mocks\MockController@index');
             $this->router->get('/baz', '\LaraCrafts\GeoRoutes\Tests\Mocks\MockController@index');
         }))->denyFrom('fr')->orRedirectTo('grault');
@@ -103,10 +103,10 @@ class GeoGroupTest extends TestCase
 
     public function testOrClosureCallback()
     {
-        (new GeoGroup(['prefix' => 'foo'], function() {
+        (new GeoGroup(['prefix' => 'foo'], function () {
             $this->router->get('/bar', '\LaraCrafts\GeoRoutes\Tests\Mocks\MockController@index');
             $this->router->get('/baz', '\LaraCrafts\GeoRoutes\Tests\Mocks\MockController@index');
-        }))->allowFrom('fr')->or(function() {
+        }))->allowFrom('fr')->or(function () {
             abort(303);
         });
 

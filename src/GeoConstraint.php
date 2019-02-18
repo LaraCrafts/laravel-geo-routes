@@ -44,8 +44,8 @@ class GeoConstraint
      *
      * @return void
      */
-	public function __construct(bool $allowed, array $countries, callable $callback = null)
-	{
+    public function __construct(bool $allowed, array $countries, callable $callback = null)
+    {
         $this->allowed = $allowed;
         $this->countries = $countries;
         $this->callback = $callback;

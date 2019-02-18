@@ -80,7 +80,7 @@ class GeoRouteTest extends TestCase
 
     public function testOrClosureCallback()
     {
-        (new GeoRoute($this->route, ['gb'], true))->or(function() {
+        (new GeoRoute($this->route, ['gb'], true))->or(function () {
             abort(303);
         });
 

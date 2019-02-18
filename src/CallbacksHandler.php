@@ -39,7 +39,7 @@ trait CallbacksHandler
                         ->bind($method, $arguments);
         }
 
-         if ($method == 'or') {
+        if ($method == 'or') {
             if (count($arguments) == 0 || !is_callable($arguments[0])) {
                 throw new InvalidArgumentException("The 'or' callback expects one parameter of type callable.");
             }

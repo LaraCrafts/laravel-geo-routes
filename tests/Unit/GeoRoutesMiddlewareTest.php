@@ -46,7 +46,7 @@ class GeoRoutesMiddlewareTest extends TestCase
 
         $this->route = $this->router->get('/foo', ['uses' => '\LaraCrafts\GeoRoutes\Tests\Mocks\MockController@index', 'as' => 'qux']);
 
-        $this->request->setRouteResolver(function() {
+        $this->request->setRouteResolver(function () {
             return $this->route->bind($this->request);
         });
 
@@ -100,7 +100,7 @@ class GeoRoutesMiddlewareTest extends TestCase
             ->andReturn((object)['countryCode' => 'CA']);
 
         #TODO: Parse callables
-        $this->route->denyFrom('ca')->or(function() use ($mockClass) {
+        $this->route->denyFrom('ca')->or(function () use ($mockClass) {
             return $mockClass::callback('arg');
         });
 

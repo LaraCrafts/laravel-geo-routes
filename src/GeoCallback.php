@@ -36,8 +36,8 @@ class GeoCallback
      *
      * @return void
      */
-	public function __construct(string $name, callable $action, array $arguments = null)
-	{
+    public function __construct(string $name, callable $action, array $arguments = null)
+    {
         $this->name = $name;
         $this->action = $action;
         $this->arguments = $arguments;
@@ -114,5 +114,4 @@ class GeoCallback
 
         return $this;
     }
-
 }

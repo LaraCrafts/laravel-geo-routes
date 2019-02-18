@@ -34,8 +34,8 @@ class GeoGroup
      */
     protected $countries;
 
-	public function __construct(array $attributes, callable $routes)
-	{
+    public function __construct(array $attributes, callable $routes)
+    {
         $this->attributes = $attributes;
         $this->routes = $routes;
 
@@ -88,5 +88,4 @@ class GeoGroup
 
         return $this;
     }
-
 }
