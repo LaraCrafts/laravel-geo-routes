@@ -4,6 +4,7 @@ namespace LaraCrafts\GeoRoutes\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use LaraCrafts\GeoRoutes\CallbacksRegistrar;
 use LaraCrafts\GeoRoutes\DeterminesGeoAccess;
 
 class GeoRoutesMiddleware
@@ -18,18 +19,22 @@ class GeoRoutesMiddleware
      * @param string $strategy
      * @param string $countries
      * @param string|null $callback
+     *
      * @return mixed
      */
-    public function handle(Request $request, Closure $next, string $strategy, string $countries, string $callback = null)
+    public function handle(Request $request, Closure $next)
     {
-        $countries = explode('&', $countries);
+        $constraint = $request->route()->GeoConstraint ?? $request->route()->action['GeoConstraint'];
 
-        if ($this->shouldHaveAccess($request, $countries, $strategy)) {
+        $countries = $constraint->getCountries();
+        $callback = $constraint->getCallback();
+
+        if ($this->shouldHaveAccess($request, $countries, $constraint->isAllowed())) {
             return $next($request);
         }
 
-        if ($callback && $callback = unserialize($callback)) {
-            return call_user_func_array($callback[0], $callback[1] ?? []);
+        if (!is_null($callback)) {
+            return $callback();
         }
 
         return abort(401);
