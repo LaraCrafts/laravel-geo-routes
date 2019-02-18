@@ -2,11 +2,11 @@
 
 namespace LaraCrafts\GeoRoutes\Tests\Unit;
 
-use Illuminate\Http\Request;
-use LaraCrafts\GeoRoutes\Http\Middleware\GeoRoutesMiddleware;
-use LaraCrafts\GeoRoutes\Tests\TestCase;
 use Mockery;
+use Illuminate\Http\Request;
+use LaraCrafts\GeoRoutes\Tests\TestCase;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use LaraCrafts\GeoRoutes\Http\Middleware\GeoRoutesMiddleware;
 
 class GeoRoutesMiddlewareTest extends TestCase
 {
@@ -24,6 +24,14 @@ class GeoRoutesMiddlewareTest extends TestCase
     /** @var \Mockery\MockInterface */
     protected $location;
 
+    /** @var \Illuminate\Routing\Router */
+    protected $router;
+
+    /** @var \Illuminate\Routing\Route */
+    protected $route;
+
+    protected $routeGroup;
+
     public function setUp()
     {
         parent::setUp();
@@ -33,6 +41,15 @@ class GeoRoutesMiddlewareTest extends TestCase
             return 'User got through';
         };
         $this->request = new Request();
+
+        $this->router = $this->app->make('router');
+
+        $this->route = $this->router->get('/foo', ['uses' => '\LaraCrafts\GeoRoutes\Tests\Mocks\MockController@index', 'as' => 'qux']);
+
+        $this->request->setRouteResolver(function() {
+            return $this->route->bind($this->request);
+        });
+
         $this->location = Mockery::mock('overload:Location');
     }
 
@@ -43,49 +60,51 @@ class GeoRoutesMiddlewareTest extends TestCase
 
     /**
      * @test
-     * @group global
      * @expectedException Symfony\Component\HttpKernel\Exception\HttpException
      */
-    public function denyDeniessDeniedCountry()
+    public function denyDeniesCountry()
     {
+        $this->route->denyFrom('us');
+
         $this->location->shouldReceive('get')
-                      ->once()
-                      ->andReturn((object) ['countryCode' => 'us']);
-        $this->middleware->handle($this->request, $this->next, 'deny', 'us');
+            ->once()
+            ->andReturn((object)['countryCode' => 'US']);
+
+        $this->middleware->handle($this->request, $this->next);
     }
 
-    /**
-     * @test
-     * @group global
-     */
-    public function MiddlewareAllowsAccess()
+    /** @test */
+    public function middlewareAllowsAccess()
     {
+        $this->route->allowFrom('us');
+
         $this->location->shouldReceive('get')
-        ->once()
-        ->andReturn((object) ['countryCode' => 'us']);
-        $output = $this->middleware->handle($this->request, $this->next, 'allow', 'us');
+            ->once()
+            ->andReturn((object)['countryCode' => 'US']);
+
+        $output = $this->middleware->handle($this->request, $this->next);
         $this->assertEquals('User got through', $output);
     }
 
-    /**
-     * @test
-     * @group global
-     */
-    public function MiddlewareExecutesCallback()
+    /** @test */
+    public function middlewareExecutesCallback()
     {
         $mockClass = Mockery::mock('alias:mockClass');
         $mockClass->shouldReceive('callback')
-                  ->once()
-                  ->with('arg')
-                  ->andReturn('MockCallback');
+            ->once()
+            ->with('arg')
+            ->andReturn('MockCallback');
 
         $this->location->shouldReceive('get')
-        ->once()
-        ->andReturn((object) ['countryCode' => 'ca']);
+            ->once()
+            ->andReturn((object)['countryCode' => 'CA']);
 
-        $callback = serialize(['mockClass::callback', ['arg']]);
+        #TODO: Parse callables
+        $this->route->denyFrom('ca')->or(function() use ($mockClass) {
+            return $mockClass::callback('arg');
+        });
 
-        $output = $this->middleware->handle($this->request, $this->next, 'allow', 'us', $callback);
+        $output = $this->middleware->handle($this->request, $this->next);
 
         $this->assertEquals('MockCallback', $output);
     }
