@@ -2,8 +2,9 @@
 
 namespace LaraCrafts\GeoRoutes;
 
-use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Routing\Route;
+use Illuminate\Routing\Router;
+use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Support\ServiceProvider;
 use LaraCrafts\GeoRoutes\Http\Middleware\GeoMiddleware;
 use LaraCrafts\GeoRoutes\Http\Middleware\GeoRoutesMiddleware;
@@ -66,15 +67,15 @@ class GeoRoutesServiceProvider extends ServiceProvider
     protected function registerMacros()
     {
         Route::macro('allowFrom', function (string ...$countries) {
-            return new GeoRoute($this, $countries, 'allow');
+            return new GeoRoute($this, $countries, true);
         });
 
         Route::macro('denyFrom', function (string ...$countries) {
-            return new GeoRoute($this, $countries, 'deny');
+            return new GeoRoute($this, $countries, false);
         });
 
-        Route::macro('from', function (string ...$countries) {
-            return new GeoRoute($this, $countries, 'allow');
+        Router::macro('geogroup', function (array $attributes, callable $routes) {
+            return new GeoGroup($attributes, $routes);
         });
     }
 }
