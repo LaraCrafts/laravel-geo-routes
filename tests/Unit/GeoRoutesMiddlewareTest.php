@@ -43,45 +43,42 @@ class GeoRoutesMiddlewareTest extends TestCase
 
     /**
      * @test
-     * @group global
      * @expectedException Symfony\Component\HttpKernel\Exception\HttpException
      */
-    public function denyDeniessDeniedCountry()
+    public function denyDeniesCountry()
     {
         $this->location->shouldReceive('get')
-                      ->once()
-                      ->andReturn((object) ['countryCode' => 'us']);
+            ->once()
+            ->andReturn((object)['countryCode' => 'us']);
         $this->middleware->handle($this->request, $this->next, 'deny', 'us');
     }
 
     /**
      * @test
-     * @group global
      */
-    public function MiddlewareAllowsAccess()
+    public function middlewareAllowsAccess()
     {
         $this->location->shouldReceive('get')
-        ->once()
-        ->andReturn((object) ['countryCode' => 'us']);
+            ->once()
+            ->andReturn((object)['countryCode' => 'us']);
         $output = $this->middleware->handle($this->request, $this->next, 'allow', 'us');
         $this->assertEquals('User got through', $output);
     }
 
     /**
      * @test
-     * @group global
      */
-    public function MiddlewareExecutesCallback()
+    public function middlewareExecutesCallback()
     {
         $mockClass = Mockery::mock('alias:mockClass');
         $mockClass->shouldReceive('callback')
-                  ->once()
-                  ->with('arg')
-                  ->andReturn('MockCallback');
+            ->once()
+            ->with('arg')
+            ->andReturn('MockCallback');
 
         $this->location->shouldReceive('get')
-        ->once()
-        ->andReturn((object) ['countryCode' => 'ca']);
+            ->once()
+            ->andReturn((object)['countryCode' => 'ca']);
 
         $callback = serialize(['mockClass::callback', ['arg']]);
 

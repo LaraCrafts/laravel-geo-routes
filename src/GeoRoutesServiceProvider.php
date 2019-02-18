@@ -21,10 +21,7 @@ class GeoRoutesServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__ . '/../config/routes.php', 'geo-routes.routes');
         $this->publishes([__DIR__ . '/../config' => config_path('geo-routes')], 'config');
 
-        if (version_compare($this->app->version(), '5.5.0', '>=')) {
-            $this->registerMacros();
-        }
-
+        $this->registerMacros();
         $this->registerGlobalMiddleware();
     }
 

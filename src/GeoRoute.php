@@ -82,7 +82,7 @@ class GeoRoute
      */
     public function __call(string $method, array $arguments)
     {
-        if (method_exists($this->route, $method)) {
+        if (method_exists($this->route, $method) || Route::hasMacro($method)) {
             return $this->route->$method(...$arguments);
         }
 
