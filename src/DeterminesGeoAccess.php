@@ -12,18 +12,19 @@ trait DeterminesGeoAccess
      *
      * @param \Illuminate\Http\Request $request
      * @param array $countries
-     * @param string $strategy
+     * @param boolean $strategy
+     *
      * @return bool
      */
-    protected function shouldHaveAccess(Request $request, array $countries, string $strategy)
+    protected function shouldHaveAccess(Request $request, array $countries, bool $allowed)
     {
         if (!$countries) {
-            return $strategy !== 'allow';
+            return !$allowed;
         }
 
         $requestCountry = Location::get($request->ip())->countryCode;
 
-        if ($strategy === 'allow') {
+        if ($allowed) {
             return in_array($requestCountry, $countries);
         }
 
