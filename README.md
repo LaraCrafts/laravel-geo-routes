@@ -44,10 +44,6 @@ Route::get('/home', 'FooController@bar')->allowFrom('us', 'gb');
 ```
 What the above example does, is allowing access to the `/home` route **only** from the *United States* and the *United Kingdom*.
 
-Alternatively we can do something like the following: 
-```php
-Route::get('/home', 'FooController@bar')->from('us', 'gb')->allow();
-```
 
 **By default,** all other countries will receive an **HTTP 401 Unauthorized Error**, to change this behavior you can use a callback as described in the [callbacks][1] section.
 
@@ -59,14 +55,24 @@ So in the second example we are going to deny access **only** from specific loca
 ```php
 Route::get('/home', 'FooController@bar')->denyFrom('ca', 'de', 'fr');
 ```
-Alternatively:
-```php
-Route::get('/home', 'FooController@bar')->from('ca', 'de', 'fr')->deny();
-```
 
 > ***Note:*** This package uses *<a href="https://www.nationsonline.org/oneworld/country_code_list.htm" target="_blank">ISO Alpha-2</a>* country codes.
 
 > ***Note:*** This package uses [*stevebauman*][4]'s [location package][5], please refer to it's [official documentation][6] for a detailed guide on how to configure it correctly.
+
+### A Quick Note On GeoGroups
+
+You can create a *GeoGroup* by using the `geogroup` method;
+```php
+Route::geogroup(['prefix' => 'LaraCrafts' .....], function() {
+    Route::get('/foo', 'FooController@bar');
+    Route::get('/bar', 'BarController@baz');
+})->allowFrom('gb', 'it')->orNotFound();
+```
+
+After creating a *GeoGroup*, you can natively apply *constraints* and *callbacks* the same way you did with other routes.
+
+> ***Note:*** The parameters for the `geogroup` method are the same ones used by the native router `group` method.
 
 ## Callbacks
 
