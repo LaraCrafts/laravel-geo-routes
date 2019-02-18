@@ -74,7 +74,7 @@ class GeoRoute
     public function __construct(Route $route, array $countries, bool $allowed)
     {
         $this->applied = false;
-        $this->countries = array_map('strtoupper', $countries);
+        $this->countries = $countries;
         $this->route = $route;
         $this->constraint = new GeoConstraint($allowed, $countries);
         $this->constraint->setAccess($allowed);

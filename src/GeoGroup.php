@@ -27,18 +27,30 @@ class GeoGroup
      */
     protected $constraint;
 
+    /**
+     * The countries covered by the constraint
+     *
+     * @var array
+     */
+    protected $countries;
+
 	public function __construct(array $attributes, callable $routes)
 	{
         $this->attributes = $attributes;
         $this->routes = $routes;
 
-        $this->constraint = new GeoConstraint(true, []);
+        $this->constraint = new GeoConstraint(false, []);
 
         CallbacksRegistrar::init();
     }
 
+    /**
+     * Destruct the GeoGroup instance
+     */
     public function __destruct()
     {
+        $this->constraint->setCountries(...$this->countries ?? []);
+
         $this->attributes = array_merge($this->attributes, [
                                             'GeoConstraint' => $this->constraint,
                                             'middleware' => 'geo'
@@ -47,6 +59,13 @@ class GeoGroup
         app('router')->group($this->attributes, $this->routes);
     }
 
+    /**
+     * Allow access from given countries
+     *
+     * @param string ...$countries
+     *
+     * @return $this
+     */
     public function allowFrom(string ...$countries)
     {
         $this->countries = $countries;
@@ -55,6 +74,13 @@ class GeoGroup
         return $this;
     }
 
+    /**
+     * Deny access from given countries
+     *
+     * @param string ...$countries
+     *
+     * @return $this
+     */
     public function denyFrom(string ...$countries)
     {
         $this->countries = $countries;

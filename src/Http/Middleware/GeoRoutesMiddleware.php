@@ -4,7 +4,6 @@ namespace LaraCrafts\GeoRoutes\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use LaraCrafts\GeoRoutes\CallbacksRegistrar;
 use LaraCrafts\GeoRoutes\DeterminesGeoAccess;
 
 class GeoRoutesMiddleware

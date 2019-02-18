@@ -118,6 +118,8 @@ class CallbacksRegistrar
      * @param string $name
      *
      * @return GeoCallback
+     *
+     * @throws \InvalidArgumentException
      */
     public static function get(string $name)
     {
@@ -187,7 +189,7 @@ class CallbacksRegistrar
      *
      * @return GeoCallback
      *
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     public static function resolve(string $uniqid)
     {

@@ -22,7 +22,9 @@ trait DeterminesGeoAccess
             return !$allowed;
         }
 
-        $requestCountry = Location::get($request->ip())->countryCode;
+        $countries = array_map('strtoupper', $countries);
+
+        $requestCountry = strtoupper(Location::get($request->ip())->countryCode);
 
         if ($allowed) {
             return in_array($requestCountry, $countries);
