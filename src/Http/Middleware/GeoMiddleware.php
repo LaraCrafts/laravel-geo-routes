@@ -20,9 +20,9 @@ class GeoMiddleware
     public function handle(Request $request, Closure $next)
     {
         $countries = config()->get('geo-routes.global.countries');
-        $strategy = config()->get('geo-routes.global.strategy');
+        $allowed = config()->get('geo-routes.global.allowed');
 
-        if (!$this->shouldHaveAccess($request, $countries, $strategy)) {
+        if (!$this->shouldHaveAccess($request, $countries, $allowed)) {
             abort(401);
         }
 

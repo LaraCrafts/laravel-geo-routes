@@ -15,17 +15,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Strategy
+    | Allowed
     |--------------------------------------------------------------------------
     |
-    | The strategy determines what should be done with the country codes
-    | entered under 'countries'. The strategy will default to 'deny' if no
-    | valid value is set.
+    | The allowed key has a value of type boolean which determines the current
+    | access constraint.
     |
-    | Allowed values: allow, deny
+    | If set to `true`, all requests from the `countries` entered below will be
+    | allowed
+    | Otherwise, if set to `false`, access from the listed countries will be denied.
     |
     */
-    'strategy' => 'deny',
+    'allowed' => false,
 
     /*
     |--------------------------------------------------------------------------
