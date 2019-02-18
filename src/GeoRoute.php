@@ -3,7 +3,6 @@
 namespace LaraCrafts\GeoRoutes;
 
 use Illuminate\Routing\Route;
-use InvalidArgumentException;
 
 /**
  * @mixin \Illuminate\Routing\Route

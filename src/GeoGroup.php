@@ -53,7 +53,7 @@ class GeoGroup
 
         $this->attributes = array_merge($this->attributes, [
                                             'GeoConstraint' => $this->constraint,
-                                            'middleware' => 'geo'
+                                            'middleware' => 'geo',
                                         ]);
 
         app('router')->group($this->attributes, $this->routes);

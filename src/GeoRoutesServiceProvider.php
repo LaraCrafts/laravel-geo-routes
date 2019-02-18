@@ -2,9 +2,9 @@
 
 namespace LaraCrafts\GeoRoutes;
 
+use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Routing\Route;
 use Illuminate\Routing\Router;
-use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Support\ServiceProvider;
 use LaraCrafts\GeoRoutes\Http\Middleware\GeoMiddleware;
 use LaraCrafts\GeoRoutes\Http\Middleware\GeoRoutesMiddleware;
