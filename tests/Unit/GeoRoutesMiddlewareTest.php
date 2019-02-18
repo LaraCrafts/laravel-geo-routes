@@ -2,11 +2,11 @@
 
 namespace LaraCrafts\GeoRoutes\Tests\Unit;
 
-use Mockery;
 use Illuminate\Http\Request;
-use LaraCrafts\GeoRoutes\Tests\TestCase;
-use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use LaraCrafts\GeoRoutes\Http\Middleware\GeoRoutesMiddleware;
+use LaraCrafts\GeoRoutes\Tests\TestCase;
+use Mockery;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
 class GeoRoutesMiddlewareTest extends TestCase
 {
