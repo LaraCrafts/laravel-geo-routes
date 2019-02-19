@@ -117,7 +117,7 @@ class CallbacksRegistrar
      *
      * @param string $name
      *
-     * @return GeoCallback
+     * @return \LaraCrafts\GeoRoutes\GeoCallback
      *
      * @throws \InvalidArgumentException
      */
@@ -145,7 +145,7 @@ class CallbacksRegistrar
      *
      * @param array $registrar
      *
-     * @return void
+     * @return array
      */
     public static function setRegistrar(array $registrar)
     {
@@ -187,7 +187,7 @@ class CallbacksRegistrar
      *
      * @param string $uniqid
      *
-     * @return GeoCallback
+     * @return \LaraCrafts\GeoRoutes\GeoCallback
      *
      * @throws \InvalidArgumentException
      */

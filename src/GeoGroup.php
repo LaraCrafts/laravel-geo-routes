@@ -34,6 +34,12 @@ class GeoGroup
      */
     protected $countries;
 
+    /**
+     * Create a new GeoGroup instance
+     *
+     * @param array $attributes
+     * @param callable $routes
+     */
     public function __construct(array $attributes, callable $routes)
     {
         $this->attributes = $attributes;

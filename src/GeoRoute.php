@@ -19,26 +19,11 @@ class GeoRoute
     protected $applied;
 
     /**
-     * The callback to execute if the visitor
-     * is not allowed.
-     *
-     * @var array
-     */
-    protected $callback;
-
-    /**
      * The countries to apply the rule for.
      *
      * @var array
      */
     protected $countries;
-
-    /**
-     * The callbacks' proxies.
-     *
-     * @var array
-     */
-    protected static $proxies;
 
     /**
      * The route.
@@ -58,7 +43,7 @@ class GeoRoute
     /**
      * The geo-constraint
      *
-     * @var GeoConstraint
+     * @var \LaraCrafts\GeoRoutes\GeoConstraint
      */
     protected $constraint;
 
@@ -67,8 +52,7 @@ class GeoRoute
      *
      * @param \Illuminate\Routing\Route $route
      * @param array $countries
-     * @param string $allowed
-     * @throws \InvalidArgumentException
+     * @param boolean $allowed
      */
     public function __construct(Route $route, array $countries, bool $allowed)
     {

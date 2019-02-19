@@ -27,6 +27,9 @@ trait CallbacksHandler
      * @param array $arguments
      *
      * @return void
+     *
+     * @throws \InvalidArgumentException
+     * @throws \BadMethodCallException
      */
     protected function handleCallbacks(string $method, array $arguments)
     {

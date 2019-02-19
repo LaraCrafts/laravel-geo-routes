@@ -40,11 +40,11 @@ class GeoConstraint
      *
      * @param boolean $allowed
      * @param array $countries
-     * @param callable $callback
+     * @param null|\LaraCrafts\GeoRoutes\GeoCallback $callback
      *
      * @return void
      */
-    public function __construct(bool $allowed, array $countries, callable $callback = null)
+    public function __construct(bool $allowed, array $countries, GeoCallback $callback = null)
     {
         $this->allowed = $allowed;
         $this->countries = $countries;
@@ -54,7 +54,7 @@ class GeoConstraint
     /**
      * Get the constraint's callback
      *
-     * @return GeoCallback
+     * @return \LaraCrafts\GeoRoutes\GeoCallback
      */
     public function getCallback()
     {
@@ -68,9 +68,9 @@ class GeoConstraint
     /**
      * Set the contraint's callback
      *
-     * @param GeoCallback $callback
+     * @param \LaraCrafts\GeoRoutes\GeoCallback $callback
      *
-     * @return GeoCallback
+     * @return \LaraCrafts\GeoRoutes\GeoCallback
      */
     public function setCallback(GeoCallback $callback)
     {
@@ -138,7 +138,7 @@ class GeoConstraint
      *
      * @param boolean $allowed
      *
-     * @return string
+     * @return $this
      */
     public function setAccess(bool $allowed)
     {
