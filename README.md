@@ -1,14 +1,20 @@
-![Laravel GeoRoutes](https://dl.dropboxusercontent.com/s/8em4vcukmwnsleg/laravel-geo-routes-banner.png?dl=0)
-[![Build Status](https://img.shields.io/travis/LaraCrafts/laravel-geo-routes/master.svg?style=flat-square)](https://travis-ci.org/LaraCrafts/laravel-geo-routes)
-[![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/LaraCrafts/laravel-geo-routes.svg?style=flat-square)][7]
-[![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/LaraCrafts/laravel-geo-routes.svg?style=flat-square)](https://scrutinizer-ci.com/g/LaraCrafts/laravel-geo-routes/?branch=master)
-[![Latest Stable Version](https://poser.pugx.org/laracrafts/laravel-geo-routes/v/stable?format=flat-square)](https://packagist.org/packages/laracrafts/laravel-geo-routes)
-[![Minimum PHP Version](https://img.shields.io/packagist/php-v/laracrafts/laravel-geo-routes.svg?style=flat-square)][9]
-[![License](https://img.shields.io/packagist/l/laracrafts/laravel-geo-routes.svg?style=flat-square)][10]
+<p align="center">
+    <img src="https://dl.dropboxusercontent.com/s/8em4vcukmwnsleg/laravel-geo-routes-banner.png?dl=0">
+</p>
+
+<p align="center">
+    <a href="https://travis-ci.org/LaraCrafts/laravel-geo-routes"><img src="https://travis-ci.org/LaraCrafts/laravel-geo-routes.svg?branch=master"></a>
+    <a href="https://scrutinizer-ci.com/g/LaraCrafts/laravel-geo-routes/"><img src="https://scrutinizer-ci.com/g/LaraCrafts/laravel-geo-routes/badges/quality-score.png?b=master"></a>
+    <a href="https://scrutinizer-ci.com/g/LaraCrafts/laravel-geo-routes/"><img src="https://scrutinizer-ci.com/g/LaraCrafts/laravel-geo-routes/badges/coverage.png?b=master"></a>
+    <a href="https://packagist.org/packages/laracrafts/laravel-geo-routes"><img src="https://poser.pugx.org/laracrafts/laravel-geo-routes/v/stable"></a>
+    <a href="http://php.net/releases/"><img src="https://img.shields.io/packagist/php-v/laracrafts/laravel-geo-routes.svg"></a>
+    <a href="https://github.com/LaraCrafts/laravel-geo-routes/blob/master/LICENSE"><img src="https://img.shields.io/packagist/l/laracrafts/laravel-geo-routes.svg"></a>
+</p>
+
 > GeoLocation Restricted Routes For Laravel
 ## Requirements
-- Laravel >= 5.5
-- PHP >= 7.0
+- Laravel 5.5 or higher
+- PHP 7.0 or higher
 
 ## Installation
 
@@ -141,9 +147,5 @@ This product is licensed under the MIT license, please refer to the [License fil
 [4]: https://github.com/stevebauman
 [5]: https://github.com/stevebauman/location
 [6]: https://github.com/stevebauman/location/blob/master/readme.md
-[7]: https://scrutinizer-ci.com/g/LaraCrafts/laravel-geo-routes/
-[8]: https://github.com/LaraCrafts/laravel-geo-routes/releases
-[9]: http://php.net/releases/
-[10]: https://github.com/LaraCrafts/laravel-geo-routes/blob/master/LICENSE
 [11]: #facade
 [12]: #publish
