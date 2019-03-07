@@ -11,7 +11,8 @@
     <a href="https://github.com/LaraCrafts/laravel-geo-routes/blob/master/LICENSE"><img src="https://img.shields.io/packagist/l/laracrafts/laravel-geo-routes.svg"></a>
 </p>
 
-> GeoLocation Restricted Routes For Laravel
+<p align="center">GeoLocation Restricted Routes For Laravel</p>
+
 ## Requirements
 - Laravel 5.5 or higher
 - PHP 7.0 or higher
