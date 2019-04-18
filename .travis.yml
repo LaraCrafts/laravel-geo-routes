@@ -5,7 +5,6 @@ cache:
     - $HOME/.composer/cache
 
 php:
-  - 7.0
   - 7.1
   - 7.2
   - 7.3
@@ -14,13 +13,9 @@ env:
   - ILLUMINATE_VERSION=5.5.* TESTBENCH_VERSION=3.5.* PHPUNIT_VERSION=^6.0
   - ILLUMINATE_VERSION=5.6.* TESTBENCH_VERSION=3.6.* PHPUNIT_VERSION=^7.0
   - ILLUMINATE_VERSION=5.7.* TESTBENCH_VERSION=3.7.* PHPUNIT_VERSION=^7.0
+  - ILLUMINATE_VERSION=5.8.* TESTBENCH_VERSION=3.8.* PHPUNIT_VERSION=^7.0 || ^8.0
 
-matrix:    # Laravel 5.6 & 5.7 do not support PHP7.0
-  exclude:
-    - php: 7.0
-      env: ILLUMINATE_VERSION=5.6.* TESTBENCH_VERSION=3.6.* PHPUNIT_VERSION=^7.0
-    - php: 7.0
-      env: ILLUMINATE_VERSION=5.7.* TESTBENCH_VERSION=3.7.* PHPUNIT_VERSION=^7.0
+sudo: false
 
 before_install:
   - composer require laravel/framework:${ILLUMINATE_VERSION} --no-update

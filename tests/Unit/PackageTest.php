@@ -10,7 +10,7 @@ class PackageTest extends TestCase
     /** @var \Illuminate\Routing\Router */
     protected $router;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->router = $this->app->make('router');

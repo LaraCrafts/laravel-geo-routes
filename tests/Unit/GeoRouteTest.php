@@ -20,7 +20,7 @@ class GeoRouteTest extends TestCase
     /** @var \Illuminate\Routing\Router */
     protected $router;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -29,7 +29,7 @@ class GeoRouteTest extends TestCase
         $this->route = $this->router->get('/foo', ['uses' => '\LaraCrafts\GeoRoutes\Tests\Mocks\MockController@index', 'as' => 'qux']);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         Mockery::close();
     }
