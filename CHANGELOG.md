@@ -1,6 +1,6 @@
 # Changelog
 
-### [v0.2.0](https://github.com/LaraCrafts/laravel-geo-routes/tree/v0.2.0) (TBD)
+### [v0.2.0](https://github.com/LaraCrafts/laravel-geo-routes/tree/v0.2.0) (2019-04-19)
 - Added Laravel 5.8 support
 - Added StyleCI and Scrutinizer integrations
 - Dropped PHP 7.0 support
