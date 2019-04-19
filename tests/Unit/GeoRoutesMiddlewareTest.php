@@ -24,7 +24,7 @@ class GeoRoutesMiddlewareTest extends TestCase
     /** @var \Mockery\MockInterface */
     protected $location;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -36,7 +36,7 @@ class GeoRoutesMiddlewareTest extends TestCase
         $this->location = Mockery::mock('overload:Location');
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         Mockery::close();
     }

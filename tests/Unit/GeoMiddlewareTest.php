@@ -18,7 +18,7 @@ class GeoMiddlewareTest extends TestCase
     /** @var \Illuminate\Http\Request */
     protected $request;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -32,7 +32,7 @@ class GeoMiddlewareTest extends TestCase
         $this->request = $this->app->make(Request::class);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         Mockery::close();
     }
