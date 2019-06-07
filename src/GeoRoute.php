@@ -98,18 +98,7 @@ class GeoRoute
      */
     public function __destruct()
     {
-        $this->applyMiddleware();
-    }
-
-    /**
-     * Generate a middleware string.
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        return 'geo:' . $this->strategy . ',' . implode('&', $this->countries) .
-            ($this->callback ? ',' . serialize($this->callback) : '');
+        $this->applyConstraint();
     }
 
     /**
@@ -125,19 +114,25 @@ class GeoRoute
     }
 
     /**
-     * Apply the middleware to the route.
+     * Apply the geo-constraint to the route.
      */
-    protected function applyMiddleware()
+    protected function applyConstraint()
     {
         if ($this->applied || !$this->countries) {
             return;
         }
 
         $action = $this->route->getAction();
-        $action['middleware'][] = (string)$this;
+        $action['middleware'][] = 'geo';
+        $action['geo'] = [
+            'strategy' => $this->strategy,
+            'countries' => (array)$this->countries,
+            'callback' => $this->callback
+        ];
+
+        $this->route->setAction($action);
 
         $this->applied = true;
-        $this->route->setAction($action);
     }
 
     /**
