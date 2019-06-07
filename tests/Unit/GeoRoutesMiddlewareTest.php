@@ -7,6 +7,8 @@ use LaraCrafts\GeoRoutes\Http\Middleware\GeoRoutesMiddleware;
 use LaraCrafts\GeoRoutes\Tests\TestCase;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use Illuminate\Routing\Route;
+use Stevebauman\Location\Facades\Location;
 
 class GeoRoutesMiddlewareTest extends TestCase
 {
@@ -18,11 +20,14 @@ class GeoRoutesMiddlewareTest extends TestCase
     /** @var \Closure */
     protected $next;
 
-    /** @var \Illuminate\Http\Request */
+    /** @var \Mockery\MockInterface */
     protected $request;
 
     /** @var \Mockery\MockInterface */
     protected $location;
+
+    /** @var \Mockery\MockInterface */
+    protected $route;
 
     public function setUp(): void
     {
@@ -32,42 +37,46 @@ class GeoRoutesMiddlewareTest extends TestCase
         $this->next = function () {
             return 'User got through';
         };
-        $this->request = new Request();
+        $this->request = Mockery::mock(Request::class);
+        $this->route = Mockery::mock(Route::class);
         $this->location = Mockery::mock('overload:Location');
     }
 
     public function tearDown(): void
     {
+        parent::tearDown();
+
         Mockery::close();
     }
 
-    /**
-     * @test
-     * @expectedException Symfony\Component\HttpKernel\Exception\HttpException
-     */
+    /** @test */
     public function denyDeniesCountry()
     {
+        $this->expectException(\Symfony\Component\HttpKernel\Exception\HttpException::class);
         $this->location->shouldReceive('get')
             ->once()
             ->andReturn((object)['countryCode' => 'us']);
-        $this->middleware->handle($this->request, $this->next, 'deny', 'us');
+
+        $this->setGeoConstraint('deny', 'us');
+
+        $this->middleware->handle($this->request, $this->next);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function middlewareAllowsAccess()
     {
+        $this->setGeoConstraint('allow', 'us');
+
         $this->location->shouldReceive('get')
             ->once()
             ->andReturn((object)['countryCode' => 'us']);
-        $output = $this->middleware->handle($this->request, $this->next, 'allow', 'us');
+
+
+        $output = $this->middleware->handle($this->request, $this->next);
         $this->assertEquals('User got through', $output);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function middlewareExecutesCallback()
     {
         $mockClass = Mockery::mock('alias:mockClass');
@@ -80,10 +89,37 @@ class GeoRoutesMiddlewareTest extends TestCase
             ->once()
             ->andReturn((object)['countryCode' => 'ca']);
 
-        $callback = serialize(['mockClass::callback', ['arg']]);
+        $callback = ['mockClass::callback', ['arg']];
 
-        $output = $this->middleware->handle($this->request, $this->next, 'allow', 'us', $callback);
+        $this->setGeoConstraint('allow', 'us', $callback);
+
+        $output = $this->middleware->handle($this->request, $this->next);
 
         $this->assertEquals('MockCallback', $output);
+    }
+
+    /**
+     * Set the route geo constraint.
+     *
+     * @param string $strategy
+     * @param array|string $countries
+     * @param array $callback
+     *
+     * @return void
+     */
+    protected function setGeoConstraint(string $strategy, $countries, array $callback = null)
+    {
+        $this->request->shouldReceive('route')
+                    ->once()
+                    ->andReturn($this->route);
+
+        $this->route->shouldReceive('getAction')
+                    ->with('geo')
+                    ->once()
+                    ->andReturn([
+                        'strategy' => $strategy,
+                        'countries' => (array)$countries,
+                        'callback' => $callback
+                    ]);
     }
 }

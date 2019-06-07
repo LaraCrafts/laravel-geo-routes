@@ -37,21 +37,17 @@ class GeoRouteTest extends TestCase
     public function testIfMiddlewareIsApplied()
     {
         (new GeoRoute($this->route, ['nl'], 'allow'));
-        $this->assertEquals('geo:allow,NL', last($this->route->middleware()));
+        $this->assertEquals('geo', last($this->route->middleware()));
 
-        (new GeoRoute($this->route, ['tn'], 'allow'))->allow();
-        $this->assertEquals('geo:allow,TN', last($this->route->middleware()));
-
-        (new GeoRoute($this->route, ['be'], 'deny'))->allow();
-        $this->assertEquals('geo:allow,BE', last($this->route->middleware()));
-
-        (new GeoRoute($this->route, ['jp'], 'allow'))->deny();
-        $this->assertEquals('geo:deny,JP', last($this->route->middleware()));
-
-        (new GeoRoute($this->route, ['us'], 'deny'))->deny();
-        $this->assertEquals('geo:deny,US', last($this->route->middleware()));
+        (new GeoRoute($this->route, ['tn'], 'deny'));
+        $this->assertEquals('geo', last($this->route->middleware()));
     }
 
+    /**
+     * @group def
+     *
+     * @return void
+     */
     public function testDefaultCallback()
     {
         (new GeoRoute($this->route, ['kr'], 'allow'));
