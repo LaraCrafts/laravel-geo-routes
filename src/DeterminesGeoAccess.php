@@ -21,7 +21,7 @@ trait DeterminesGeoAccess
             return $strategy !== 'allow';
         }
 
-        $requestCountry = Location::get($request->ip())->countryCode;
+        $requestCountry = Location::get()->countryCode;
 
         if ($strategy === 'allow') {
             return in_array($requestCountry, $countries);
