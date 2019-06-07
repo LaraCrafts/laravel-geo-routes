@@ -18,18 +18,26 @@ class GeoRoutesMiddleware
      * @param string $strategy
      * @param string $countries
      * @param string|null $callback
+     *
      * @return mixed
      */
-    public function handle(Request $request, Closure $next, string $strategy, string $countries, string $callback = null)
+    public function handle(Request $request, Closure $next)
     {
-        $countries = explode('&', $countries);
+        $route = $request->route();
 
-        if ($this->shouldHaveAccess($request, $countries, $strategy)) {
+        if (!$route) {
+            #TODO: Invoke the default callback.
+            return abort(401);
+        }
+
+        $geo = $route->getAction('geo');
+
+        if ($this->shouldHaveAccess($request, (array)$geo['countries'], $geo['strategy'])) {
             return $next($request);
         }
 
-        if ($callback && $callback = unserialize($callback)) {
-            return call_user_func_array($callback[0], $callback[1] ?? []);
+        if (array_key_exists('callback', $geo) && $callback = $geo['callback']) {
+            return call_user_func_array($callback[0], $callback[1]);
         }
 
         return abort(401);
