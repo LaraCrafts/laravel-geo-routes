@@ -2,14 +2,12 @@
 
 namespace LaraCrafts\GeoRoutes;
 
+use BadMethodCallException;
+use Illuminate\Routing\Route;
+use Illuminate\Support\Str;
+use LaraCrafts\GeoRoutes\Contracts\Callback;
 use ReflectionClass;
 use ReflectionMethod;
-use BadMethodCallException;
-use Illuminate\Support\Str;
-use Illuminate\Routing\Route;
-use Symfony\Component\Finder\Finder;
-use LaraCrafts\GeoRoutes\Contracts\Callback;
-use Illuminate\Contracts\Foundation\Application;
 
 /**
  * @mixin \Illuminate\Routing\Route
