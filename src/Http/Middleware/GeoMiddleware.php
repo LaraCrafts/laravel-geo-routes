@@ -22,7 +22,7 @@ class GeoMiddleware
         $countries = config()->get('geo-routes.global.countries');
         $strategy = config()->get('geo-routes.global.strategy');
 
-        if (!$this->shouldHaveAccess($request, $countries, $strategy)) {
+        if (!$this->shouldHaveAccess($countries, $strategy)) {
             abort(401);
         }
 
