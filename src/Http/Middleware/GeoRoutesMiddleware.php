@@ -24,7 +24,7 @@ class GeoRoutesMiddleware
     {
         $countries = explode('&', $countries);
 
-        if ($this->shouldHaveAccess($request, $countries, $strategy)) {
+        if ($this->shouldHaveAccess($countries, $strategy)) {
             return $next($request);
         }
 
