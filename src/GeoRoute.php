@@ -2,9 +2,14 @@
 
 namespace LaraCrafts\GeoRoutes;
 
+use ReflectionClass;
+use ReflectionMethod;
 use BadMethodCallException;
-use Illuminate\Routing\Route;
 use Illuminate\Support\Str;
+use Illuminate\Routing\Route;
+use Symfony\Component\Finder\Finder;
+use LaraCrafts\GeoRoutes\Contracts\Callback;
+use Illuminate\Contracts\Foundation\Application;
 
 /**
  * @mixin \Illuminate\Routing\Route
@@ -41,6 +46,14 @@ class GeoRoute
     protected static $proxies;
 
     /**
+     * Determine whether the callbacks proxies
+     * are loaded.
+     *
+     * @var boolean
+     */
+    protected static $loaded = false;
+
+    /**
      * The route.
      *
      * @var \Illuminate\Routing\Route
@@ -57,10 +70,9 @@ class GeoRoute
     /**
      * Create a new GeoRoute instance.
      *
-     * @param \Illuminate\Routing\Route $route
-     * @param array $countries
-     * @param string $strategy
-     * @throws \InvalidArgumentException
+     * @param  \Illuminate\Routing\Route $route
+     * @param  array $countries
+     * @param  string $strategy
      */
     public function __construct(Route $route, array $countries, string $strategy)
     {
@@ -153,11 +165,13 @@ class GeoRoute
     }
 
     /**
-     * Load the available proxies.
+     * Load the available callbacks proxies.
+     *
+     * @return void
      */
     protected static function loadProxies()
     {
-        if (static::$proxies !== null) {
+        if (static::$loaded) {
             return;
         }
 
@@ -165,8 +179,65 @@ class GeoRoute
         $callbacks = config('geo-routes.routes.callbacks');
 
         foreach ($callbacks as $key => $callback) {
-            static::$proxies['or' . Str::studly($key)] = $callback;
+            static::addCallback($key, $callback);
         }
+
+        static::$loaded = true;
+    }
+
+    /**
+     * Add a callback proxy from a given name and callable.
+     *
+     * @param string $name
+     * @param callable $callback
+     *
+     * @return void
+     */
+    public static function addCallback(string $name, callable $callback)
+    {
+        static::$proxies['or' . Str::studly($name)] = $callback;
+    }
+
+    /**
+     * Get the array of callbacks.
+     *
+     * @return array|null
+     */
+    public static function callbacks()
+    {
+        return static::$callbacks;
+    }
+
+    /**
+     * Parse callbacks from a given class.
+     *
+     * This method will use reflection to loop through all of the static
+     * methods.
+     *
+     * @param string $class
+     *
+     * @return void
+     */
+    public static function parseCallbacks(string $class)
+    {
+        $reflection = new ReflectionClass($class);
+        $callbacks = $reflection->getMethods(ReflectionMethod::IS_STATIC);
+
+        foreach ($callbacks as $callback) {
+            static::addCallback($callback->getName(), $callback->getClosure());
+        }
+    }
+
+    /**
+     * Load callbacks from a given path.
+     *
+     * @param string $path
+     *
+     * @return void
+     */
+    public static function loadCallbacksFrom(string $path)
+    {
+        //
     }
 
     /**
