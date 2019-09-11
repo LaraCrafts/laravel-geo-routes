@@ -3,7 +3,9 @@
 namespace LaraCrafts\GeoRoutes\Http\Middleware;
 
 use Closure;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use LaraCrafts\GeoRoutes\DeterminesGeoAccess;
 
 class GeoRoutesMiddleware
@@ -30,13 +32,23 @@ class GeoRoutesMiddleware
             return abort(401);
         }
 
-        $geo = $route->getAction('geo');
+        $constraint = $route->getAction('geo') ?? [];
 
-        if ($this->shouldHaveAccess($request, (array)$geo['countries'], $geo['strategy'])) {
+        $validator = Validator::make($constraint, [
+            'countries' => 'required|array|min:1',
+            'countries.*' => 'string|min:2|max:2',
+            'strategy' => 'required|in:allow,deny',
+        ]);
+
+        if ($validator->fails()) {
+            throw new Exception("The GeoRoute constraint is invalid.");
+        }
+
+        if ($this->shouldHaveAccess($request, (array)$constraint['countries'], $constraint['strategy'])) {
             return $next($request);
         }
 
-        if (array_key_exists('callback', $geo) && $callback = $geo['callback']) {
+        if (array_key_exists('callback', $constraint) && $callback = $constraint['callback']) {
             return call_user_func_array($callback[0], $callback[1]);
         }
 
