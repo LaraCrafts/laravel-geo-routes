@@ -3,12 +3,11 @@
 namespace LaraCrafts\GeoRoutes\Tests\Unit;
 
 use Illuminate\Http\Request;
+use Illuminate\Routing\Route;
 use LaraCrafts\GeoRoutes\Http\Middleware\GeoRoutesMiddleware;
 use LaraCrafts\GeoRoutes\Tests\TestCase;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use Illuminate\Routing\Route;
-use Stevebauman\Location\Facades\Location;
 
 class GeoRoutesMiddlewareTest extends TestCase
 {
@@ -137,7 +136,7 @@ class GeoRoutesMiddlewareTest extends TestCase
                     ->andReturn([
                         'strategy' => $strategy,
                         'countries' => (array)$countries,
-                        'callback' => $callback
+                        'callback' => $callback,
                     ]);
     }
 }

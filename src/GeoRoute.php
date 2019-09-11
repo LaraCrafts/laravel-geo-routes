@@ -127,7 +127,7 @@ class GeoRoute
         $action['geo'] = [
             'strategy' => $this->strategy,
             'countries' => (array)$this->countries,
-            'callback' => $this->callback
+            'callback' => $this->callback,
         ];
 
         $this->route->setAction($action);
