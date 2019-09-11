@@ -98,6 +98,24 @@ class GeoRoutesMiddlewareTest extends TestCase
         $this->assertEquals('MockCallback', $output);
     }
 
+    /** @test */
+    public function middlewareThrowsExceptionIfTheGeoAttributeIsInvalid()
+    {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('The GeoRoute constraint is invalid.');
+
+        $this->request->shouldReceive('route')
+                    ->once()
+                    ->andReturn($this->route);
+
+        $this->route->shouldReceive('getAction')
+                    ->with('geo')
+                    ->once()
+                    ->andReturn([]);
+
+        $output = $this->middleware->handle($this->request, $this->next);
+    }
+
     /**
      * Set the route geo constraint.
      *

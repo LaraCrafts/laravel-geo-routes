@@ -43,11 +43,7 @@ class GeoRouteTest extends TestCase
         $this->assertEquals('geo', last($this->route->middleware()));
     }
 
-    /**
-     * @group def
-     *
-     * @return void
-     */
+
     public function testDefaultCallback()
     {
         (new GeoRoute($this->route, ['kr'], 'allow'));
