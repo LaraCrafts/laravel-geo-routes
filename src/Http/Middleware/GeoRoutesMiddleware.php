@@ -44,7 +44,7 @@ class GeoRoutesMiddleware
             throw new Exception("The GeoRoute constraint is invalid.");
         }
 
-        if ($this->shouldHaveAccess($request, (array)$constraint['countries'], $constraint['strategy'])) {
+        if ($this->shouldHaveAccess((array)$constraint['countries'], $constraint['strategy'])) {
             return $next($request);
         }
 
