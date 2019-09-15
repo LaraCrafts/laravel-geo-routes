@@ -2,7 +2,6 @@
 
 namespace LaraCrafts\GeoRoutes;
 
-use Illuminate\Http\Request;
 use Stevebauman\Location\Facades\Location;
 
 trait DeterminesGeoAccess
