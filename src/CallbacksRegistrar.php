@@ -3,9 +3,9 @@
 namespace LaraCrafts\GeoRoutes;
 
 use Exception;
+use Illuminate\Support\Str;
 use ReflectionClass;
 use ReflectionMethod;
-use Illuminate\Support\Str;
 
 class CallbacksRegistrar
 {

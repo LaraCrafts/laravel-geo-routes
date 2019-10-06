@@ -4,8 +4,8 @@ namespace LaraCrafts\GeoRoutes\Tests\Unit;
 
 use Closure;
 use LaraCrafts\GeoRoutes\CallbacksRegistrar;
-use Mockery;
 use LaraCrafts\GeoRoutes\Tests\TestCase;
+use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use ReflectionClass;
 

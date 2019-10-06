@@ -15,5 +15,4 @@ class CallbacksRegistrar extends Facade
     {
         return 'georoutes.callbacks';
     }
-
 }
