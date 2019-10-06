@@ -3,8 +3,9 @@
 namespace LaraCrafts\GeoRoutes;
 
 use BadMethodCallException;
-use Illuminate\Routing\Route;
 use Illuminate\Support\Str;
+use Illuminate\Routing\Route;
+use LaraCrafts\GeoRoutes\Support\Facades\CallbacksRegistrar;
 
 /**
  * @mixin \Illuminate\Routing\Route
@@ -34,13 +35,6 @@ class GeoRoute
     protected $countries;
 
     /**
-     * The callbacks' proxies.
-     *
-     * @var array
-     */
-    protected static $proxies;
-
-    /**
      * The route.
      *
      * @var \Illuminate\Routing\Route
@@ -57,10 +51,9 @@ class GeoRoute
     /**
      * Create a new GeoRoute instance.
      *
-     * @param \Illuminate\Routing\Route $route
-     * @param array $countries
-     * @param string $strategy
-     * @throws \InvalidArgumentException
+     * @param  \Illuminate\Routing\Route $route
+     * @param  array $countries
+     * @param  string $strategy
      */
     public function __construct(Route $route, array $countries, string $strategy)
     {
@@ -68,8 +61,6 @@ class GeoRoute
         $this->countries = array_map('strtoupper', $countries);
         $this->route = $route;
         $this->strategy = $strategy;
-
-        static::loadProxies();
     }
 
     /**
@@ -86,8 +77,8 @@ class GeoRoute
             return $this->route->$method(...$arguments);
         }
 
-        if (array_key_exists($method, static::$proxies)) {
-            return $this->setCallback(static::$proxies[$method], $arguments);
+        if (CallbacksRegistrar::hasProxy($method)) {
+            return $this->setCallback(CallbacksRegistrar::callback($method), $arguments);
         }
 
         throw new BadMethodCallException("Undefined method '$method'");
@@ -145,23 +136,6 @@ class GeoRoute
         $this->strategy = 'deny';
 
         return $this;
-    }
-
-    /**
-     * Load the available proxies.
-     */
-    protected static function loadProxies()
-    {
-        if (static::$proxies !== null) {
-            return;
-        }
-
-        static::$proxies = [];
-        $callbacks = config('geo-routes.routes.callbacks');
-
-        foreach ($callbacks as $key => $callback) {
-            static::$proxies['or' . Str::studly($key)] = $callback;
-        }
     }
 
     /**
