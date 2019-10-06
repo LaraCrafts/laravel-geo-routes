@@ -42,6 +42,7 @@ php artisan vendor:publish --provider="LaraCrafts\GeoRoutes\GeoRoutesServiceProv
 
 ## Usage
 
+### Regular Routes
 To get started real quick, the `allowFrom` and `denyFrom` methods allow you to restrict access to routes depending on *GeoLocations*
 
 - Allow access from specific regions
@@ -75,9 +76,28 @@ Route::get('/home', 'FooController@bar')->from('ca', 'de', 'fr')->deny();
 
 > ***Note:*** This package uses [*stevebauman*][4]'s [location package][5], please refer to it's [official documentation][6] for a detailed guide on how to configure it correctly.
 
-#### Manual configuration
+### Route Groups
 
-Under the hood, the `allowFrom` and the `denyFrom` methods set the `geo` attribute on the route which is an array containing the following parameters:
+Besides allowing you to control access to regular routes, the   ***`laravel-geo-routes`*** package also allows you to define route groups and do the same trick with them.
+
+Please consider the following example:
+
+```php
+Route::geo(['prefix' => '/en', function () {
+    Route::get('/', 'HomeController@index');
+    Route::get('/forums', 'ForumsController@index');
+}])->allowFrom('dk', 'gb')->orRedirectTo('error');
+```
+
+> ***Note***: As you may have noticed, we are using the `geo` method instead of the default `group` method which will behave the same way the `group` method does, accepting an array of attributes for the first argument and a routes *closure* for the second one.
+
+> ***Note***: Attributes methods can only be used after calling the `geo` method so instead of `Route::name('english.')->geo(...);` you have to write `Route::geo(...)->name('english.');`
+
+> ***Note***: Unless a rule is applied using the `from`, `allow`, `deny`, `allowFrom` or `denyFrom` methods the route group will not be defined.
+
+### Manual configuration
+
+Under the hood, the `allowFrom` and the `denyFrom` methods set the `geo` attribute on the routes which is an array containing the following parameters:
 - [array] **`countries`**: The list of countries covered by the *geo-constraint*.
 - [string] **`strategy`**: Determines whether to allow or deny access, the value can only be **allow** or **deny**.
 - [array] **`callback`** (optional): The callback that will be invoked once the access is denied and its arguments.
@@ -89,6 +109,15 @@ Route::get([ 'geo' => ['countries' => ['us', 'ca'], 'strategy' => 'allow', 'call
     //
 });
 ```
+
+Your `GeoGroups` may also be defined manually as in the following example:
+
+```php
+Route::group([ 'geo' => ['countries' => ['us', 'ca'], 'strategy' => 'allow', 'callback' => [$myCallback, $myArgs]] ], function() {
+    //
+});
+```
+
 
 ## Callbacks
 
