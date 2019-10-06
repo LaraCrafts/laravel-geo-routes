@@ -34,6 +34,10 @@ class GeoRoutesServiceProvider extends ServiceProvider
     {
         $router = $this->app->make('router');
 
+        $this->app->singleton('georoutes.callbacks', function () {
+            return new CallbacksRegistrar(config('geo-routes.routes.callbacks'));
+        });
+
         if (method_exists($router, 'aliasMiddleware')) {
             $router->aliasMiddleware('geo', GeoRoutesMiddleware::class);
         } else {
