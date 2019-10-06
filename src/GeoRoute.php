@@ -11,6 +11,7 @@ use Illuminate\Routing\Route;
 class GeoRoute
 {
     use Concerns\HasCallback;
+    use Concerns\ControlsAccess;
 
     /**
      * Rule is applied.
@@ -88,18 +89,6 @@ class GeoRoute
     }
 
     /**
-     * Allow given countries.
-     *
-     * @return $this
-     */
-    public function allow()
-    {
-        $this->strategy = 'allow';
-
-        return $this;
-    }
-
-    /**
      * Apply the geo-constraint to the route.
      */
     protected function applyConstraint()
@@ -119,17 +108,5 @@ class GeoRoute
         $this->route->setAction($action);
 
         $this->applied = true;
-    }
-
-    /**
-     * Deny given countries.
-     *
-     * @return $this
-     */
-    public function deny()
-    {
-        $this->strategy = 'deny';
-
-        return $this;
     }
 }

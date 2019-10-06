@@ -8,6 +8,7 @@ use Illuminate\Support\Arr;
 class GeoGroup
 {
     use Concerns\HasCallback;
+    use Concerns\ControlsAccess;
 
     /**
      * Determines if the geo rule is applied.
@@ -15,21 +16,6 @@ class GeoGroup
      * @var bool
      */
     protected $applied;
-
-    /**
-     * The countries to apply the rule for.
-     *
-     * @var array
-     */
-    protected $countries;
-
-    /**
-     * Determines whether to allow or deny access
-     * to the routes group.
-     *
-     * @var string
-     */
-    protected $strategy;
 
     /**
      * The routes closure.
@@ -95,31 +81,17 @@ class GeoGroup
     }
 
     /**
-     * Allow access from the given countries.
+     * Set the array of countries covered by the rule.
      *
      * @param string ...$countries
      *
      * @return $this
      */
-    public function allowFrom(string ...$countries)
+    public function from(string ...$countries)
     {
-        $this->strategy = 'allow';
         $this->countries = $countries;
 
         return $this;
-    }
-
-    /**
-     * Deny access from the given countries.
-     *
-     * @param string ...$countries
-     *
-     * @return $this
-     */
-    public function denyFrom(string ...$countries)
-    {
-        $this->strategy = 'deny';
-        $this->countries = $countries;
     }
 
     /**
