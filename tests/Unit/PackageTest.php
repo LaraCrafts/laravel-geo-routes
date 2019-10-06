@@ -22,6 +22,7 @@ class PackageTest extends TestCase
         $this->assertInstanceOf(GeoRoute::class, $this->router->get('/foo', 'BarController@baz')->from('it'));
         $this->assertInstanceOf(GeoRoute::class, $this->router->get('/foo', 'BarController@baz')->allowFrom('ch'));
         $this->assertInstanceOf(GeoRoute::class, $this->router->get('/foo', 'BarController@baz')->denyFrom('ru'));
-        $this->assertInstanceOf(GeoGroup::class, $this->router->geo([], function () {})->allowFrom('gb'));
+        $this->assertInstanceOf(GeoGroup::class, $this->router->geo([], function () {
+        })->allowFrom('gb'));
     }
 }

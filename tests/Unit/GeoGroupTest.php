@@ -3,8 +3,8 @@
 namespace LaraCrafts\GeoRoutes\Tests\Unit;
 
 use LaraCrafts\GeoRoutes\GeoGroup;
-use Mockery;
 use LaraCrafts\GeoRoutes\Tests\TestCase;
+use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
 class GeoGroupTest extends TestCase
@@ -134,7 +134,7 @@ class GeoGroupTest extends TestCase
                 '/foo',
                 [
                     'uses' => '\LaraCrafts\GeoRoutes\Tests\Mocks\MockController@index',
-                    'as' => 'foo'
+                    'as' => 'foo',
                 ]
             );
 
@@ -142,7 +142,7 @@ class GeoGroupTest extends TestCase
                 '/bar',
                 [
                     'uses' => '\LaraCrafts\GeoRoutes\Tests\Mocks\MockController@index',
-                    'as' => 'bar'
+                    'as' => 'bar',
                 ]
             );
         });

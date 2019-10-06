@@ -43,16 +43,16 @@ class GeoGroup
     *
     * @var array
     */
-   protected $allowedAttributes = [
+    protected $allowedAttributes = [
        'as', 'domain', 'middleware', 'name', 'namespace', 'prefix', 'where',
    ];
 
-   /**
-    * The attributes that are aliased.
-    *
-    * @var array
-    */
-   protected $aliases = [
+    /**
+     * The attributes that are aliased.
+     *
+     * @var array
+     */
+    protected $aliases = [
        'name' => 'as',
    ];
 
@@ -62,8 +62,8 @@ class GeoGroup
      * @param array $attributes
      * @param \Closure $routes
      */
-	public function __construct(array $attributes, Closure $routes)
-	{
+    public function __construct(array $attributes, Closure $routes)
+    {
         $this->attributes = $attributes;
         $this->routes = $routes;
         $this->router = app('router');
