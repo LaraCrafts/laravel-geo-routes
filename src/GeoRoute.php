@@ -48,26 +48,28 @@ class GeoRoute
     protected $route;
 
     /**
-     * The rule's strategy.
+     * Determines if the access is allowed to
+     * the given countries.
      *
-     * @var string
+     * @var boolean
      */
-    protected $strategy;
+    protected $allowed;
 
     /**
      * Create a new GeoRoute instance.
      *
      * @param \Illuminate\Routing\Route $route
      * @param array $countries
-     * @param string $strategy
+     * @param boolean $allowed
+     *
      * @throws \InvalidArgumentException
      */
-    public function __construct(Route $route, array $countries, string $strategy)
+    public function __construct(Route $route, array $countries, bool $allowed)
     {
         $this->applied = false;
         $this->countries = array_map('strtoupper', $countries);
         $this->route = $route;
-        $this->strategy = $strategy;
+        $this->allowed = $allowed;
 
         static::loadProxies();
     }
@@ -108,7 +110,7 @@ class GeoRoute
      */
     public function allow()
     {
-        $this->strategy = 'allow';
+        $this->allowed = true;
 
         return $this;
     }
@@ -125,7 +127,7 @@ class GeoRoute
         $action = $this->route->getAction();
         $action['middleware'][] = 'geo';
         $action['geo'] = [
-            'strategy' => $this->strategy,
+            'allowed' => $this->allowed,
             'countries' => (array)$this->countries,
             'callback' => $this->callback,
         ];
@@ -142,7 +144,7 @@ class GeoRoute
      */
     public function deny()
     {
-        $this->strategy = 'deny';
+        $this->allowed = false;
 
         return $this;
     }

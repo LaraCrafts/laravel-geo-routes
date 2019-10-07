@@ -17,7 +17,7 @@ class GeoRoutesMiddleware
      *
      * @param \Illuminate\Http\Request $request
      * @param \Closure $next
-     * @param string $strategy
+     * @param string $allowed
      * @param string $countries
      * @param string|null $callback
      *
@@ -37,14 +37,14 @@ class GeoRoutesMiddleware
         $validator = Validator::make($constraint, [
             'countries' => 'required|array|min:1',
             'countries.*' => 'string|min:2|max:2',
-            'strategy' => 'required|in:allow,deny',
+            'allowed' => 'required',
         ]);
 
         if ($validator->fails()) {
             throw new Exception("The GeoRoute constraint is invalid.");
         }
 
-        if ($this->shouldHaveAccess((array)$constraint['countries'], $constraint['strategy'])) {
+        if ($this->shouldHaveAccess((array)$constraint['countries'], $constraint['allowed'])) {
             return $next($request);
         }
 

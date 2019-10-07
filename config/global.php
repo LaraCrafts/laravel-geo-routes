@@ -15,17 +15,14 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Strategy
+    | Allowed
     |--------------------------------------------------------------------------
     |
-    | The strategy determines what should be done with the country codes
-    | entered under 'countries'. The strategy will default to 'deny' if no
-    | valid value is set.
-    |
-    | Allowed values: allow, deny
+    | The allowed parameter determines whether to allow access from the configured
+    | countries.
     |
     */
-    'strategy' => 'deny',
+    'allowed' => false,
 
     /*
     |--------------------------------------------------------------------------

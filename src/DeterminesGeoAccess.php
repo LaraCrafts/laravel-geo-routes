@@ -10,18 +10,19 @@ trait DeterminesGeoAccess
      * Determine if the request should be allowed through.
      *
      * @param array $countries
-     * @param string $strategy
+     * @param boolean $allowed
+     *
      * @return bool
      */
-    protected function shouldHaveAccess(array $countries, string $strategy)
+    protected function shouldHaveAccess(array $countries, bool $allowed)
     {
         if (!$countries) {
-            return $strategy !== 'allow';
+            return !$allowed;
         }
 
         $requestCountry = Location::get()->countryCode;
 
-        if ($strategy === 'allow') {
+        if ($allowed) {
             return in_array($requestCountry, $countries);
         }
 

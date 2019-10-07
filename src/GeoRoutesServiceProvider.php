@@ -63,15 +63,15 @@ class GeoRoutesServiceProvider extends ServiceProvider
     protected function registerMacros()
     {
         Route::macro('allowFrom', function (string ...$countries) {
-            return new GeoRoute($this, $countries, 'allow');
+            return new GeoRoute($this, $countries, true);
         });
 
         Route::macro('denyFrom', function (string ...$countries) {
-            return new GeoRoute($this, $countries, 'deny');
+            return new GeoRoute($this, $countries, false);
         });
 
         Route::macro('from', function (string ...$countries) {
-            return new GeoRoute($this, $countries, 'allow');
+            return new GeoRoute($this, $countries, true);
         });
     }
 }
