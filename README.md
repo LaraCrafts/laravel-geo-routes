@@ -75,17 +75,30 @@ Route::get('/home', 'FooController@bar')->from('ca', 'de', 'fr')->deny();
 
 > ***Note:*** This package uses [*stevebauman*][4]'s [location package][5], please refer to it's [official documentation][6] for a detailed guide on how to configure it correctly.
 
-#### Manual configuration
+### Global Configuration
+
+> The global configuration allows you to set a global rule that cover all of your routes.
+
+You can find the configuration file at the following location:
+`config/geo-routes/global.php`.
+
+This file contains some very handy keys, which are:
+
+1. `enabled`: Determines wether the global rule should be enabled. Can be configured through the `GEO_ACCESS_ENABLED` environment variable.
+2. `countries`: The list of countries covered by the rule.
+3. `strategy`: Determines whether to allow or deny access from the configured countries. The value can only be `allow` or `deny` .
+
+### Manual configuration
 
 Under the hood, the `allowFrom` and the `denyFrom` methods set the `geo` attribute on the route which is an array containing the following parameters:
 - [array] **`countries`**: The list of countries covered by the *geo-constraint*.
-- [string] **`strategy`**: Determines whether to allow or deny access, the value can only be **allow** or **deny**.
+- [boolean] **`allowed`**: Determines whether to allow or deny access from the configured countries.
 - [array] **`callback`** (optional): The callback that will be invoked once the access is denied and its arguments.
 
 Therefore, if you are more into verbosity, you can define your `GeoRoutes` in the following way:
 
 ```php
-Route::get([ 'geo' => ['countries' => ['us', 'ca'], 'strategy' => 'allow', 'callback' => [$myCallback, $myArgs]] ], function() {
+Route::get([ 'geo' => ['countries' => ['us', 'ca'], 'allowed' => true, 'callback' => [$myCallback, $myArgs]] ], function() {
     //
 });
 ```
@@ -105,7 +118,7 @@ Route::get('/forums', 'FooController@bar')
 
 - ### Default Callbacks
 
-*Laravel-geo-routes* have some useful built-in callbacks, we are going to list them below along with their use cases.
+*Laravel-geo-routes* has some useful built-in callbacks, we are going to list them below along with their use cases.
 
 - `orNotFound`
 
