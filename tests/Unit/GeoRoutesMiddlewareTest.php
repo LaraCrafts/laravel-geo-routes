@@ -56,7 +56,7 @@ class GeoRoutesMiddlewareTest extends TestCase
             ->once()
             ->andReturn((object)['countryCode' => 'us']);
 
-        $this->setGeoConstraint('deny', 'us');
+        $this->setGeoConstraint(false, 'us');
 
         $this->middleware->handle($this->request, $this->next);
     }
@@ -64,7 +64,7 @@ class GeoRoutesMiddlewareTest extends TestCase
     /** @test */
     public function middlewareAllowsAccess()
     {
-        $this->setGeoConstraint('allow', 'us');
+        $this->setGeoConstraint(true, 'us');
 
         $this->location->shouldReceive('get')
             ->once()
@@ -90,7 +90,7 @@ class GeoRoutesMiddlewareTest extends TestCase
 
         $callback = ['mockClass::callback', ['arg']];
 
-        $this->setGeoConstraint('allow', 'us', $callback);
+        $this->setGeoConstraint(true, 'us', $callback);
 
         $output = $this->middleware->handle($this->request, $this->next);
 
@@ -118,13 +118,13 @@ class GeoRoutesMiddlewareTest extends TestCase
     /**
      * Set the route geo constraint.
      *
-     * @param string $strategy
+     * @param boolean $allowed
      * @param array|string $countries
      * @param array $callback
      *
      * @return void
      */
-    protected function setGeoConstraint(string $strategy, $countries, array $callback = null)
+    protected function setGeoConstraint(bool $allowed, $countries, array $callback = null)
     {
         $this->request->shouldReceive('route')
                     ->once()
@@ -134,7 +134,7 @@ class GeoRoutesMiddlewareTest extends TestCase
                     ->with('geo')
                     ->once()
                     ->andReturn([
-                        'strategy' => $strategy,
+                        'allowed' => $allowed,
                         'countries' => (array)$countries,
                         'callback' => $callback,
                     ]);

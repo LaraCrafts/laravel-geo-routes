@@ -36,17 +36,17 @@ class GeoRouteTest extends TestCase
 
     public function testIfMiddlewareIsApplied()
     {
-        (new GeoRoute($this->route, ['nl'], 'allow'));
+        (new GeoRoute($this->route, ['nl'], true));
         $this->assertEquals('geo', last($this->route->middleware()));
 
-        (new GeoRoute($this->route, ['tn'], 'deny'));
+        (new GeoRoute($this->route, ['tn'], false));
         $this->assertEquals('geo', last($this->route->middleware()));
     }
 
 
     public function testDefaultCallback()
     {
-        (new GeoRoute($this->route, ['kr'], 'allow'));
+        (new GeoRoute($this->route, ['kr'], true));
 
         $this->location
             ->shouldReceive('get')
@@ -60,7 +60,7 @@ class GeoRouteTest extends TestCase
 
     public function testOrNotFoundCallback()
     {
-        (new GeoRoute($this->route, ['gb'], 'allow'))->orNotFound();
+        (new GeoRoute($this->route, ['gb'], true))->orNotFound();
 
         $this->location
             ->shouldReceive('get')
@@ -74,7 +74,7 @@ class GeoRouteTest extends TestCase
 
     public function testOrRedirectCallback()
     {
-        (new GeoRoute($this->route, ['uk'], 'allow'))->orRedirectTo('grault');
+        (new GeoRoute($this->route, ['uk'], true))->orRedirectTo('grault');
 
         $this->router->get('/quux', ['uses' => 'CorgeController@uier', 'as' => 'grault']);
 
