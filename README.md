@@ -79,13 +79,13 @@ Route::get('/home', 'FooController@bar')->from('ca', 'de', 'fr')->deny();
 
 Under the hood, the `allowFrom` and the `denyFrom` methods set the `geo` attribute on the route which is an array containing the following parameters:
 - [array] **`countries`**: The list of countries covered by the *geo-constraint*.
-- [string] **`strategy`**: Determines whether to allow or deny access, the value can only be **allow** or **deny**.
+- [boolean] **`allowed`**: Determines whether to allow or deny access from the configured countries.
 - [array] **`callback`** (optional): The callback that will be invoked once the access is denied and its arguments.
 
 Therefore, if you are more into verbosity, you can define your `GeoRoutes` in the following way:
 
 ```php
-Route::get([ 'geo' => ['countries' => ['us', 'ca'], 'strategy' => 'allow', 'callback' => [$myCallback, $myArgs]] ], function() {
+Route::get([ 'geo' => ['countries' => ['us', 'ca'], 'allowed' => true, 'callback' => [$myCallback, $myArgs]] ], function() {
     //
 });
 ```
