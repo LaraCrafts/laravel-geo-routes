@@ -32,41 +32,6 @@ class CallbacksRegistrarTest extends TestCase
         Mockery::close();
     }
 
-    public function testIfAddCallbackAddsProxy()
-    {
-        $registrar = new CallbacksRegistrar;
-        $registrar->addCallback('foo', '\LaraCrafts\GeoRoutes\Tests\Mocks\Callbacks::foo');
-
-        $proxies = $this->getProperty($registrar, 'proxies');
-
-        $this->assertEquals(
-            ['orFoo' => '\LaraCrafts\GeoRoutes\Tests\Mocks\Callbacks::foo'],
-            $proxies->getValue($registrar)
-        );
-    }
-
-    public function testIfLoadCallbacksInvokesAddCallback()
-    {
-        $callbacks = [
-            'foo' => '\LaraCrafts\GeoRoutes\Tests\Mocks\Callbacks::foo',
-            'bar' => '\LaraCrafts\GeoRoutes\Tests\Mocks\Callbacks::bar',
-        ];
-
-        $registrar = Mockery::mock(CallbacksRegistrar::class)->makePartial();
-
-        $registrar->shouldReceive('addCallback')
-                ->ordered()
-                ->once()
-                ->with('foo', '\LaraCrafts\GeoRoutes\Tests\Mocks\Callbacks::foo');
-
-        $registrar->shouldReceive('addCallback')
-                ->ordered()
-                ->once()
-                ->with('bar', '\LaraCrafts\GeoRoutes\Tests\Mocks\Callbacks::bar');
-
-        $registrar->loadCallbacks($callbacks);
-    }
-
     public function testIfCallbacksFetchesTheProxiesList()
     {
         $callbacks = [
