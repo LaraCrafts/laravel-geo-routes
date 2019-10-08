@@ -167,7 +167,28 @@ public function boot()
 
 ```
 
-#### 2. Using the `callback` method
+#### 2. Using an `array` of callbacks
+
+The `loadCallbacks` method allows you to load an associative array of callbacks.
+
+**Example:**
+
+```php
+use LaraCrafts\GeoRoutes\Support\Facades\CallbacksRegistrar;
+
+public function boot()
+{
+    $myCallbacksArray = [
+        'handyName' => 'myClass::myCallback'
+        //
+    ]
+    
+    CallbacksRegistrar::loadCallbacks($myCallbacksArray);
+}
+
+```
+
+#### 3. Using the `callback` method
 
 The `callback` method allows you to add a single custom callback, accepting a name and a callable.
 
