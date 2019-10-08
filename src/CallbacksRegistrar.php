@@ -19,9 +19,9 @@ class CallbacksRegistrar
     /**
      * Create a new CallbacksRegistrar instance.
      */
-    public function __construct(array $callbacks)
+    public function __construct()
     {
-        $this->loadProxies($callbacks);
+        $this->proxies = [];
     }
 
     /**
@@ -38,12 +38,36 @@ class CallbacksRegistrar
     }
 
     /**
-     * Get the callbacks list.
+     * Load callbacks proxies from a given associative array.
+     *
+     * @param array $callbacks
+     *
+     * @return void
+     */
+    public function loadCallbacks(array $callbacks)
+    {
+        foreach ($callbacks as $key => $callback) {
+            $this->addCallback($key, $callback);
+        }
+    }
+
+    /**
+     * Get or Load callbacks.
+     *
+     * If the callbacks parameter is present the callbacks
+     * will be loaded, otherwise the current callbacks array
+     * will be returned.
+     *
+     * @param array|null $callbacks
      *
      * @return array|null
      */
-    public function callbacks()
+    public function callbacks(array $callbacks = null)
     {
+        if ($callbacks) {
+            return $this->loadCallbacks($callbacks);
+        }
+
         return $this->proxies;
     }
 
@@ -116,21 +140,5 @@ class CallbacksRegistrar
     public function hasProxy(string $proxy)
     {
         return array_key_exists($proxy, $this->proxies);
-    }
-
-    /**
-     * Load the available callbacks proxies.
-     *
-     * @param array $callbacks
-     *
-     * @return void
-     */
-    protected function loadProxies(array $callbacks)
-    {
-        $this->proxies = [];
-
-        foreach ($callbacks as $key => $callback) {
-            $this->addCallback($key, $callback);
-        }
     }
 }
