@@ -35,8 +35,7 @@ class GeoRoutesServiceProvider extends ServiceProvider
         $router = $this->app->make('router');
 
         $this->app->singleton('georoutes.callbacks', function () {
-            $registrar = new CallbacksRegistrar();
-            #Load the configuration callbacks.
+            $registrar = new CallbackRegistrar();
             $registrar->loadCallbacks(config('geo-routes.routes.callbacks'));
 
             return $registrar;

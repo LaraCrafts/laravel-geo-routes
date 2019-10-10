@@ -2,7 +2,7 @@
 
 namespace LaraCrafts\GeoRoutes\Tests\Unit;
 
-use LaraCrafts\GeoRoutes\CallbacksRegistrar;
+use LaraCrafts\GeoRoutes\CallbackRegistrar;
 use LaraCrafts\GeoRoutes\GeoRoute;
 use LaraCrafts\GeoRoutes\Tests\TestCase;
 
@@ -26,6 +26,6 @@ class PackageTest extends TestCase
 
     public function testBindings()
     {
-        $this->assertInstanceOf(CallbacksRegistrar::class, $this->app->make('georoutes.callbacks'));
+        $this->assertInstanceOf(CallbackRegistrar::class, $this->app->make('georoutes.callbacks'));
     }
 }

@@ -4,7 +4,7 @@ namespace LaraCrafts\GeoRoutes\Support\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
-class CallbacksRegistrar extends Facade
+class CallbackRegistrar extends Facade
 {
     /**
      * Get the registered name of the component.

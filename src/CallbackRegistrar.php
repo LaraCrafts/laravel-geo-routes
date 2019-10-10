@@ -7,7 +7,7 @@ use Illuminate\Support\Str;
 use ReflectionClass;
 use ReflectionMethod;
 
-class CallbacksRegistrar
+class CallbackRegistrar
 {
     /**
      * The callbacks' proxies.

@@ -153,16 +153,16 @@ Route::get('/blog', 'FooController@baz')
 
 > ***Notice*** that we have added the **`or`** prefix and converted the callback name to studly case (e.g. `myCallback` was converted to `orMyCallback`), be sure not to forget this note as it is very important for your callback to work.
 
-You may also load these callbacks using the `parseCallbacks` method of the `CallbacksRegistrar`.
+You may also load these callbacks using the `parseCallbacks` method of the `CallbackRegistrar`.
 
 **Example:**
 
 ```php
-use LaraCrafts\GeoRoutes\Support\Facades\CallbacksRegistrar;
+use LaraCrafts\GeoRoutes\Support\Facades\CallbackRegistrar;
 
 public function boot()
 {
-    CallbacksRegistrar::parseCallbacks(MyCallbacksClass::class);
+    CallbackRegistrar::parseCallbacks(MyCallbacksClass::class);
 }
 
 ```
@@ -174,7 +174,7 @@ The `loadCallbacks` method allows you to load an associative array of callbacks.
 **Example:**
 
 ```php
-use LaraCrafts\GeoRoutes\Support\Facades\CallbacksRegistrar;
+use LaraCrafts\GeoRoutes\Support\Facades\CallbackRegistrar;
 
 public function boot()
 {
@@ -183,7 +183,7 @@ public function boot()
         //
     ]
     
-    CallbacksRegistrar::loadCallbacks($myCallbacksArray);
+    CallbackRegistrar::loadCallbacks($myCallbacksArray);
 }
 
 ```
@@ -194,11 +194,11 @@ The `callback` method allows you to add a single custom callback, accepting a na
 
 **Example:**
 ```php
-use LaraCrafts\GeoRoutes\Support\Facades\CallbacksRegistrar;
+use LaraCrafts\GeoRoutes\Support\Facades\CallbackRegistrar;
 
 public function boot()
 {
-    CallbacksRegistrar::callback('foo', function () {
+    CallbackRegistrar::callback('foo', function () {
         return 'Sorry, you are not authorized.';
     });
 }

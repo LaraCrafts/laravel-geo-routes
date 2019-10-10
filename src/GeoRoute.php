@@ -5,7 +5,7 @@ namespace LaraCrafts\GeoRoutes;
 use BadMethodCallException;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Str;
-use LaraCrafts\GeoRoutes\Support\Facades\CallbacksRegistrar;
+use LaraCrafts\GeoRoutes\Support\Facades\CallbackRegistrar;
 
 /**
  * @mixin \Illuminate\Routing\Route
@@ -77,8 +77,8 @@ class GeoRoute
             return $this->route->$method(...$arguments);
         }
 
-        if (CallbacksRegistrar::hasProxy($method)) {
-            return $this->setCallback(CallbacksRegistrar::callback($method), $arguments);
+        if (CallbackRegistrar::hasProxy($method)) {
+            return $this->setCallback(CallbackRegistrar::callback($method), $arguments);
         }
 
         throw new BadMethodCallException("Undefined method '$method'");
