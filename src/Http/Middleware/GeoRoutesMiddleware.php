@@ -17,9 +17,6 @@ class GeoRoutesMiddleware
      *
      * @param \Illuminate\Http\Request $request
      * @param \Closure $next
-     * @param string $strategy
-     * @param string $countries
-     * @param string|null $callback
      *
      * @return mixed
      */

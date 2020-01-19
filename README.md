@@ -32,6 +32,7 @@ Open your `config/app.php` file and add this entry to the `providers` array
 ```php
 LaraCrafts\GeoRoutes\GeoRoutesServiceProvider::class,
 ```
+<div id="publish"></div>
 
 * Publish the configuration
 
@@ -134,7 +135,7 @@ Route::get('/forums', 'FooController@bar')
 
 - ### Default Callbacks
 
-*Laravel-geo-routes* have some useful built-in callbacks, we are going to list them below along with their use cases.
+*Laravel-geo-routes* has some useful built-in callbacks, we are going to list them below along with their use cases.
 
 - `orNotFound`
 
@@ -155,11 +156,13 @@ Route::get('/forums', 'FooController@bar')
 ```
 
 - ### Custom callbacks
-The callbacks above might not be enough for your own use case, so you might want to add custom callbacks, the following guide will describe the steps to create your own custom callbacks.
+The callbacks above might not be enough for your own use case, so you might want to add custom callbacks, in this guide we will go through several methods to define custom callbacks.
 
-1. Create a new class, for instance `CustomCallbacks`
-2. Add as many callbacks as you want to add, but be sure that all of your methods are **`static`** or you'll be facing problems
-3. Open the `config/geo-routes.php` configuration file, and add your callbacks to the callbacks array, like so:
+ #### 1. Using a class
+
+  1. Create a new class, for instance `CustomCallbacks`
+  2. Add as many callbacks as you want to add, but be sure that all of your methods are **`static`** or you'll be facing problems
+  3. Open the `config/geo-routes.php` configuration file, and add your callbacks to the callbacks array, like so:
 ```php
 'callbacks' => [
     'myCallback' => 'CustomCallbacks::myCallback',
@@ -167,6 +170,7 @@ The callbacks above might not be enough for your own use case, so you might want
 ]
 ```
 Now your callbacks are ready, and you can start using them like so:
+
 ```php
 Route::get('/forums', 'FooController@bar')
 ->allowFrom('ca', 'us')
@@ -176,7 +180,59 @@ Route::get('/blog', 'FooController@baz')
 ->denyFrom('fr', 'es', 'ar')
 ->orAnotherCallback();
 ```
+
 > ***Notice*** that we have added the **`or`** prefix and converted the callback name to studly case (e.g. `myCallback` was converted to `orMyCallback`), be sure not to forget this note as it is very important for your callback to work.
+
+You may also load these callbacks using the `parseCallbacks` method of the `CallbackRegistrar`.
+
+**Example:**
+
+```php
+use LaraCrafts\GeoRoutes\Support\Facades\CallbackRegistrar;
+
+public function boot()
+{
+    CallbackRegistrar::parseCallbacks(MyCallbacksClass::class);
+}
+
+```
+
+#### 2. Using an `array` of callbacks
+
+The `loadCallbacks` method allows you to load an associative array of callbacks.
+
+**Example:**
+
+```php
+use LaraCrafts\GeoRoutes\Support\Facades\CallbackRegistrar;
+
+public function boot()
+{
+    $myCallbacksArray = [
+        'handyName' => 'myClass::myCallback'
+        //
+    ]
+    
+    CallbackRegistrar::loadCallbacks($myCallbacksArray);
+}
+
+```
+
+#### 3. Using the `callback` method
+
+The `callback` method allows you to add a single custom callback, accepting a name and a callable.
+
+**Example:**
+```php
+use LaraCrafts\GeoRoutes\Support\Facades\CallbackRegistrar;
+
+public function boot()
+{
+    CallbackRegistrar::callback('foo', function () {
+        return 'Sorry, you are not authorized.';
+    });
+}
+```
 
 ## Contribution
 All contributions are welcomed for this project, please refer to the [CONTRIBUTING.md][2] file for more information about contribution guidelines.

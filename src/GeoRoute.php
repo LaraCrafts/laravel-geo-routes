@@ -4,6 +4,8 @@ namespace LaraCrafts\GeoRoutes;
 
 use BadMethodCallException;
 use Illuminate\Routing\Route;
+use Illuminate\Support\Str;
+use LaraCrafts\GeoRoutes\Support\Facades\CallbackRegistrar;
 
 /**
  * @mixin \Illuminate\Routing\Route
@@ -44,10 +46,9 @@ class GeoRoute
     /**
      * Create a new GeoRoute instance.
      *
-     * @param \Illuminate\Routing\Route $route
-     * @param array $countries
-     * @param string $strategy
-     * @throws \InvalidArgumentException
+     * @param  \Illuminate\Routing\Route $route
+     * @param  array $countries
+     * @param  string $strategy
      */
     public function __construct(Route $route, array $countries, string $strategy)
     {
@@ -55,8 +56,6 @@ class GeoRoute
         $this->countries = array_map('strtoupper', $countries);
         $this->route = $route;
         $this->strategy = $strategy;
-
-        static::loadProxies();
     }
 
     /**
@@ -73,8 +72,8 @@ class GeoRoute
             return $this->route->$method(...$arguments);
         }
 
-        if ($this->callbackExists($method)) {
-            return $this->setCallback(static::$proxies[$method], $arguments);
+        if (CallbackRegistrar::hasProxy($method)) {
+            return $this->setCallback(CallbackRegistrar::callback($method), $arguments);
         }
 
         throw new BadMethodCallException("Undefined method '$method'");
