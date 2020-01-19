@@ -2,8 +2,10 @@
 
 namespace LaraCrafts\GeoRoutes;
 
+use Closure;
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Routing\Route;
+use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 use LaraCrafts\GeoRoutes\Http\Middleware\GeoMiddleware;
 use LaraCrafts\GeoRoutes\Http\Middleware\GeoRoutesMiddleware;
@@ -79,6 +81,14 @@ class GeoRoutesServiceProvider extends ServiceProvider
 
         Route::macro('from', function (string ...$countries) {
             return new GeoRoute($this, $countries, 'allow');
+        });
+
+        Route::macro('geo', function (array $attributes, Closure $routes) {
+            return new GeoGroup($attributes, $routes);
+        });
+
+        Router::macro('geo', function (array $attributes, Closure $routes) {
+            return new GeoGroup($attributes, $routes);
         });
     }
 }

@@ -4,7 +4,6 @@ namespace LaraCrafts\GeoRoutes;
 
 use BadMethodCallException;
 use Illuminate\Routing\Route;
-use Illuminate\Support\Str;
 use LaraCrafts\GeoRoutes\Support\Facades\CallbackRegistrar;
 
 /**
@@ -12,20 +11,15 @@ use LaraCrafts\GeoRoutes\Support\Facades\CallbackRegistrar;
  */
 class GeoRoute
 {
+    use Concerns\HasCallback;
+    use Concerns\ControlsAccess;
+
     /**
      * Rule is applied.
      *
      * @var bool
      */
     protected $applied;
-
-    /**
-     * The callback to execute if the visitor
-     * is not allowed.
-     *
-     * @var array
-     */
-    protected $callback;
 
     /**
      * The countries to apply the rule for.
@@ -93,18 +87,6 @@ class GeoRoute
     }
 
     /**
-     * Allow given countries.
-     *
-     * @return $this
-     */
-    public function allow()
-    {
-        $this->strategy = 'allow';
-
-        return $this;
-    }
-
-    /**
      * Apply the geo-constraint to the route.
      */
     protected function applyConstraint()
@@ -124,71 +106,5 @@ class GeoRoute
         $this->route->setAction($action);
 
         $this->applied = true;
-    }
-
-    /**
-     * Deny given countries.
-     *
-     * @return $this
-     */
-    public function deny()
-    {
-        $this->strategy = 'deny';
-
-        return $this;
-    }
-
-    /**
-     * Return a HTTP 404 error if access is denied.
-     *
-     * @return $this
-     */
-    public function orNotFound()
-    {
-        return $this->setCallback('LaraCrafts\GeoRoutes\Callbacks::notFound', func_get_args());
-    }
-
-    /**
-     * Redirect to given route if access is denied.
-     *
-     * @param string $routeName
-     *
-     * @return $this
-     */
-    public function orRedirectTo(string $routeName)
-    {
-        return $this->setCallback('LaraCrafts\GeoRoutes\Callbacks::redirectTo', func_get_args());
-    }
-
-    /**
-     * Return a HTTP 401 error if access is denied (this is the default behavior).
-     *
-     * @return $this
-     */
-    public function orUnauthorized()
-    {
-        $this->callback = null;
-
-        return $this;
-    }
-
-    /**
-     * Set the callback.
-     *
-     * @param callable $callback
-     * @param array $arguments
-     *
-     * @return $this
-     */
-    protected function setCallback(callable $callback, array $arguments)
-    {
-        if (is_string($callback) && Str::contains($callback, '@')) {
-            $callback = Str::parseCallback($callback, '__invoke');
-            $callback[0] = resolve($callback[0]);
-        }
-
-        $this->callback = [$callback, $arguments];
-
-        return $this;
     }
 }

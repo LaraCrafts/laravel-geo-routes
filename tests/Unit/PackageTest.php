@@ -3,6 +3,7 @@
 namespace LaraCrafts\GeoRoutes\Tests\Unit;
 
 use LaraCrafts\GeoRoutes\CallbackRegistrar;
+use LaraCrafts\GeoRoutes\GeoGroup;
 use LaraCrafts\GeoRoutes\GeoRoute;
 use LaraCrafts\GeoRoutes\Tests\TestCase;
 
@@ -22,6 +23,8 @@ class PackageTest extends TestCase
         $this->assertInstanceOf(GeoRoute::class, $this->router->get('/foo', 'BarController@baz')->from('it'));
         $this->assertInstanceOf(GeoRoute::class, $this->router->get('/foo', 'BarController@baz')->allowFrom('ch'));
         $this->assertInstanceOf(GeoRoute::class, $this->router->get('/foo', 'BarController@baz')->denyFrom('ru'));
+        $this->assertInstanceOf(GeoGroup::class, $this->router->geo([], function () {
+        })->allowFrom('gb'));
     }
 
     public function testBindings()
