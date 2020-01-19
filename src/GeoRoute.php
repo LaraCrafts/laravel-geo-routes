@@ -4,7 +4,6 @@ namespace LaraCrafts\GeoRoutes;
 
 use BadMethodCallException;
 use Illuminate\Routing\Route;
-use Illuminate\Support\Str;
 use LaraCrafts\GeoRoutes\Support\Facades\CallbackRegistrar;
 
 /**

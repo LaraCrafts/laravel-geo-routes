@@ -2,8 +2,8 @@
 
 namespace LaraCrafts\GeoRoutes\Tests\Unit;
 
-use LaraCrafts\GeoRoutes\GeoGroup;
 use LaraCrafts\GeoRoutes\CallbackRegistrar;
+use LaraCrafts\GeoRoutes\GeoGroup;
 use LaraCrafts\GeoRoutes\GeoRoute;
 use LaraCrafts\GeoRoutes\Tests\TestCase;
 
