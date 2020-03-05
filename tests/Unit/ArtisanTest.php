@@ -29,9 +29,9 @@ class ArtisanTest extends TestCase
         $this->tester->execute(['--geo' => true]);
         $output = $this->tester->getDisplay();
 
-        $this->assertStringContainsString('Countries', $output);
-        $this->assertStringContainsString('Strategy', $output);
-        $this->assertStringContainsString('Callback', $output);
+        $this->assertContains('Countries', $output);
+        $this->assertContains('Strategy', $output);
+        $this->assertContains('Callback', $output);
     }
 
     public function testIfGeoOnlyDisplaysOnlyGeoRoutes()
@@ -39,9 +39,9 @@ class ArtisanTest extends TestCase
         $this->tester->execute(['--geo-only' => true]);
         $output = $this->tester->getDisplay();
 
-        $this->assertStringContainsString('home', $output);
-        $this->assertStringContainsString('posts', $output);
-        $this->assertStringNotContainsString('timeline', $output);
+        $this->assertContains('home', $output);
+        $this->assertContains('posts', $output);
+        $this->assertNotContains('timeline', $output);
     }
 
     /** @test */
@@ -50,9 +50,9 @@ class ArtisanTest extends TestCase
         $this->tester->execute(['--country' => 'NL']);
         $output = $this->tester->getDisplay();
 
-        $this->assertStringContainsString('home', $output);
-        $this->assertStringNotContainsString('posts', $output);
-        $this->assertStringNotContainsString('timeline', $output);
+        $this->assertContains('home', $output);
+        $this->assertNotContains('posts', $output);
+        $this->assertNotContains('timeline', $output);
     }
 
     /** @test */
@@ -61,16 +61,16 @@ class ArtisanTest extends TestCase
         $this->tester->execute(['--strategy' => 'allow']);
         $output = $this->tester->getDisplay();
 
-        $this->assertStringContainsString('posts', $output);
-        $this->assertStringNotContainsString('home', $output);
-        $this->assertStringNotContainsString('timeline', $output);
+        $this->assertContains('posts', $output);
+        $this->assertNotContains('home', $output);
+        $this->assertNotContains('timeline', $output);
 
         $this->tester->execute(['--strategy' => 'deny']);
         $output = $this->tester->getDisplay();
 
-        $this->assertStringContainsString('home', $output);
-        $this->assertStringNotContainsString('posts', $output);
-        $this->assertStringNotContainsString('timeline', $output);
+        $this->assertContains('home', $output);
+        $this->assertNotContains('posts', $output);
+        $this->assertNotContains('timeline', $output);
     }
 
     protected function setUpRoutes()
