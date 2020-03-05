@@ -75,7 +75,7 @@ class RouteListCommand extends BaseCommand
      */
     protected function displayRoutes(array $routes)
     {
-        if ($this->option('json')) {
+        if ($this->hasOption('json') && $this->option('json')) {
             $this->line(json_encode(array_values($routes)));
 
             return;
