@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static mixed callback(string $name, callable $callable = null)
  * @method static boolean hasCallback(string $name)
  * @method static boolean hasProxy(string $proxy)
- * 
+ *
  * @see \LaraCrafts\GeoRoutes\CallbackRegistrar
  */
 class CallbackRegistrar extends Facade
