@@ -146,11 +146,11 @@ class RouteListCommand extends BaseCommand
             $this->hasGeoOption() ? array_merge($this->headers, $this->geoHeaders) : $this->headers
         );
 
-        if ($this->option('compact')) {
+        if ($this->hasOption('compact') && $this->option('compact')) {
             return array_intersect($availableColumns, $this->compactColumns);
         }
 
-        if ($columns = $this->option('columns')) {
+        if ($this->hasOption('columns') && $columns = $this->option('columns')) {
             return array_intersect($availableColumns, $this->parseColumns($columns));
         }
 
