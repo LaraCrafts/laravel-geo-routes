@@ -2,11 +2,11 @@
 
 namespace LaraCrafts\GeoRoutes\Console\Commands;
 
-use Illuminate\Support\Arr;
+use Illuminate\Foundation\Console\RouteListCommand as BaseCommand;
 use Illuminate\Routing\Route;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\Console\Input\InputOption;
-use Illuminate\Foundation\Console\RouteListCommand as BaseCommand;
 
 class RouteListCommand extends BaseCommand
 {
@@ -88,7 +88,7 @@ class RouteListCommand extends BaseCommand
      * Format the routes output.
      *
      * @param array $routes
-     * 
+     *
      * @return array
      */
     protected function formatRoutes(array $routes)
@@ -107,7 +107,7 @@ class RouteListCommand extends BaseCommand
      * URI or/and name
      *
      * @param  array  $route
-     * 
+     *
      * @return array|null
      */
     protected function filterRoute(array $route)
@@ -115,7 +115,6 @@ class RouteListCommand extends BaseCommand
         if (($this->option('country') && !in_array(strtoupper($this->option('country')), $route['countries'] ?? []))
             || $this->option('strategy') && $route['strategy'] != strtolower($this->option('strategy'))
             || $this->option('geo-only') && !$route['is_geo']) {
-                
             return;
         }
 
@@ -266,7 +265,7 @@ class RouteListCommand extends BaseCommand
      */
     protected function hasGeoOption()
     {
-        return $this->option('geo') || $this->option('geo-only') 
+        return $this->option('geo') || $this->option('geo-only')
             || $this->option('country') || $this->option('strategy');
     }
 

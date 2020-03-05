@@ -3,12 +3,12 @@
 namespace LaraCrafts\GeoRoutes;
 
 use Closure;
+use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Routing\Route;
 use Illuminate\Routing\Router;
-use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Support\ServiceProvider;
-use LaraCrafts\GeoRoutes\Http\Middleware\GeoMiddleware;
 use LaraCrafts\GeoRoutes\Console\Commands\RouteListCommand;
+use LaraCrafts\GeoRoutes\Http\Middleware\GeoMiddleware;
 use LaraCrafts\GeoRoutes\Http\Middleware\GeoRoutesMiddleware;
 
 class GeoRoutesServiceProvider extends ServiceProvider

@@ -2,9 +2,9 @@
 
 namespace LaraCrafts\GeoRoutes\Tests\Unit;
 
+use LaraCrafts\GeoRoutes\Console\Commands\RouteListCommand;
 use LaraCrafts\GeoRoutes\Tests\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
-use LaraCrafts\GeoRoutes\Console\Commands\RouteListCommand;
 
 class ArtisanTest extends TestCase
 {
@@ -82,7 +82,7 @@ class ArtisanTest extends TestCase
                 'geo' => [
                     'strategy' => 'deny',
                     'countries' => ['NL', 'GB'],
-                    'callback' => ['\LaraCrafts\GeoRoutes\Tests\Mocks\Callbacks::foo', []]
+                    'callback' => ['\LaraCrafts\GeoRoutes\Tests\Mocks\Callbacks::foo', []],
                 ],
             ]
         );
@@ -95,7 +95,7 @@ class ArtisanTest extends TestCase
                     'strategy' => 'allow',
                     'countries' => ['CA', 'DZ', 'ES'],
                     'callback' => ['\LaraCrafts\GeoRoutes\Tests\Mocks\Callbacks::foo', []],
-                ]
+                ],
             ]
         );
 
@@ -103,7 +103,7 @@ class ArtisanTest extends TestCase
     }
 
     protected function getTester()
-    {   
+    {
         $this->command = new RouteListCommand($this->router);
         $this->command->setLaravel($this->app);
         
