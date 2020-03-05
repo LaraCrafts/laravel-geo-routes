@@ -13,11 +13,13 @@
 
 <p align="center">GeoLocation Restricted Routes For Laravel</p>
 
-## Requirements
+Requirements
+==
 - Laravel 5.5 or higher
 - PHP 7.1 or higher
 
-## Installation
+Installation
+==
 
 Navigate to your project's root folder via terminal or command prompt and execute the following command:
 ```bash
@@ -41,7 +43,8 @@ While still in the same folder, execute this command in your terminal:
 php artisan vendor:publish --provider="LaraCrafts\GeoRoutes\GeoRoutesServiceProvider"
 ```
 
-## Usage
+Usage
+==
 
 ### Regular Routes
 To get started real quick, the `allowFrom` and `denyFrom` methods allow you to restrict access to routes depending on *GeoLocations*
@@ -233,6 +236,18 @@ public function boot()
     });
 }
 ```
+
+## Artisan Command
+We have tweaked the `route:list` command and added new options in order to make retrieving the _geo-constraint_ information easier. Below you will find the list of new options along with their usage examples.
+
+| Option |  Value |  Description  | Usage |
+|---|---|---|---|
+|  `--geo`\|`-g` |  None |  Show the routes geo specifications |  `php artisan route:list --geo` |
+|  `--geo-only` | None  | Display GeoRoutes only  | `php artisan route:list --geo-only`  |
+|  `--country` |  String (<a href="https://www.nationsonline.org/oneworld/country_code_list.htm" target="_blank">ISO Alpha-2 Country Code</a>) |  Display only the routes that have a given country |  `php artisan route:list --country=[COUNTRY]` |
+| `--strategy` | String (allow\|deny) | Display only the routes that have a given strategy | `php artisan route:list --strategy=[STRATEGY]`
+
+
 
 ## Contribution
 All contributions are welcomed for this project, please refer to the [CONTRIBUTING.md][2] file for more information about contribution guidelines.
