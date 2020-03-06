@@ -4,6 +4,17 @@ namespace LaraCrafts\GeoRoutes\Support\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
+/**
+ * @method static void addCallback(string $name, callable $callback)
+ * @method static void loadCallbacks(array $callbacks)
+ * @method static array|null callbacks(array $callbacks = null)
+ * @method static void parseCallbacks(string $class)
+ * @method static mixed callback(string $name, callable $callable = null)
+ * @method static boolean hasCallback(string $name)
+ * @method static boolean hasProxy(string $proxy)
+ *
+ * @see \LaraCrafts\GeoRoutes\CallbackRegistrar
+ */
 class CallbackRegistrar extends Facade
 {
     /**
