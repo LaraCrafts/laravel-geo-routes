@@ -2,10 +2,12 @@
 
 namespace LaraCrafts\GeoRoutes\Tests\Unit;
 
-use Illuminate\Contracts\Http\Kernel;
-use Illuminate\Http\Request;
-use LaraCrafts\GeoRoutes\Tests\TestCase;
 use Mockery;
+use Illuminate\Http\Request;
+use Illuminate\Contracts\Http\Kernel;
+use LaraCrafts\GeoRoutes\Tests\TestCase;
+use LaraCrafts\GeoRoutes\Tests\Mocks\Callbacks;
+use LaraCrafts\GeoRoutes\Support\Facades\CallbackRegistrar;
 
 class GeoMiddlewareTest extends TestCase
 {
@@ -57,5 +59,21 @@ class GeoMiddlewareTest extends TestCase
 
         $response = $this->kernel->handle($this->request);
         $this->assertEquals(200, $response->getStatusCode());
+    }
+
+    public function testIfMiddlewareExecutesDefaultCallback()
+    {
+        $callbacks = Mockery::mock(Callbacks::class);
+        $callbacks->shouldReceive('foo')->once()->with('bar')->andReturn('foo');
+
+        CallbackRegistrar::setDefault([$callbacks, 'foo'], 'bar');
+
+        $this->location->shouldReceive('get')
+            ->once()
+            ->andReturn((object)['countryCode' => 'ch']);
+
+        $response = $this->kernel->handle($this->request);
+
+        $this->assertEquals('foo', $response);
     }
 }

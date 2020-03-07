@@ -2,12 +2,14 @@
 
 namespace LaraCrafts\GeoRoutes\Tests\Unit;
 
+use Mockery;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
-use LaraCrafts\GeoRoutes\Http\Middleware\GeoRoutesMiddleware;
 use LaraCrafts\GeoRoutes\Tests\TestCase;
-use Mockery;
+use LaraCrafts\GeoRoutes\Tests\Mocks\Callbacks;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use LaraCrafts\GeoRoutes\Support\Facades\CallbackRegistrar;
+use LaraCrafts\GeoRoutes\Http\Middleware\GeoRoutesMiddleware;
 
 class GeoRoutesMiddlewareTest extends TestCase
 {
@@ -78,23 +80,23 @@ class GeoRoutesMiddlewareTest extends TestCase
     /** @test */
     public function middlewareExecutesCallback()
     {
-        $mockClass = Mockery::mock('alias:mockClass');
-        $mockClass->shouldReceive('callback')
+        $callbacks = Mockery::mock(Callbacks::class);
+        $callbacks->shouldReceive('foo')
             ->once()
             ->with('arg')
-            ->andReturn('MockCallback');
+            ->andReturn('foo');
 
         $this->location->shouldReceive('get')
             ->once()
             ->andReturn((object)['countryCode' => 'ca']);
 
-        $callback = ['mockClass::callback', ['arg']];
+        $callback = [[$callbacks, 'foo'], ['arg']];
 
         $this->setGeoConstraint('allow', 'us', $callback);
 
         $output = $this->middleware->handle($this->request, $this->next);
 
-        $this->assertEquals('MockCallback', $output);
+        $this->assertEquals('foo', $output);
     }
 
     /** @test */
@@ -112,7 +114,24 @@ class GeoRoutesMiddlewareTest extends TestCase
                     ->once()
                     ->andReturn([]);
 
-        $output = $this->middleware->handle($this->request, $this->next);
+        $this->middleware->handle($this->request, $this->next);
+    }
+
+    /** @test */
+    public function middlewareExecutesDefaultCallbackIfNoCallbackIsFound()
+    {
+        $callbacks = Mockery::mock(Callbacks::class);
+        $callbacks->shouldReceive('foo')->once()->with('bar');
+
+        CallbackRegistrar::setDefault([$callbacks, 'foo'], 'bar');
+
+        $this->location->shouldReceive('get')
+            ->once()
+            ->andReturn((object)['countryCode' => 'ca']);
+
+        $this->setGeoConstraint('deny', 'ca');
+
+        $this->middleware->handle($this->request, $this->next);
     }
 
     /**

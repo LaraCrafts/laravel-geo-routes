@@ -7,6 +7,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use LaraCrafts\GeoRoutes\DeterminesGeoAccess;
+use LaraCrafts\GeoRoutes\Support\Facades\CallbackRegistrar;
 
 class GeoRoutesMiddleware
 {
@@ -25,8 +26,7 @@ class GeoRoutesMiddleware
         $route = $request->route();
 
         if (!$route) {
-            #TODO: Invoke the default callback.
-            return abort(401);
+            return CallbackRegistrar::invokeDefaultCallback();
         }
 
         $constraint = $route->getAction('geo') ?? [];
@@ -49,6 +49,6 @@ class GeoRoutesMiddleware
             return call_user_func_array($callback[0], $callback[1]);
         }
 
-        return abort(401);
+        return CallbackRegistrar::invokeDefaultCallback();
     }
 }

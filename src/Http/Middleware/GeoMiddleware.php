@@ -5,6 +5,7 @@ namespace LaraCrafts\GeoRoutes\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use LaraCrafts\GeoRoutes\DeterminesGeoAccess;
+use LaraCrafts\GeoRoutes\Support\Facades\CallbackRegistrar;
 
 class GeoMiddleware
 {
@@ -24,7 +25,7 @@ class GeoMiddleware
         $strategy = config()->get('geo-routes.global.strategy');
 
         if (!$this->shouldHaveAccess($countries, $strategy)) {
-            abort(401);
+            return CallbackRegistrar::invokeDefaultCallback();
         }
 
         return $next($request);
