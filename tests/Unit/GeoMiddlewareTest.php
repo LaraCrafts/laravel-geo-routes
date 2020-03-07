@@ -2,12 +2,12 @@
 
 namespace LaraCrafts\GeoRoutes\Tests\Unit;
 
-use Mockery;
-use Illuminate\Http\Request;
 use Illuminate\Contracts\Http\Kernel;
-use LaraCrafts\GeoRoutes\Tests\TestCase;
-use LaraCrafts\GeoRoutes\Tests\Mocks\Callbacks;
+use Illuminate\Http\Request;
 use LaraCrafts\GeoRoutes\Support\Facades\CallbackRegistrar;
+use LaraCrafts\GeoRoutes\Tests\Mocks\Callbacks;
+use LaraCrafts\GeoRoutes\Tests\TestCase;
+use Mockery;
 
 class GeoMiddlewareTest extends TestCase
 {

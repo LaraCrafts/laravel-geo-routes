@@ -2,14 +2,14 @@
 
 namespace LaraCrafts\GeoRoutes\Tests\Unit;
 
-use Mockery;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
-use LaraCrafts\GeoRoutes\Tests\TestCase;
-use LaraCrafts\GeoRoutes\Tests\Mocks\Callbacks;
-use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use LaraCrafts\GeoRoutes\Support\Facades\CallbackRegistrar;
 use LaraCrafts\GeoRoutes\Http\Middleware\GeoRoutesMiddleware;
+use LaraCrafts\GeoRoutes\Support\Facades\CallbackRegistrar;
+use LaraCrafts\GeoRoutes\Tests\Mocks\Callbacks;
+use LaraCrafts\GeoRoutes\Tests\TestCase;
+use Mockery;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
 class GeoRoutesMiddlewareTest extends TestCase
 {

@@ -3,12 +3,12 @@
 namespace LaraCrafts\GeoRoutes\Tests\Unit;
 
 use Closure;
-use Mockery;
-use ReflectionClass;
 use InvalidArgumentException;
-use LaraCrafts\GeoRoutes\Tests\TestCase;
 use LaraCrafts\GeoRoutes\CallbackRegistrar;
+use LaraCrafts\GeoRoutes\Tests\TestCase;
+use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use ReflectionClass;
 
 class CallbackRegistrarTest extends TestCase
 {

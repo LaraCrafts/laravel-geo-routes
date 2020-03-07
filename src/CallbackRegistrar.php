@@ -3,10 +3,10 @@
 namespace LaraCrafts\GeoRoutes;
 
 use Exception;
-use ReflectionClass;
-use ReflectionMethod;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
+use ReflectionClass;
+use ReflectionMethod;
 
 class CallbackRegistrar
 {
@@ -19,7 +19,7 @@ class CallbackRegistrar
 
     /**
      * The default callback and its arguments.
-     * 
+     *
      * @var array
      */
     protected $default = [[Callbacks::class, 'unauthorized'], []];
