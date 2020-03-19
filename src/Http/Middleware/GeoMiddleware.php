@@ -25,7 +25,7 @@ class GeoMiddleware
         $strategy = config()->get('geo-routes.global.strategy');
 
         if (!$this->shouldHaveAccess($countries, $strategy)) {
-            return CallbackRegistrar::invokeDefaultCallback();
+            return CallbackRegistrar::invokeDefault();
         }
 
         return $next($request);

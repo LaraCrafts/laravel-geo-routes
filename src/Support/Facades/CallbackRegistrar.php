@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static boolean hasProxy(string $proxy)
  * @method static void setDefault(string|callable $callback, ...$arguments)
  * @method static array getDefault()
- * @method static mixed invokeDefaultCallback()
+ * @method static mixed invokeDefault()
  *
  * @see \LaraCrafts\GeoRoutes\CallbackRegistrar
  */

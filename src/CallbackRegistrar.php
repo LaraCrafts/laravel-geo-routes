@@ -190,7 +190,7 @@ class CallbackRegistrar
      *
      * @return mixed
      */
-    public function invokeDefaultCallback()
+    public function invokeDefault()
     {
         return call_user_func_array(...$this->default);
     }

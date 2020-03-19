@@ -26,7 +26,7 @@ class GeoRoutesMiddleware
         $route = $request->route();
 
         if (!$route) {
-            return CallbackRegistrar::invokeDefaultCallback();
+            return CallbackRegistrar::invokeDefault();
         }
 
         $constraint = $route->getAction('geo') ?? [];
@@ -49,6 +49,6 @@ class GeoRoutesMiddleware
             return call_user_func_array($callback[0], $callback[1]);
         }
 
-        return CallbackRegistrar::invokeDefaultCallback();
+        return CallbackRegistrar::invokeDefault();
     }
 }

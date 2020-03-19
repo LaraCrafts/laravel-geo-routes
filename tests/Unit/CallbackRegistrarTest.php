@@ -155,11 +155,11 @@ class CallbackRegistrarTest extends TestCase
         );
     }
 
-    public function testIfInvokeDefaultCallbackExecutesDefault()
+    public function testIfInvokeDefaultExecutesDefault()
     {
         $this->registrar->setDefault('\LaraCrafts\GeoRoutes\Tests\Mocks\Callbacks::foo');
 
-        $this->assertEquals('foo', $this->registrar->invokeDefaultCallback());
+        $this->assertEquals('foo', $this->registrar->invokeDefault());
     }
 
     /**
