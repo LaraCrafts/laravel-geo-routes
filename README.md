@@ -13,13 +13,13 @@
 
 <p align="center">GeoLocation Restricted Routes For Laravel</p>
 
-Requirements
-==
+## Requirements
+
 - Laravel 5.5 or higher
 - PHP 7.1 or higher
 
-Installation
-==
+## Installation
+
 
 Navigate to your project's root folder via terminal or command prompt and execute the following command:
 ```bash
@@ -43,8 +43,8 @@ While still in the same folder, execute this command in your terminal:
 php artisan vendor:publish --provider="LaraCrafts\GeoRoutes\GeoRoutesServiceProvider"
 ```
 
-Usage
-==
+## Usage
+
 
 ### Regular Routes
 To get started real quick, the `allowFrom` and `denyFrom` methods allow you to restrict access to routes depending on *GeoLocations*
