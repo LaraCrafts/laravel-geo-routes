@@ -7,6 +7,7 @@ use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Routing\Route;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
+use LaraCrafts\GeoRoutes\Console\Commands\RouteListCommand;
 use LaraCrafts\GeoRoutes\Http\Middleware\GeoMiddleware;
 use LaraCrafts\GeoRoutes\Http\Middleware\GeoRoutesMiddleware;
 
@@ -22,9 +23,11 @@ class GeoRoutesServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__ . '/../config/global.php', 'geo-routes.global');
         $this->mergeConfigFrom(__DIR__ . '/../config/routes.php', 'geo-routes.routes');
         $this->publishes([__DIR__ . '/../config' => config_path('geo-routes')], 'config');
-
         $this->registerMacros();
         $this->registerGlobalMiddleware();
+        $this->app->extend('command.route.list', function ($command, $app) {
+            return new RouteListCommand($app['router']);
+        });
     }
 
     /**
