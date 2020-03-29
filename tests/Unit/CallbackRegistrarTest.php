@@ -3,6 +3,7 @@
 namespace LaraCrafts\GeoRoutes\Tests\Unit;
 
 use Closure;
+use InvalidArgumentException;
 use LaraCrafts\GeoRoutes\CallbackRegistrar;
 use LaraCrafts\GeoRoutes\Tests\TestCase;
 use Mockery;
@@ -22,9 +23,14 @@ class CallbackRegistrarTest extends TestCase
     /** @var \Illuminate\Routing\Router */
     protected $router;
 
+    /** @var \LaraCrafts\GeoRoutes\CallbackRegistrar|\Mockery\MockInterface */
+    protected $registrar;
+
     public function setUp(): void
     {
         parent::setUp();
+
+        $this->registrar = new CallbackRegistrar;
     }
 
     public function tearDown(): void
@@ -39,10 +45,9 @@ class CallbackRegistrarTest extends TestCase
             'bar' => '\LaraCrafts\GeoRoutes\Tests\Mocks\Callbacks::bar',
         ];
 
-        $registrar = new CallbackRegistrar;
-        $registrar->loadCallbacks($callbacks);
+        $this->registrar->loadCallbacks($callbacks);
 
-        $proxies = $registrar->callbacks();
+        $proxies = $this->registrar->callbacks();
 
         foreach ($callbacks as $key => $callback) {
             $this->assertArrayHasKey('or' . ucfirst($key), $proxies);
@@ -57,11 +62,11 @@ class CallbackRegistrarTest extends TestCase
             'bar' => '\LaraCrafts\GeoRoutes\Tests\Mocks\Callbacks::bar',
         ];
 
-        $registrar = Mockery::mock(CallbackRegistrar::class)->makePartial();
+        $this->registrar = Mockery::mock(CallbackRegistrar::class)->makePartial();
 
-        $registrar->shouldReceive('loadCallbacks')->with($callbacks)->once();
+        $this->registrar->shouldReceive('loadCallbacks')->with($callbacks)->once();
 
-        $registrar->callbacks($callbacks);
+        $this->registrar->callbacks($callbacks);
     }
 
     public function testIfParseCallbacksLoadsCallbacksFromClass()
@@ -71,11 +76,9 @@ class CallbackRegistrarTest extends TestCase
             'orBar' => '\LaraCrafts\GeoRoutes\Tests\Mocks\Callbacks::bar',
         ];
 
-        $registrar = new CallbackRegistrar;
+        $this->registrar->parseCallbacks(\LaraCrafts\GeoRoutes\Tests\Mocks\Callbacks::class);
 
-        $registrar->parseCallbacks(\LaraCrafts\GeoRoutes\Tests\Mocks\Callbacks::class);
-
-        $proxies = $registrar->callbacks();
+        $proxies = $this->registrar->callbacks();
 
         foreach ($expected as $proxy => $callable) {
             $this->assertArrayHasKey($proxy, $proxies);
@@ -85,41 +88,78 @@ class CallbackRegistrarTest extends TestCase
 
     public function testIfCallbackReturnsCallable()
     {
-        $registrar = new CallbackRegistrar;
-        $registrar->loadCallbacks(['foo' => '\LaraCrafts\GeoRoutes\Tests\Mocks\Callbacks::foo']);
+        $this->registrar->loadCallbacks(['foo' => '\LaraCrafts\GeoRoutes\Tests\Mocks\Callbacks::foo']);
 
-        $this->assertEquals('\LaraCrafts\GeoRoutes\Tests\Mocks\Callbacks::foo', $registrar->callback('foo'));
-        $this->assertEquals('\LaraCrafts\GeoRoutes\Tests\Mocks\Callbacks::foo', $registrar->callback('orFoo'));
+        $this->assertEquals('\LaraCrafts\GeoRoutes\Tests\Mocks\Callbacks::foo', $this->registrar->callback('foo'));
+        $this->assertEquals('\LaraCrafts\GeoRoutes\Tests\Mocks\Callbacks::foo', $this->registrar->callback('orFoo'));
     }
 
     public function testIfHasCallbackReturnsTrueIfCallbackExists()
     {
-        $registrar = new CallbackRegistrar;
-        $registrar->loadCallbacks(['foo' => '\LaraCrafts\GeoRoutes\Tests\Mocks\Callbacks::foo']);
+        $this->registrar->loadCallbacks(['foo' => '\LaraCrafts\GeoRoutes\Tests\Mocks\Callbacks::foo']);
 
-        $this->assertTrue($registrar->hasCallback('foo'));
+        $this->assertTrue($this->registrar->hasCallback('foo'));
     }
 
     public function testIfHasCallbackReturnsFalseIfCallbackDoesNotExist()
     {
-        $registrar = new CallbackRegistrar;
-
-        $this->assertFalse($registrar->hasCallback('foo'));
+        $this->assertFalse($this->registrar->hasCallback('foo'));
     }
 
     public function testIfHasProxyReturnsTrueIfProxyExists()
     {
-        $registrar = new CallbackRegistrar;
-        $registrar->loadCallbacks(['foo' => '\LaraCrafts\GeoRoutes\Tests\Mocks\Callbacks::foo']);
+        $this->registrar->loadCallbacks(['foo' => '\LaraCrafts\GeoRoutes\Tests\Mocks\Callbacks::foo']);
 
-        $this->assertTrue($registrar->hasProxy('orFoo'));
+        $this->assertTrue($this->registrar->hasProxy('orFoo'));
     }
 
     public function testIfHasProxyReturnsFalseIfProxyDoesNotExist()
     {
-        $registrar = new CallbackRegistrar;
+        $this->assertFalse($this->registrar->hasProxy('orFoo'));
+    }
 
-        $this->assertFalse($registrar->hasProxy('orFoo'));
+    public function testIfSetDefaultInvokesCallbackIfArgIsString()
+    {
+        $this->registrar = Mockery::mock(CallbackRegistrar::class)->makePartial();
+        $this->registrar->loadCallbacks(['foo' => '\LaraCrafts\GeoRoutes\Tests\Mocks\Callbacks::foo']);
+
+        $this->registrar->shouldReceive('callback')->with('foo')->once();
+
+        $this->registrar->setDefault('foo');
+    }
+
+    public function testIfSetDefaultSetsDefaultPropertyValueIfArgIsCallable()
+    {
+        $this->registrar->setDefault('\LaraCrafts\GeoRoutes\Tests\Mocks\Callbacks::foo', 'arg1');
+
+        $default = $this->getProperty($this->registrar, 'default')->getValue($this->registrar);
+
+        $this->assertEquals(['\LaraCrafts\GeoRoutes\Tests\Mocks\Callbacks::foo', ['arg1']], $default);
+    }
+
+    public function testIfSetDefaultThrowsExceptionIfArgIsInvalid()
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('setDefault expects parameter 1 to be string or callable integer given');
+
+        $this->registrar->setDefault(321314);
+    }
+
+    public function testIfGetDefaultReturnsDefaultCallbackArray()
+    {
+        $this->registrar->setDefault('\LaraCrafts\GeoRoutes\Tests\Mocks\Callbacks::foo', 'arg1');
+        
+        $this->assertEquals(
+            ['\LaraCrafts\GeoRoutes\Tests\Mocks\Callbacks::foo', ['arg1']],
+            $this->registrar->getDefault()
+        );
+    }
+
+    public function testIfInvokeDefaultExecutesDefault()
+    {
+        $this->registrar->setDefault('\LaraCrafts\GeoRoutes\Tests\Mocks\Callbacks::foo');
+
+        $this->assertEquals('foo', $this->registrar->invokeDefault());
     }
 
     /**

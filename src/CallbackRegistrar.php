@@ -4,6 +4,7 @@ namespace LaraCrafts\GeoRoutes;
 
 use Exception;
 use Illuminate\Support\Str;
+use InvalidArgumentException;
 use ReflectionClass;
 use ReflectionMethod;
 
@@ -15,6 +16,13 @@ class CallbackRegistrar
      * @var array
      */
     protected $proxies;
+
+    /**
+     * The default callback and its arguments.
+     *
+     * @var array
+     */
+    protected $default = [[Callbacks::class, 'unauthorized'], []];
 
     /**
      * Create a new CallbacksRegistrar instance.
@@ -140,5 +148,50 @@ class CallbackRegistrar
     public function hasProxy(string $proxy)
     {
         return array_key_exists($proxy, $this->proxies);
+    }
+
+    /**
+     * Set the default callback and its arguments.
+     *
+     * @param string|callable $callback
+     * @param  mixed ...$arguments
+     *
+     * @return void
+     */
+    public function setDefault($callback, ...$arguments)
+    {
+        if (is_callable($callback)) {
+            return $this->default = [$callback, $arguments];
+        }
+        
+        if (is_string($callback)) {
+            return $this->default = [$this->callback($callback), $arguments];
+        }
+
+        throw new InvalidArgumentException(sprintf(
+            "%s expects parameter 1 to be string or callable %s given",
+            __FUNCTION__,
+            gettype($callback)
+        ));
+    }
+
+    /**
+     * Get the default callback callable and its arguments.
+     *
+     * @return array
+     */
+    public function getDefault()
+    {
+        return $this->default;
+    }
+
+    /**
+     * Invoke the default callback.
+     *
+     * @return mixed
+     */
+    public function invokeDefault()
+    {
+        return call_user_func_array(...$this->default);
     }
 }

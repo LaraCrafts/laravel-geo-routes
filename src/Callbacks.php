@@ -7,6 +7,16 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 class Callbacks
 {
     /**
+     * Return a HTTP 401 Unauthorized response.
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\HttpException
+     */
+    public static function unauthorized()
+    {
+        throw new HttpException(401);
+    }
+    
+    /**
      * Return a HTTP 404 Not Found response.
      *
      * @throws \Symfony\Component\HttpKernel\Exception\HttpException
